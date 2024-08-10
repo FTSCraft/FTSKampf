@@ -1,0 +1,15 @@
+name: FTSKampf
+version: '2.0.1'
+main: de.ftscraft.ftskampf.main.FTSKampf
+api-version: '1.20'
+depend:
+  - FTSEngine
+authors: [ Melleming, CiraThomasen ]
+commands:
+  kampf:
+  hp:
+  heilen:
+  kampfskill:
+  hurt:
+  react:
+  magie:

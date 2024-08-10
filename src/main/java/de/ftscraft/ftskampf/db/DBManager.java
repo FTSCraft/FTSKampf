@@ -1,0 +1,186 @@
+package de.ftscraft.ftskampf.db;
+
+import de.ftscraft.ftskampf.main.FTSKampf;
+import de.ftscraft.ftskampf.utils.Dice;
+import de.ftscraft.ftskampf.utils.Skill;
+import de.ftscraft.ftskampf.utils.exceptions.NotEnoughPointsException;
+import de.ftscraft.ftskampf.utils.exceptions.SkillLimitException;
+import org.apache.commons.io.IOUtils;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class DBManager {
+    FTSKampf plugin = FTSKampf.getPlugin();
+    FileConfiguration config = plugin.getConfig();
+    private final List<Skill> skills;
+
+    {
+        try {
+            skills = loadSkills();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String getPath() throws IOException {
+        String path = System.getProperty("user.dir");
+        File saveDirectory = new File(path + "/plugins/" + plugin.getName() + "/saves/");
+        if (!saveDirectory.exists()) {
+            saveDirectory.mkdirs();
+        }
+        File file = new File(path + "/plugins/" + plugin.getName() + "/saves/saves.csv");
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        return file.getAbsolutePath();
+    }
+
+    public List<Skill> loadSkills() throws IOException {
+        List<Skill> skills = new ArrayList<>();
+        BufferedReader reader = new BufferedReader(new FileReader(getPath()));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] values = line.split(";");
+            String uuid = values[0];
+            int points = Integer.parseInt(values[1]);
+            int melee = Integer.parseInt(values[2]);
+            int distance = Integer.parseInt(values[3]);
+            int magic = Integer.parseInt(values[4]);
+            int agility = Integer.parseInt(values[5]);
+            int maxHp = Integer.parseInt(values[6]);
+            skills.add(new Skill(uuid, points, melee, distance, magic, agility, maxHp));
+        }
+        reader.close();
+        return skills;
+    }
+
+    public void addSkillpoints(int points, Player player, Dice dice) throws NotEnoughPointsException, SkillLimitException, IOException {
+        Skill skill = getPlayerSkill(player);
+        int skillpoints = skill.getSkill(dice);
+        if (points > skill.getPoints()) {
+            throw new NotEnoughPointsException("Not enough points!");
+        }
+        int remainingPoints = skill.getPoints() - points;
+        skillpoints += points;
+        int racePoints = plugin.getRaceOrDefault(player).getSkill(dice);
+        int finalSkillpoints = racePoints + skillpoints;
+        if (finalSkillpoints > dice.getSize()) {
+            skill.setSkill(dice, dice.getSize()-racePoints);
+            int overflow = finalSkillpoints - dice.getSize();
+            remainingPoints += overflow;
+            skill.setPoints(remainingPoints);
+            addSkill(skill);
+            throw new SkillLimitException("Skill limit reached", overflow);
+        }
+        skill.setSkill(dice, skillpoints);
+        skill.setPoints(remainingPoints);
+        player.sendMessage("§6Dein Skill für §c" + dice.getName() + " §6hat nun §c" + finalSkillpoints  + " §6Punkte!" );
+        player.sendMessage("§6Aktuell kannst du noch §c" + remainingPoints + " §6Skillpoints vergeben");
+        addSkill(skill);
+    }
+
+    public void addHp(int points, Player player) throws NotEnoughPointsException, IOException {
+        Skill skill = getPlayerSkill(player);
+        int skillpoints = skill.getMaxHp();
+        if (points > skill.getPoints()) {
+            throw new NotEnoughPointsException("Not enough points!");
+        }
+        int remainingPoints = skill.getPoints() - points;
+        skillpoints += points * config.getInt("Health.SkillMultiplier");
+        int racePoints = plugin.getRaceOrDefault(player).getHealth();
+        int finalSkillpoints = racePoints + skillpoints;
+        skill.setMaxHp(skillpoints);
+        skill.setPoints(remainingPoints);
+        player.sendMessage("§6Deine maximalen Lebenspunkte sind nun §c" + finalSkillpoints  + " §6Punkte!" );
+        player.sendMessage("§6Aktuell kannst du noch §c" + remainingPoints + " §6Skillpoints vergeben");
+        addSkill(skill);
+    }
+
+    public boolean removeSkill(Skill skill) throws IOException {
+        Iterator<Skill> iterator = skills.iterator();
+        while (iterator.hasNext()) {
+            Skill skillSearch = iterator.next();
+            if (skillSearch.getUUID().equals(skill.getUUID())) {
+                iterator.remove();
+                saveSkills();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean removeSkill(String username) throws Exception {
+        String uuid = getUUID(username);
+        Iterator<Skill> iterator = skills.iterator();
+        while (iterator.hasNext()) {
+            Skill skillSearch = iterator.next();
+            if (skillSearch.getUUID().equals(uuid)) {
+                iterator.remove();
+                saveSkills();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String getUUID(String username) throws Exception {
+        String urlString = "https://api.mojang.com/users/profiles/minecraft/" + username;
+        URL url = new URL(urlString);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setUseCaches(false);
+        connection.setDoOutput(true);
+        connection.setConnectTimeout(10000);
+        connection.setReadTimeout(10000);
+        connection.connect();
+        String responseString = IOUtils.toString(connection.getInputStream(), "UTF-8");
+        int index = responseString.indexOf("\"id\"");
+        if (index < 0) {
+            throw new Exception("Invalid response from Mojang API: " + responseString);
+        }
+        String uuid = responseString.substring(index + 8, index + 8 + 32);
+        if(uuid.contains("\"")) {
+            uuid = responseString.substring(index + 6, index + 6 + 32);
+        }
+        return uuid.substring(0, 8) + "-" + uuid.substring(8, 12) + "-" + uuid.substring(12, 16) + "-" + uuid.substring(16, 20) + "-" + uuid.substring(20, 32);
+    }
+
+    private void addSkill(Skill newSkill) throws IOException {
+        removeSkill(newSkill);
+        skills.add(newSkill);
+        saveSkills();
+    }
+
+    private void saveSkills() throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(getPath()));
+        for (Skill skill : skills) {
+            String uuid = skill.getUUID();
+            int points = skill.getPoints();
+            int melee = skill.getMelee();
+            int distance = skill.getDistance();
+            int magic = skill.getMagic();
+            int agility = skill.getAgility();
+            int maxHp = skill.getMaxHp();
+            writer.write(uuid + ";" + points + ";" + melee + ";" + distance + ";" + magic + ";" + agility + ";" + maxHp);
+            writer.newLine();
+        }
+        writer.close();
+    }
+
+    public Skill getPlayerSkill(Player player) {
+        String uuid = player.getUniqueId().toString();
+        for (Skill skill : skills) {
+            if (skill.getUUID().equals(uuid)) {
+                return skill;
+            }
+        }
+        return new Skill(uuid, plugin.getRaceOrDefault(player).getPoints());
+    }
+}
