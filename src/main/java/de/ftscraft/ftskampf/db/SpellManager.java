@@ -140,4 +140,9 @@ public class SpellManager {
             saveZauber();
         }
     }
+
+    public void reset() {
+        spells.clear();
+        saveZauber();
+    }
 }

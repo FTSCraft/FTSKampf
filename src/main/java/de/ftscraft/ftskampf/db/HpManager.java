@@ -159,4 +159,9 @@ public class HpManager {
             saveHp();
         }
     }
+
+    public void reset() {
+        health.clear();
+        saveHp();
+    }
 }

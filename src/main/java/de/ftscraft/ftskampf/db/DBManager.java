@@ -71,7 +71,7 @@ public class DBManager {
         skillpoints += points;
         int racePoints = plugin.getRaceOrDefault(player).getSkill(dice);
         int finalSkillpoints = racePoints + skillpoints;
-        if (finalSkillpoints > dice.getSize()) {
+        if (finalSkillpoints > dice.getMaxSkillable()) {
             skill.setSkill(dice, dice.getSize()-racePoints);
             int overflow = finalSkillpoints - dice.getSize();
             remainingPoints += overflow;
@@ -182,5 +182,14 @@ public class DBManager {
             }
         }
         return new Skill(uuid, plugin.getRaceOrDefault(player).getPoints());
+    }
+
+    public void reset() {
+        skills.clear();
+        try {
+            saveSkills();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

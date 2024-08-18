@@ -53,7 +53,7 @@ public class CMDHeal implements CommandExecutor {
         }
 
         if (args.length < 2) {
-            player.sendMessage(Message.TAG + "§6Bitte verwende den Befehl so: §c/ftskampf heal [Spieler] [HP zum heilen]");
+            player.sendMessage(Message.TAG + "§6Bitte verwende den Befehl so: §c/heilen [Spieler] [HP zum heilen]");
             return true;
         }
 

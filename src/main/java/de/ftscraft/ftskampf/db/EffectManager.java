@@ -130,4 +130,9 @@ public class EffectManager {
         return file.getAbsolutePath();
     }
 
+    public void reset() {
+        activeEffects.clear();
+        saveEffects();
+    }
+
 }

@@ -234,7 +234,7 @@ public class DiceManager {
         }
 
         if (!hpManager.isPlayerHurt(target)) {
-            player.sendMessage(Message.TAG + "§c" + target.getName() + " §6ist nicht verletzt!");
+            sendMessageInRange(Message.TAG + "§c" + target.getName() + " §6ist nicht verletzt!", player);
             return;
         }
 

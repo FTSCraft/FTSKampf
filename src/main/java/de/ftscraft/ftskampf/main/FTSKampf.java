@@ -66,7 +66,6 @@ public final class FTSKampf extends JavaPlugin {
         hpManager = new HpManager();
         diceManager = new DiceManager();
 
-
         getCommand("kampf").setExecutor(new CMDKampf());
         getCommand("hp").setExecutor(new CMDHp());
         getCommand("heilen").setExecutor(new CMDHeal());
@@ -74,6 +73,7 @@ public final class FTSKampf extends JavaPlugin {
         getCommand("hurt").setExecutor(new CMDHurt());
         getCommand("react").setExecutor(new CMDReact());
         getCommand("magie").setExecutor(new CMDMagie());
+        getCommand("ftskampfdb").setExecutor(new CMDftskampfdb());
 
         InventoryListener inventoryListener = new InventoryListener();
         getServer().getPluginManager().registerEvents(inventoryListener, plugin);
@@ -153,7 +153,7 @@ public final class FTSKampf extends JavaPlugin {
     private void createInitialConfig() {
         FileConfiguration config = plugin.getConfig();
 
-        config.set("Testmode", "false");
+        config.set("Testmode", false);
 
         config.set("Permissions.UseDices.Name", "ftskampf.useDices");
         config.set("Permissions.UseDices.Required", false);
@@ -165,6 +165,8 @@ public final class FTSKampf extends JavaPlugin {
         config.set("Permissions.ResetOtherSkills.Required", false);
         config.set("Permissions.Heal.Name", "ftskampf.heal");
         config.set("Permissions.Heal.Required", false);
+        config.set("Permissions.DBAdmin.Name", "ftskampf.dbadmin");
+        config.set("Permissions.DBAdmin.Required", true);
 
         config.set("Permissions.ChooseSpells.Name", "ftskampf.chooseSpells");
         config.set("Permissions.ChooseSpells.Required", false);
@@ -179,10 +181,14 @@ public final class FTSKampf extends JavaPlugin {
         config.set("DiceChatRange", 20);
 
         config.set("Dice.Melee.Max", 100);
+        config.set("Dice.Melee.MaxSkillable", 100);
         config.set("Dice.Distance.Max", 100);
+        config.set("Dice.Distance.MaxSkillable", 100);
         config.set("Dice.Magic.Max", 100);
-        config.set("Dice.Agility.Max", 20);
-        config.set("Dice.Action.Max", 20);
+        config.set("Dice.Magic.MaxSkillable", 100);
+        config.set("Dice.Agility.Max", 100);
+        config.set("Dice.Agility.MaxSkillable", 50);
+        config.set("Dice.Action.Max", 100);
 
         config.set("Health.RegenRate", 30);
         config.set("Health.RegenPoints", 1);
@@ -221,19 +227,19 @@ public final class FTSKampf extends JavaPlugin {
         config.set("Races.Mensch.Alias", new String[]{"Menschin"});
         config.set("Races.Mensch.MName", "Mensch");
         config.set("Races.Mensch.FName", "Menschin");
-        config.set("Races.Mensch.points", 40);
+        config.set("Races.Mensch.points", 100);
         config.set("Races.Mensch.InitialValues.Melee", 10);
-        config.set("Races.Mensch.InitialValues.Distance", 17);
+        config.set("Races.Mensch.InitialValues.Distance", 15);
         config.set("Races.Mensch.InitialValues.Magic", -1);
-        config.set("Races.Mensch.InitialValues.Agility", 6);
-        config.set("Races.Mensch.InitialValues.Health", 120);
+        config.set("Races.Mensch.InitialValues.Agility", 8);
+        config.set("Races.Mensch.InitialValues.Health", 100);
 
         config.set("Races.Elf.Alias", new String[]{"Elfe", "Elfin", "Dunkelelf", "Dunkelelfin"});
         config.set("Races.Elf.MName", "Elf");
         config.set("Races.Elf.FName", "Elfe");
-        config.set("Races.Elf.points", 50);
-        config.set("Races.Elf.InitialValues.Melee", 2);
-        config.set("Races.Elf.InitialValues.Distance", 13);
+        config.set("Races.Elf.points", 120);
+        config.set("Races.Elf.InitialValues.Melee", 8);
+        config.set("Races.Elf.InitialValues.Distance", 10);
         config.set("Races.Elf.InitialValues.Magic", 15);
         config.set("Races.Elf.InitialValues.Agility", 9);
         config.set("Races.Elf.InitialValues.Health", 80);
@@ -241,21 +247,21 @@ public final class FTSKampf extends JavaPlugin {
         config.set("Races.Zwerg.Alias", new String[]{"Zwergin", "Eisenzwerg", "Eisenzwergin"});
         config.set("Races.Zwerg.MName", "Zwerg");
         config.set("Races.Zwerg.FName", "Zwergin");
-        config.set("Races.Zwerg.points", 50);
-        config.set("Races.Zwerg.InitialValues.Melee", 10);
-        config.set("Races.Zwerg.InitialValues.Distance", 3);
-        config.set("Races.Zwerg.InitialValues.Magic", 10);
-        config.set("Races.Zwerg.InitialValues.Agility", 5);
-        config.set("Races.Zwerg.InitialValues.Health", 100);
+        config.set("Races.Zwerg.points", 120);
+        config.set("Races.Zwerg.InitialValues.Melee", 12);
+        config.set("Races.Zwerg.InitialValues.Distance", 12);
+        config.set("Races.Zwerg.InitialValues.Magic", 8);
+        config.set("Races.Zwerg.InitialValues.Agility", 7);
+        config.set("Races.Zwerg.InitialValues.Health", 120);
 
         config.set("Races.Ork.Alias", new String[]{"Orkin"});
         config.set("Races.Ork.MName", "Ork");
         config.set("Races.Ork.FName", "Orkin");
-        config.set("Races.Ork.points", 50);
-        config.set("Races.Ork.InitialValues.Melee", 19);
-        config.set("Races.Ork.InitialValues.Distance", 2);
-        config.set("Races.Ork.InitialValues.Magic", 3);
-        config.set("Races.Ork.InitialValues.Agility", 1);
+        config.set("Races.Ork.points", 120);
+        config.set("Races.Ork.InitialValues.Melee", 18);
+        config.set("Races.Ork.InitialValues.Distance",5);
+        config.set("Races.Ork.InitialValues.Magic", 5);
+        config.set("Races.Ork.InitialValues.Agility", 6);
         config.set("Races.Ork.InitialValues.Health", 150);
         plugin.saveConfig();
     }

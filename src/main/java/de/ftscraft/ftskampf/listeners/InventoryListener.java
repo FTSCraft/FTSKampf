@@ -143,7 +143,7 @@ public class InventoryListener implements Listener {
                     return;
                 }
             } else {
-                message = new StringBuilder("§7" + article + " §o" + raceName + " §r§e" + diceManager.getName(player) + " §7setzt §a" + spell.getName() + " §7ein!");
+                message = new StringBuilder(Message.TAG + "§7" + article + " §o" + raceName + " §r§e" + diceManager.getName(player) + " §7setzt §a" + spell.getName() + " §7ein!");
             }
             diceManager.sendMessageInRange(message, player);
 
@@ -210,7 +210,7 @@ public class InventoryListener implements Listener {
                     return;
                 }
             } else {
-                message = new StringBuilder("§7" + article + " §o" + raceName + " §r§e" + diceManager.getName(player) + " §7wirkt §a" + spell.getName() + " §7auf " + articleTarget + " §o" + raceNameTarget + " §e" + targetName);
+                message = new StringBuilder(Message.TAG + "§7" + article + " §o" + raceName + " §r§e" + diceManager.getName(player) + " §7wirkt §a" + spell.getName() + " §7auf " + articleTarget + " §o" + raceNameTarget + " §e" + targetName);
             }
             diceManager.sendMessageInRange(message, player);
 
