@@ -1,0 +1,2 @@
+REPOSITORY DISCONTINUED
+CONTINUED ON https://github.com/FTSCraft/FTSKampf
