@@ -70,7 +70,6 @@ public class DiceManager {
     public void rollDice(Dice dice, Player player) throws RaceDoNotExistException {
         Race race = plugin.getRace(player);
         Ausweis ausweis = engine.getAusweis(player);
-        if (race == null) throw new RaceDoNotExistException("Race does not exist");
         if (race.getSkill(dice) < 0) {
             player.sendMessage(Message.TAG + "§6Die Rasse §o" + race.getmName() + " §6verfügt nicht über die Fähigkeit §o" + dice.getName() + "!");
             return;
@@ -107,7 +106,6 @@ public class DiceManager {
     public void rollActionDice(Dice dice, Player player) throws RaceDoNotExistException {
         Race race = plugin.getRace(player);
         Ausweis ausweis = engine.getAusweis(player);
-        if (race == null) throw new RaceDoNotExistException("Race does not exist");
 
         Ausweis.Gender gender = ausweis.getGender();
         String article = "Der";
@@ -146,7 +144,6 @@ public class DiceManager {
     public void rollTargetDice(Dice dice, Player player, Player target, double modifier, double absorptionRate, boolean penetrateArmor) throws RaceDoNotExistException {
         Race race = plugin.getRace(player);
         Ausweis ausweis = engine.getAusweis(player);
-        if (race == null) throw new RaceDoNotExistException("Race does not exist");
         if (race.getSkill(dice) < 0) {
             player.sendMessage(Message.TAG + "§6Die Rasse §o" + race.getmName() + " §6verfügt nicht über die Fähigkeit §o" + dice.getName() + "!");
             return;
@@ -227,7 +224,6 @@ public class DiceManager {
     public void rollHealDice(Dice dice, Player player, Player target, double modifier) throws RaceDoNotExistException {
         Race race = plugin.getRace(player);
         Ausweis ausweis = engine.getAusweis(player);
-        if (race == null) throw new RaceDoNotExistException("Race does not exist");
         if (race.getSkill(dice) < 0) {
             player.sendMessage(Message.TAG + "§6Die Rasse §o" + race.getmName() + " §6verfügt nicht über die Fähigkeit §o" + dice.getName() + "!");
             return;
@@ -322,9 +318,11 @@ public class DiceManager {
             sendMessageInRange(Message.TAG + getName(attack.getAttacker()) + " §7verursacht Schaden in Höhe von §c" + damage + " §7 an §2" + getName(target) + "§5[" + attack.getType().getName() + "]", target);
             hpManager.hurtPlayer(target, damage);
 
-            int absorbedLife = (int) Math.round(damage * attack.getAbsorptionRate());
-            hpManager.healPlayer(attacker, absorbedLife);
-            sendMessageInRange(Message.TAG + "§c" + getName(attacker) + " §7absorbiert §c" + absorbedLife + " §7Lebenspunkte", attacker);
+            if (attack.getAbsorptionRate() > 0) {
+                int absorbedLife = (int) Math.round(damage * attack.getAbsorptionRate());
+                hpManager.healPlayer(attacker, absorbedLife);
+                sendMessageInRange(Message.TAG + "§c" + getName(attacker) + " §7absorbiert §c" + absorbedLife + " §7Lebenspunkte", attacker);
+            }
 
             if (hpManager.getHealth(target) <= 0) {
                 sendMessageInRange(Message.TAG + "§c" + getName(target) + " §7ist kampfunfähig!", target);

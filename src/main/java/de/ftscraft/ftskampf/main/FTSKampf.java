@@ -13,6 +13,7 @@ import de.ftscraft.ftskampf.utils.HealthRunner;
 import de.ftscraft.ftskampf.utils.LivingEffectRunner;
 import de.ftscraft.ftskampf.utils.MappedInventory;
 import de.ftscraft.ftskampf.utils.Race;
+import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -34,7 +35,7 @@ public final class FTSKampf extends JavaPlugin {
     public static List<MappedInventory> spellCastInventory;
     public static HashMap<MappedInventory, Player> spellTargetInventory;
     public static HashMap<Inventory, Player> targetInventorys;
-    public static HashMap<String, String> aliasMap;
+    public static List<String> raceList;
     private Engine engine;
     private DBManager dbManager;
     private HpManager hpManager;
@@ -51,7 +52,7 @@ public final class FTSKampf extends JavaPlugin {
         targetInventorys = new HashMap<>();
 
         if (!doConfigExist()) createInitialConfig();
-        aliasMap = getAliasMap();
+        raceList = getRaceList();
 
         engine = (Engine) getServer().getPluginManager().getPlugin("FTSEngine");
         effectManager = new EffectManager();
@@ -106,23 +107,39 @@ public final class FTSKampf extends JavaPlugin {
     public Race getRaceOrDefault(Player player) {
         FileConfiguration config = plugin.getConfig();
         Race race;
-        if((!engine.hasAusweis(player)) || ((race = getRace(player)) == null)) {
+        if(!engine.hasAusweis(player)) {
+            return new Race(config.getString("Races.Default"));
+        }
+        try {
+            race = getRace(player);
+        } catch (RaceDoNotExistException e) {
             return new Race(config.getString("Races.Default"));
         }
         return race;
     }
 
-    public Race getRace(Player player) {
-        String race = engine.getAusweis(player).getRace();
+    public Race getRace(Player player) throws RaceDoNotExistException {
+        String race = findRace(engine.getAusweis(player).getRace());
         FileConfiguration config = plugin.getConfig();
         if ((config.getString("Races." + race) == null)) {
-            if (aliasMap.containsKey(race)) {
-                return new Race(aliasMap.get(race));
-            } else {
-                return null;
-            }
+            throw new RaceDoNotExistException("Rasse nicht gefunden!");
         }
         return new Race(race);
+    }
+
+    private String findRace(String race) {
+        int found = 0;
+        String foundRace = null;
+        for(String existingRace : raceList) {
+            if(race.toLowerCase().contains(existingRace.toLowerCase())) {
+                found++;
+                foundRace = existingRace;
+            }
+        }
+        if(found == 1) {
+            return foundRace;
+        }
+        return null;
     }
 
     private boolean doConfigExist() {
@@ -139,15 +156,13 @@ public final class FTSKampf extends JavaPlugin {
         return directory;
     }
 
-    private HashMap<String, String> getAliasMap() {
-        HashMap<String, String> map = new HashMap<>();
+    private List<String> getRaceList() {
+        List<String> raceList = new ArrayList<>();
         FileConfiguration config = plugin.getConfig();
-        for(String aliasRace : config.getStringList("Races.HasAlias")) {
-            for (String alias : config.getStringList("Races." + aliasRace + ".Alias")) {
-                map.put(alias, aliasRace);
-            }
+        for(String race : config.getStringList("Races.List")) {
+            raceList.add(race);
         }
-        return map;
+        return raceList;
     }
 
     private void createInitialConfig() {
@@ -222,11 +237,10 @@ public final class FTSKampf extends JavaPlugin {
         config.set("Weapon.Distance.CrossbowPrecisionLoss", 10);
 
         config.set("Races.Default", "Mensch");
-        config.set("Races.HasAlias", new String[]{"Mensch", "Elf", "Zwerg", "Ork"});
+        config.set("Races.List", new String[]{"Mensch", "Elf", "Zwerg", "Ork"});
 
-        config.set("Races.Mensch.Alias", new String[]{"Menschin"});
         config.set("Races.Mensch.MName", "Mensch");
-        config.set("Races.Mensch.FName", "Menschin");
+        config.set("Races.Mensch.FName", "Menschenfrau");
         config.set("Races.Mensch.points", 100);
         config.set("Races.Mensch.InitialValues.Melee", 10);
         config.set("Races.Mensch.InitialValues.Distance", 15);
@@ -234,7 +248,6 @@ public final class FTSKampf extends JavaPlugin {
         config.set("Races.Mensch.InitialValues.Agility", 8);
         config.set("Races.Mensch.InitialValues.Health", 100);
 
-        config.set("Races.Elf.Alias", new String[]{"Elfe", "Elfin", "Dunkelelf", "Dunkelelfin"});
         config.set("Races.Elf.MName", "Elf");
         config.set("Races.Elf.FName", "Elfe");
         config.set("Races.Elf.points", 120);
@@ -244,7 +257,6 @@ public final class FTSKampf extends JavaPlugin {
         config.set("Races.Elf.InitialValues.Agility", 9);
         config.set("Races.Elf.InitialValues.Health", 80);
 
-        config.set("Races.Zwerg.Alias", new String[]{"Zwergin", "Eisenzwerg", "Eisenzwergin"});
         config.set("Races.Zwerg.MName", "Zwerg");
         config.set("Races.Zwerg.FName", "Zwergin");
         config.set("Races.Zwerg.points", 120);
@@ -254,7 +266,6 @@ public final class FTSKampf extends JavaPlugin {
         config.set("Races.Zwerg.InitialValues.Agility", 7);
         config.set("Races.Zwerg.InitialValues.Health", 120);
 
-        config.set("Races.Ork.Alias", new String[]{"Orkin"});
         config.set("Races.Ork.MName", "Ork");
         config.set("Races.Ork.FName", "Orkin");
         config.set("Races.Ork.points", 120);

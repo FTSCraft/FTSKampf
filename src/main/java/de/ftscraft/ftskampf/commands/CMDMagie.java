@@ -7,6 +7,7 @@ import de.ftscraft.ftskampf.db.SpellManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
 import de.ftscraft.ftskampf.spells.Spell;
 import de.ftscraft.ftskampf.utils.*;
+import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -51,7 +52,13 @@ public class CMDMagie implements CommandExecutor {
                 }
             }
 
-            Race race = plugin.getRace(player);
+            Race race = null;
+            try {
+                race = plugin.getRace(player);
+            } catch (RaceDoNotExistException e) {
+                player.sendMessage(Message.TAG + "§6Deine Rasse wurde nicht gefunden!");
+                return true;
+            }
 
             if (race.getSkill(Dice.MAGIC) < 0) {
                 player.sendMessage(Message.TAG + "§6Die Rasse §o" + race.getmName() + " §6verfügt nicht über die Fähigkeit §o" + Dice.MAGIC.getName() + "!");

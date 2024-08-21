@@ -119,7 +119,7 @@ public class InventoryListener implements Listener {
             Engine engine = plugin.getEngine();
             Ausweis ausweis = engine.getAusweis(player);
             Ausweis.Gender gender = ausweis.getGender();
-            Race race = plugin.getRace(player);
+            Race race = plugin.getRaceOrDefault(player);
 
             String article = "Der";
             String raceName = race.getmName();
@@ -172,7 +172,7 @@ public class InventoryListener implements Listener {
             Engine engine = plugin.getEngine();
             Ausweis ausweis = engine.getAusweis(player);
             Ausweis.Gender gender = ausweis.getGender();
-            Race race = plugin.getRace(player);
+            Race race = plugin.getRaceOrDefault(player);
 
             String article = "Der";
             String raceName = race.getmName();

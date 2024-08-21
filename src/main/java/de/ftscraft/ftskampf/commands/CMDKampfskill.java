@@ -9,6 +9,7 @@ import de.ftscraft.ftskampf.utils.Dice;
 import de.ftscraft.ftskampf.utils.Message;
 import de.ftscraft.ftskampf.utils.Race;
 import de.ftscraft.ftskampf.utils.exceptions.NotEnoughPointsException;
+import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
 import de.ftscraft.ftskampf.utils.exceptions.SkillLimitException;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -50,8 +51,10 @@ public class CMDKampfskill implements CommandExecutor {
             return true;
         }
 
-        Race race = plugin.getRace(player);
-        if (race == null) {
+        Race race = null;
+        try {
+            race = plugin.getRace(player);
+        } catch (RaceDoNotExistException e) {
             player.sendMessage(Message.TAG + "§6Deine Rasse wurde nicht gefunden!");
             return true;
         }
