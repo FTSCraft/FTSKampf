@@ -1,5 +1,5 @@
 name: FTSKampf
-version: '2.1.0'
+version: ${project.version}
 main: de.ftscraft.ftskampf.main.FTSKampf
 api-version: '1.20'
 depend:
