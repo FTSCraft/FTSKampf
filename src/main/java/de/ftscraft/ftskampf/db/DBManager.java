@@ -72,11 +72,15 @@ public class DBManager {
         int racePoints = plugin.getRaceOrDefault(player).getSkill(dice);
         int finalSkillpoints = racePoints + skillpoints;
         if (finalSkillpoints > dice.getMaxSkillable()) {
-            skill.setSkill(dice, dice.getSize()-racePoints);
-            int overflow = finalSkillpoints - dice.getSize();
+            skill.setSkill(dice, dice.getMaxSkillable()-racePoints);
+            int overflow = finalSkillpoints - dice.getMaxSkillable();
             remainingPoints += overflow;
             skill.setPoints(remainingPoints);
             addSkill(skill);
+            if(overflow < dice.getMaxSkillable()) {
+                player.sendMessage("§6Dein Skill für §c" + dice.getName() + " §6hat nun §c" + dice.getMaxSkillable() + " §6Punkte!");
+                player.sendMessage("§6Aktuell kannst du noch §c" + remainingPoints + " §6Skillpoints vergeben");
+            }
             throw new SkillLimitException("Skill limit reached", overflow);
         }
         skill.setSkill(dice, skillpoints);
