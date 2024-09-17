@@ -117,7 +117,9 @@ public class DiceManager {
 
         int value = calculateAttackValue(dice, player);
 
-        StringBuilder message = new StringBuilder("§7" + article + " §o" + raceName + " §r§e" + getName(player) + " §7würfelt: §e").append("§2").append(value).append(" §5[").append(dice.getName()).append("]");
+        String colourCode = value < 51 ? "§c" : "§2";
+
+        StringBuilder message = new StringBuilder("§7" + article + " §o" + raceName + " §r§e" + getName(player) + " §7würfelt: §e").append(colourCode).append(value).append(" §5[").append(dice.getName()).append("]");
         sendMessageInRange(message, player);
     }
 
