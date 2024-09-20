@@ -121,6 +121,10 @@ public class DiceManager {
         sendMessageInRange(message, player);
     }
 
+    public PlainResult rollMagicPreDice(Player player) {
+        return rollPlainDice(Dice.MAGIC, player);
+    }
+
     public void rollTargetDice(Dice dice, Player player, Player target) throws RaceDoNotExistException {
         rollTargetDice(dice, player, target, 1, 0, false);
     }
@@ -135,10 +139,6 @@ public class DiceManager {
 
     public void rollTargetDice(Dice dice, Player player, Player target, double modifier, boolean penetrateArmor) throws RaceDoNotExistException {
         rollTargetDice(dice, player, target, modifier, 0, penetrateArmor);
-    }
-
-    public PlainResult rollMagicPreDice(Player player) {
-        return rollPlainDice(Dice.MAGIC, player);
     }
 
     public void rollTargetDice(Dice dice, Player player, Player target, double modifier, double absorptionRate, boolean penetrateArmor) throws RaceDoNotExistException {
@@ -315,7 +315,7 @@ public class DiceManager {
         if (!success) {
             Player attacker = attack.getAttacker();
             int damage = calculateDefendValue(target, attack.getStrength(), attack.getType());
-            sendMessageInRange(Message.TAG + getName(attack.getAttacker()) + " §7verursacht Schaden in Höhe von §c" + damage + " §7 an §2" + getName(target) + "§5[" + attack.getType().getName() + "]", target);
+            sendMessageInRange(Message.TAG + getName(attack.getAttacker()) + " §7verursacht Schaden in Höhe von §c" + damage + " §7an §2" + getName(target) + " §5[" + attack.getType().getName() + "]", target);
             hpManager.hurtPlayer(target, damage);
 
             if (attack.getAbsorptionRate() > 0) {
@@ -351,7 +351,7 @@ public class DiceManager {
             }
         }
 
-        StringBuilder message = new StringBuilder("§7" + article + " §o" + raceName + " §r§e" + getName(target) + " §7versucht zu Kontern und würfelt: §e");
+        StringBuilder message = new StringBuilder(Message.TAG + "§7" + article + " §o" + raceName + " §r§e" + getName(target) + " §7versucht zu Kontern und würfelt: §e");
 
         Dice dice = attack.getType();
         int value = calculateAttackValue(dice, target);
@@ -362,7 +362,10 @@ public class DiceManager {
         int attackDmg;
         if (success) {
             message.append("§2").append(value).append(" §7und hat damit den Wurf §2geschafft!").append(" §5[").append(dice.getName()).append("]");
-            attackDmg = calculateDifference(attack.getStrength(), value);
+            int counterDamage = calculateAttackStrength(target, dice, value);
+            attackDmg = calculateDifference(attack.getStrength(), counterDamage);
+            sendMessageInRange(message, target);
+            message = new StringBuilder(Message.TAG + "§7" + article + " §o" + raceName + " §r§e" + getName(target) + " §7versucht zu Kontern mit: §c").append(counterDamage).append(" §5[").append(dice.getName()).append("]");
         } else {
             message.append("§c").append(value).append(" §7hätte aber §c").append(skill).append(" §7oder niedriger würfeln müssen!").append(" §5[").append(dice.getName()).append("]");
             attackDmg = attack.getStrength();
@@ -379,7 +382,7 @@ public class DiceManager {
         ItemStack item = new ItemStack(Material.SHIELD);
         item.getItemMeta().getPersistentDataContainer();
 
-        sendMessageInRange(Message.TAG + getName(attacker) + " §7greift an mit der Stärke von §c" + calculateAttackStrength(attacker, dice, attackDmg) + " §5[" + dice.getName() + "]", attacker);
+        sendMessageInRange(Message.TAG + getName(attacker) + " §7greift an mit der Stärke von §c" + attackDmg + " §5[" + dice.getName() + "]", attacker);
 
         int damage = calculateDefendValue(target, attackDmg, dice);
         sendMessageInRange(Message.TAG + "§e" + getName(attacker) + " §7verursacht Schaden in Höhe von §c" + damage + " §7an §e" + getName(target) + " §5[" + attack.getType().getName() + "]", target);
