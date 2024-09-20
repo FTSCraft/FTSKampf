@@ -82,7 +82,7 @@ public class CMDHp implements CommandExecutor {
             targetName = ausweis.getFirstName() + " " + ausweis.getLastName();
         }
 
-        player.sendMessage(Message.TAG + " §c" + targetName + aussehen);
+        player.sendMessage(Message.TAG + "§c" + targetName + aussehen);
 
         return true;
     }
