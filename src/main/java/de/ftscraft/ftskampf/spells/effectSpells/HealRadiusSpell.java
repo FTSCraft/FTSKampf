@@ -1,11 +1,11 @@
 package de.ftscraft.ftskampf.spells.effectSpells;
 
-import de.ftscraft.ftskampf.spells.Spell;
+import de.ftscraft.ftskampf.spells.EffectSpell;
 import de.ftscraft.ftskampf.spells.effects.HealRadius;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
 import org.bukkit.entity.Player;
 
-public class HealRadiusSpell extends Spell {
+public class HealRadiusSpell extends EffectSpell {
 
    public HealRadiusSpell() {
         super("Flächenheilung", "0190", "Heilt alle Spieler im Umkreis von 5 Blöcken.");

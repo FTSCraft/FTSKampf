@@ -2,11 +2,11 @@ package de.ftscraft.ftskampf.spells.effectSpells;
 
 import de.ftscraft.ftskampf.db.EffectManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
-import de.ftscraft.ftskampf.spells.Spell;
+import de.ftscraft.ftskampf.spells.EffectSpell;
 import de.ftscraft.ftskampf.spells.effects.BuffAttack;
 import org.bukkit.entity.Player;
 
-public class BuffAttackSpell extends Spell {
+public class BuffAttackSpell extends EffectSpell {
 
     FTSKampf plugin = FTSKampf.getPlugin();
     EffectManager effectManager = plugin.getEffectManager();

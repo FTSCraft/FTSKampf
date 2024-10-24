@@ -1,10 +1,8 @@
 package de.ftscraft.ftskampf.db;
 
-import de.ftscraft.ftskampf.spells.Spell;
+import de.ftscraft.ftskampf.spells.EffectSpell;
 import de.ftscraft.ftskampf.main.FTSKampf;
-import de.ftscraft.ftskampf.spells.effectSpells.*;
 import de.ftscraft.ftskampf.utils.SpellCollection;
-import de.ftscraft.ftskampf.spells.*;
 import org.bukkit.entity.Player;
 
 import java.io.*;
@@ -16,48 +14,30 @@ import java.util.List;
 public class SpellManager {
     private final FTSKampf plugin = FTSKampf.getPlugin();
     private HashMap<String, SpellCollection> spells;
-    List<Spell> allSpells = new ArrayList<>();
+    List<EffectSpell> allSpells = new ArrayList<>();
 
     public SpellManager() {
+        initClasses();
         initSpells();
     }
 
-    public void init() throws IOException {
-        spells = loadZauber();
+    private void initClasses() {
+
     }
 
-    //Put here all Spells
     private void initSpells() {
-        allSpells.add(new BuffAgilitySpell());
-        allSpells.add(new BuffArmorSpell());
-        allSpells.add(new BuffAttackArmorRangeSpell());
-        allSpells.add(new BuffAttackDebuffArmorSpell());
-        allSpells.add(new BuffAttackSpell());
-        allSpells.add(new BuffUnarmedSpell());
-        allSpells.add(new DamageAbsorptionSpell());
-        allSpells.add(new DamageOverTimeSpell());
-        allSpells.add(new DamagePenetrationSpell());
-        allSpells.add(new DamageSpell());
-        allSpells.add(new DebuffTargetAgilitySpell());
-        allSpells.add(new DebuffTargetArmorSpell());
-        allSpells.add(new DebuffTargetAttackSpell());
-        allSpells.add(new HealLimitRangeSpell());
-        allSpells.add(new HealRadiusSpell());
-        allSpells.add(new HealSelfDamageSpell());
-        allSpells.add(new HealSpell());
-        allSpells.add(new ProtectAttackSpell());
-        allSpells.add(new StunSpell());
+
     }
 
-    public Spell getSpellByZid(String zid) {
-        for (Spell spell : allSpells) {
+    public EffectSpell getSpellByZid(String zid) {
+        for (EffectSpell spell : allSpells) {
             if (spell.getZid().equals(zid))
                 return spell;
         }
         return null;
     }
 
-    public List<Spell> getAllSpells() {
+    public List<EffectSpell> getAllSpells() {
         return allSpells;
     }
 
@@ -74,7 +54,7 @@ public class SpellManager {
         return 0;
     }
 
-    public boolean playerHasSpell(String uuid, Spell spell) {
+    public boolean playerHasSpell(String uuid, EffectSpell spell) {
         return getSpellCollection(uuid).contains(spell);
     }
 
@@ -130,7 +110,7 @@ public class SpellManager {
             for (String uuid : spells.keySet()) {
                 writer.write(uuid);
                 SpellCollection collection = spells.get(uuid);
-                for(Spell spell : collection.getSpells())
+                for(EffectSpell spell : collection.getSpells())
                     writer.write(";" + spell.getZid());
                 writer.newLine();
             }

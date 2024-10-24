@@ -1,11 +1,11 @@
 package de.ftscraft.ftskampf.spells.effectSpells;
 
-import de.ftscraft.ftskampf.spells.Spell;
+import de.ftscraft.ftskampf.spells.EffectSpell;
 import de.ftscraft.ftskampf.spells.effects.DamagePenetration;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
 import org.bukkit.entity.Player;
 
-public class DamagePenetrationSpell extends Spell {
+public class DamagePenetrationSpell extends EffectSpell {
 
     public DamagePenetrationSpell() {
         super("Rüstungsdurchdringender Schaden", "0178", "Verursacht Schaden, der die Rüstung des Ziels durchdringt.");

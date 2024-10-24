@@ -2,7 +2,7 @@ package de.ftscraft.ftskampf.spells;
 
 import org.bukkit.entity.Player;
 
-public abstract class Spell {
+public abstract class EffectSpell {
     private String zid;
     private String name;
     private String description;
@@ -20,19 +20,19 @@ public abstract class Spell {
         return description;
     }
 
-    public boolean equals(Spell compare) {
+    public boolean equals(EffectSpell compare) {
         if(compare == null) return false;
         return compare.getZid() == zid;
     }
 
-    public Spell(String name, String zid, String description) {
+    public EffectSpell(String name, String zid, String description) {
         this.name = name;
         this.zid = zid;
         this.description = description;
         this.race = "all";
     }
 
-    public Spell(String name, String zid, String description, String race) {
+    public EffectSpell(String name, String zid, String description, String race) {
         this.name = name;
         this.zid = zid;
         this.description = description;

@@ -2,7 +2,7 @@ package de.ftscraft.ftskampf.inventorys;
 
 import de.ftscraft.ftskampf.db.SpellManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
-import de.ftscraft.ftskampf.spells.Spell;
+import de.ftscraft.ftskampf.spells.EffectSpell;
 import de.ftscraft.ftskampf.utils.MappedInventory;
 import de.ftscraft.ftskampf.utils.SpellCollection;
 import org.bukkit.Bukkit;
@@ -33,7 +33,7 @@ public class MagicInventory {
         Inventory inventory = Bukkit.createInventory(null, 9 * 5, "Zauber auswählen");
         int i = 0;
         HashMap<Integer, String> zidMapping = new HashMap<>();
-        for(Spell spell : spellCollection.getSpells()) {
+        for(EffectSpell spell : spellCollection.getSpells()) {
             if(spell.isSelfApplicable()) {
                 ItemStack item = new ItemStack(Material.ENCHANTED_BOOK);
                 ItemMeta itemMeta = item.getItemMeta();
@@ -55,7 +55,7 @@ public class MagicInventory {
         Inventory inventory = Bukkit.createInventory(null, 9 * 5, "Zauber auswählen, Ziel: " + target.getName());
         int i = 0;
         HashMap<Integer, String> zidMapping = new HashMap<>();
-        for(Spell spell : spellCollection.getSpells()) {
+        for(EffectSpell spell : spellCollection.getSpells()) {
             if(spell.isTargetApplicable()) {
                 ItemStack item = new ItemStack(Material.ENCHANTED_BOOK);
                 ItemMeta itemMeta = item.getItemMeta();

@@ -55,20 +55,19 @@ public final class FTSKampf extends JavaPlugin {
         effectManager = new EffectManager();
         effectManager.init();
         spellManager = new SpellManager();
-        try {
-            spellManager.init();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         dbManager = new DBManager();
         hpManager = new HpManager();
         diceManager = new DiceManager();
+
+        configManager.checkDatabaseVersions();
 
         getCommand("kampf").setExecutor(new CMDKampf());
         getCommand("hp").setExecutor(new CMDHp());
         getCommand("heilen").setExecutor(new CMDHeal());
         getCommand("kampfskill").setExecutor(new CMDKampfskill());
-        getCommand("hurt").setExecutor(new CMDHurt());
+        if (getConfig().getBoolean("Testmode")) {
+            getCommand("hurt").setExecutor(new CMDHurt());
+        }
         getCommand("react").setExecutor(new CMDReact());
         getCommand("magie").setExecutor(new CMDMagie());
         getCommand("ftskampfdb").setExecutor(new CMDftskampfdb());
@@ -90,21 +89,35 @@ public final class FTSKampf extends JavaPlugin {
     public static FTSKampf getPlugin() {
         return plugin;
     }
+
     public DBManager getDB() {
         return dbManager;
     }
+
     public Engine getEngine() {
         return engine;
     }
-    public HpManager getHpManager() { return hpManager;}
-    public DiceManager getDiceManager() { return diceManager;}
-    public EffectManager getEffectManager() { return effectManager;}
-    public SpellManager getSpellManager() { return spellManager;}
+
+    public HpManager getHpManager() {
+        return hpManager;
+    }
+
+    public DiceManager getDiceManager() {
+        return diceManager;
+    }
+
+    public EffectManager getEffectManager() {
+        return effectManager;
+    }
+
+    public SpellManager getSpellManager() {
+        return spellManager;
+    }
 
     public Race getRaceOrDefault(Player player) {
         FileConfiguration config = plugin.getConfig();
         Race race;
-        if(!engine.hasAusweis(player)) {
+        if (!engine.hasAusweis(player)) {
             return new Race(config.getString("Races.Default"));
         }
         try {
@@ -127,13 +140,13 @@ public final class FTSKampf extends JavaPlugin {
     private String findRace(String race) {
         int found = 0;
         String foundRace = null;
-        for(String existingRace : raceList) {
-            if(race.toLowerCase().contains(existingRace.toLowerCase())) {
+        for (String existingRace : raceList) {
+            if (race.toLowerCase().contains(existingRace.toLowerCase())) {
                 found++;
                 foundRace = existingRace;
             }
         }
-        if(found == 1) {
+        if (found == 1) {
             return foundRace;
         }
         return null;
@@ -142,7 +155,7 @@ public final class FTSKampf extends JavaPlugin {
     private List<String> getRaceList() {
         List<String> raceList = new ArrayList<>();
         FileConfiguration config = plugin.getConfig();
-        for(String race : config.getStringList("Races.List")) {
+        for (String race : config.getStringList("Races.List")) {
             raceList.add(race);
         }
         return raceList;

@@ -5,7 +5,7 @@ import de.ftscraft.ftsengine.utils.Ausweis;
 import de.ftscraft.ftskampf.db.DBManager;
 import de.ftscraft.ftskampf.db.SpellManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
-import de.ftscraft.ftskampf.spells.Spell;
+import de.ftscraft.ftskampf.spells.EffectSpell;
 import de.ftscraft.ftskampf.utils.*;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
 import org.bukkit.Bukkit;
@@ -79,7 +79,7 @@ public class CMDMagie implements CommandExecutor {
             Inventory inventory = Bukkit.createInventory(null, 9 * 5, "Zauber auswählen");
             int i = 0;
             HashMap<Integer, String> zidMapping = new HashMap<>();
-            for (Spell spell : spellManager.getAllSpells()) {
+            for (EffectSpell spell : spellManager.getAllSpells()) {
                 if (spell.raceMatches(ausweis.getRace()) && !spellManager.playerHasSpell(player.getUniqueId().toString(), spell)) {
                     ItemStack item = new ItemStack(Material.ENCHANTED_BOOK);
                     ItemMeta itemMeta = item.getItemMeta();
@@ -144,10 +144,10 @@ public class CMDMagie implements CommandExecutor {
                 return true;
             }
             StringBuilder message = new StringBuilder(Message.TAG + "§7Du hast folgende Zauber gelernt: §c");
-            List<Spell> spells = spellManager.getSpellCollection(player).getSpells();
+            List<EffectSpell> spells = spellManager.getSpellCollection(player).getSpells();
             message.append(spells.get(0).getName());
             if (spells.size() > 1) {
-                for (Spell spell : spells.subList(1, spells.size())) {
+                for (EffectSpell spell : spells.subList(1, spells.size())) {
                     message.append(", ").append(spell.getName());
                 }
             }

@@ -1,11 +1,11 @@
 package de.ftscraft.ftskampf.spells.effectSpells;
 
-import de.ftscraft.ftskampf.spells.Spell;
+import de.ftscraft.ftskampf.spells.EffectSpell;
 import de.ftscraft.ftskampf.spells.effects.Damage;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
 import org.bukkit.entity.Player;
 
-public class DamageSpell extends Spell {
+public class DamageSpell extends EffectSpell {
 
     public DamageSpell() {
         super("Schadenszauber", "0175", "Verursacht direkten Schaden am Ziel.");

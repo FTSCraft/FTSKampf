@@ -2,12 +2,11 @@ package de.ftscraft.ftskampf.spells.effectSpells;
 
 import de.ftscraft.ftskampf.db.EffectManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
-import de.ftscraft.ftskampf.spells.Spell;
-import de.ftscraft.ftskampf.spells.effects.BuffAttackArmorRange;
+import de.ftscraft.ftskampf.spells.EffectSpell;
 import de.ftscraft.ftskampf.spells.effects.BuffAttackDebuffArmor;
 import org.bukkit.entity.Player;
 
-public class BuffAttackDebuffArmorSpell extends Spell {
+public class BuffAttackDebuffArmorSpell extends EffectSpell {
 
     FTSKampf plugin = FTSKampf.getPlugin();
     EffectManager effectManager = plugin.getEffectManager();

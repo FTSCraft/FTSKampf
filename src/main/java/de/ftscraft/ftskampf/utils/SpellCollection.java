@@ -1,7 +1,7 @@
 package de.ftscraft.ftskampf.utils;
 
 import de.ftscraft.ftskampf.db.SpellManager;
-import de.ftscraft.ftskampf.spells.Spell;
+import de.ftscraft.ftskampf.spells.EffectSpell;
 import de.ftscraft.ftskampf.main.FTSKampf;
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ public class SpellCollection {
     FTSKampf plugin = FTSKampf.getPlugin();
     SpellManager spellManager = plugin.getSpellManager();
     String owner;
-    List<Spell> spells;
+    List<EffectSpell> spells;
 
 
     public SpellCollection(String owner) {
@@ -31,7 +31,7 @@ public class SpellCollection {
         spells.add(spellManager.getSpellByZid(zid));
     }
 
-    public List<Spell> getSpells() {
+    public List<EffectSpell> getSpells() {
         return spells;
     }
 
@@ -39,8 +39,8 @@ public class SpellCollection {
         return spells.size();
     }
 
-    public boolean contains(Spell spell) {
-        for(Spell vSpell : spells) {
+    public boolean contains(EffectSpell spell) {
+        for(EffectSpell vSpell : spells) {
             if (vSpell.equals(spell))
                 return true;
         }

@@ -5,13 +5,46 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.util.HashMap;
 
 public class ConfigManager {
-    private FTSKampf plugin;
-    private FileConfiguration config;
+    private final String SKILLS_COMPATIBLE_VERSION = "2.2";
+    private final String HP_COMPATIBLE_VERSION = "2.2";
+    private final String SPELLS_COMPATIBLE_VERSION = "2.2";
+    private final String EFFECT_COMPATIBLE_VERSION = "2.2";
+
+    private final FTSKampf plugin;
+    private final FileConfiguration config;
 
     public ConfigManager() {
         this.plugin = FTSKampf.getPlugin();
         config = plugin.getConfig();
         checkConfig();
+    }
+
+    public void checkDatabaseVersions () {
+        DBManager dbManager = plugin.getDB();
+        HpManager hpManager = plugin.getHpManager();
+        SpellManager spellManager = plugin.getSpellManager();
+        EffectManager effectManager = plugin.getEffectManager();
+
+        if(!config.getString("DBVersion.Skills").equals(SKILLS_COMPATIBLE_VERSION)) {
+            dbManager.reset();
+            config.set("DBVersion.Skills", SKILLS_COMPATIBLE_VERSION);
+        }
+
+        if(!config.getString("DBVersion.Hp").equals(HP_COMPATIBLE_VERSION)) {
+            hpManager.reset();
+            config.set("DBVersion.Hp", HP_COMPATIBLE_VERSION);
+        }
+
+        if(!config.getString("DBVersion.Spells").equals(SPELLS_COMPATIBLE_VERSION)) {
+            spellManager.reset();
+            config.set("DBVersion.Spells", SPELLS_COMPATIBLE_VERSION);
+        }
+
+        if(!config.getString("DBVersion.Effect").equals(EFFECT_COMPATIBLE_VERSION)) {
+            effectManager.reset();
+            config.set("DBVersion.Effect", EFFECT_COMPATIBLE_VERSION);
+        }
+        plugin.saveConfig();
     }
 
     private void checkConfig() {
@@ -121,6 +154,10 @@ public class ConfigManager {
         defaultValues.put("Races.Ork.InitialValues.Magic", 5);
         defaultValues.put("Races.Ork.InitialValues.Agility", 6);
         defaultValues.put("Races.Ork.InitialValues.Health", 150);
+        defaultValues.put("DBVersion.Skills", "0");
+        defaultValues.put("DBVersion.Hp", "0");
+        defaultValues.put("DBVersion.Spells", "0");
+        defaultValues.put("DBVersion.Effect", "0");
 
         for(String key : defaultValues.keySet()) {
             if(!config.isSet(key)) config.set(key, defaultValues.get(key));

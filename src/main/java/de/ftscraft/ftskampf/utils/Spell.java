@@ -1,0 +1,4 @@
+package de.ftscraft.ftskampf.utils;
+
+public class Spell {
+}

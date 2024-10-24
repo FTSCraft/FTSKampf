@@ -1,11 +1,11 @@
 package de.ftscraft.ftskampf.spells.effectSpells;
 
-import de.ftscraft.ftskampf.spells.Spell;
+import de.ftscraft.ftskampf.spells.EffectSpell;
 import de.ftscraft.ftskampf.spells.effects.HealSelfDamage;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
 import org.bukkit.entity.Player;
 
-public class HealSelfDamageSpell extends Spell {
+public class HealSelfDamageSpell extends EffectSpell {
 
     public HealSelfDamageSpell() {
         super("Starke Heilung mit Schaden am Anwender", "0185", "Heilt ein Ziel stark, fügt jedoch dem Anwender selbst Schaden zu.");

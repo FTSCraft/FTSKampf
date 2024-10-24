@@ -6,7 +6,7 @@ import de.ftscraft.ftskampf.damageCalculators.DiceManager;
 import de.ftscraft.ftskampf.db.SpellManager;
 import de.ftscraft.ftskampf.inventorys.MagicInventory;
 import de.ftscraft.ftskampf.main.FTSKampf;
-import de.ftscraft.ftskampf.spells.Spell;
+import de.ftscraft.ftskampf.spells.EffectSpell;
 import de.ftscraft.ftskampf.utils.*;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
 import org.bukkit.entity.Player;
@@ -129,7 +129,7 @@ public class InventoryListener implements Listener {
             }
 
             String zid = zidMapping.get(slot);
-            Spell spell = spellManager.getSpellByZid(zid);
+            EffectSpell spell = spellManager.getSpellByZid(zid);
 
             StringBuilder message;
             PlainResult result = new PlainResult(-1, 100, true);
@@ -196,7 +196,7 @@ public class InventoryListener implements Listener {
             }
 
             String zid = zidMapping.get(slot);
-            Spell spell = spellManager.getSpellByZid(zid);
+            EffectSpell spell = spellManager.getSpellByZid(zid);
 
             StringBuilder message;
             PlainResult result = new PlainResult(-1, 100, true);

@@ -6,7 +6,7 @@ import de.ftscraft.ftskampf.spells.effects.effectDefinitions.ContinuousEffectId;
 public class ProtectAttack extends ContinuousEffect {
 
     public ProtectAttack(String target, String caster) {
-        this(target, caster, -1, 3);
+        this(target, caster, -1, 1);
     }
 
     public ProtectAttack(String target, String caster, double modifier, int durability) {

@@ -1,13 +1,12 @@
 package de.ftscraft.ftskampf.spells.effectSpells;
 
 import de.ftscraft.ftskampf.damageCalculators.DiceManager;
-import de.ftscraft.ftskampf.db.EffectManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
-import de.ftscraft.ftskampf.spells.Spell;
+import de.ftscraft.ftskampf.spells.EffectSpell;
 import de.ftscraft.ftskampf.utils.Message;
 import org.bukkit.entity.Player;
 
-public class StunSpell extends Spell {
+public class StunSpell extends EffectSpell {
 
     FTSKampf plugin = FTSKampf.getPlugin();
     DiceManager diceManager = plugin.getDiceManager();
