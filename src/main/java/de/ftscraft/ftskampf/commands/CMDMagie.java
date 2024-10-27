@@ -52,7 +52,7 @@ public class CMDMagie implements CommandExecutor {
                 }
             }
 
-            Race race = null;
+            Race race;
             try {
                 race = plugin.getRace(player);
             } catch (RaceDoNotExistException e) {
@@ -76,10 +76,11 @@ public class CMDMagie implements CommandExecutor {
                 return true;
             }
 
+            //TODO MAGIEAUSWAHLGUI
             Inventory inventory = Bukkit.createInventory(null, 9 * 5, "Zauber auswählen");
             int i = 0;
-            HashMap<Integer, String> zidMapping = new HashMap<>();
-            for (EffectSpell spell : spellManager.getAllSpells()) {
+            HashMap<Integer, String> idMapping = new HashMap<>();
+            for (Spell spell : spellManager.getAllSpells()) {
                 if (spell.raceMatches(ausweis.getRace()) && !spellManager.playerHasSpell(player.getUniqueId().toString(), spell)) {
                     ItemStack item = new ItemStack(Material.ENCHANTED_BOOK);
                     ItemMeta itemMeta = item.getItemMeta();
@@ -90,10 +91,10 @@ public class CMDMagie implements CommandExecutor {
                     itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                     item.setItemMeta(itemMeta);
                     inventory.setItem(i, item);
-                    zidMapping.put(i++, spell.getZid());
+                    idMapping.put(i++, spell.getId());
                 }
             }
-            FTSKampf.spellChooseInventory.add(new MappedInventory(inventory, zidMapping));
+            FTSKampf.spellChooseInventory.add(new MappedInventory(inventory, idMapping));
             player.openInventory(inventory);
             return true;
         }
@@ -144,10 +145,10 @@ public class CMDMagie implements CommandExecutor {
                 return true;
             }
             StringBuilder message = new StringBuilder(Message.TAG + "§7Du hast folgende Zauber gelernt: §c");
-            List<EffectSpell> spells = spellManager.getSpellCollection(player).getSpells();
+            List<Spell> spells = spellManager.getSpellCollection(player).getSpells();
             message.append(spells.get(0).getName());
             if (spells.size() > 1) {
-                for (EffectSpell spell : spells.subList(1, spells.size())) {
+                for (Spell spell : spells.subList(1, spells.size())) {
                     message.append(", ").append(spell.getName());
                 }
             }

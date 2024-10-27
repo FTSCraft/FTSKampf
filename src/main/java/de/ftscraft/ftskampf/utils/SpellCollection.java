@@ -11,7 +11,7 @@ public class SpellCollection {
     FTSKampf plugin = FTSKampf.getPlugin();
     SpellManager spellManager = plugin.getSpellManager();
     String owner;
-    List<EffectSpell> spells;
+    List<Spell> spells;
 
 
     public SpellCollection(String owner) {
@@ -22,16 +22,19 @@ public class SpellCollection {
     public SpellCollection(String owner, List<String> spells) {
         this.owner = owner;
         this.spells = new ArrayList<>();
-        for(String zid : spells) {
-            this.spells.add(spellManager.getSpellByZid(zid));
+        for(String id : spells) {
+            Spell spell = spellManager.getSpellById(id);
+            if(spell != null) {
+                this.spells.add(spell);
+            }
         }
     }
 
-    public void addSpell(String zid) {
-        spells.add(spellManager.getSpellByZid(zid));
+    public void addSpell(String id) {
+        spells.add(spellManager.getSpellById(id));
     }
 
-    public List<EffectSpell> getSpells() {
+    public List<Spell> getSpells() {
         return spells;
     }
 
@@ -39,8 +42,8 @@ public class SpellCollection {
         return spells.size();
     }
 
-    public boolean contains(EffectSpell spell) {
-        for(EffectSpell vSpell : spells) {
+    public boolean contains(Spell spell) {
+        for(Spell vSpell : spells) {
             if (vSpell.equals(spell))
                 return true;
         }
