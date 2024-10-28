@@ -5,7 +5,6 @@ import de.ftscraft.ftsengine.utils.Ausweis;
 import de.ftscraft.ftskampf.db.DBManager;
 import de.ftscraft.ftskampf.db.SpellManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
-import de.ftscraft.ftskampf.spells.EffectSpell;
 import de.ftscraft.ftskampf.utils.*;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
 import org.bukkit.Bukkit;
@@ -76,33 +75,29 @@ public class CMDMagie implements CommandExecutor {
                 return true;
             }
 
-            //TODO MAGIEAUSWAHLGUI
-            Inventory inventory = Bukkit.createInventory(null, 9 * 5, "Zauber auswählen");
+            Inventory inventory = Bukkit.createInventory(null, 9 * 5, "Klasse auswählen");
             int i = 0;
             HashMap<Integer, String> idMapping = new HashMap<>();
-            for (Spell spell : spellManager.getAllSpells()) {
-                if (spell.raceMatches(ausweis.getRace()) && !spellManager.playerHasSpell(player.getUniqueId().toString(), spell)) {
+            for (SpellClass spellClass : spellManager.getAllClasses()) {
+                if (spellClass.raceMatches(ausweis.getRace())) {
                     ItemStack item = new ItemStack(Material.ENCHANTED_BOOK);
                     ItemMeta itemMeta = item.getItemMeta();
-                    itemMeta.setDisplayName(spell.getName());
-                    List<String> lore = new ArrayList<>();
-                    lore.add(spell.getDescription());
-                    itemMeta.setLore(lore);
+                    itemMeta.setDisplayName(spellClass.getName());
                     itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                     item.setItemMeta(itemMeta);
                     inventory.setItem(i, item);
-                    idMapping.put(i++, spell.getId());
+                    idMapping.put(i++, spellClass.getId());
                 }
             }
-            FTSKampf.spellChooseInventory.add(new MappedInventory(inventory, idMapping));
+            FTSKampf.spellChooseInventory.add(new MappedInventory(inventory, idMapping, MappedInventory.MappedInventoryType.CLASS_INVENTORY));
             player.openInventory(inventory);
             return true;
         }
 
         if (args[0].equalsIgnoreCase("reset")) {
             if (args.length < 2) {
-                if (config.getBoolean("Permissions.ResetSpellsOther.Required")) {
-                    if (!(player.hasPermission(config.getString("Permissions.ResetSpellsOther.Name")))) {
+                if (config.getBoolean("Permissions.ResetSpells.Required")) {
+                    if (!(player.hasPermission(config.getString("Permissions.ResetSpells.Name")))) {
                         player.sendMessage(Message.TAG + "§6Du hast keine Berechtigung für diese Aktion!");
                         return true;
                     }
@@ -114,8 +109,8 @@ public class CMDMagie implements CommandExecutor {
 
 
             //Reset Spells of others
-            if (config.getBoolean("Permissions.ResetSpells.Required")) {
-                if (!(player.hasPermission(config.getString("Permissions.ResetSpells.Name")))) {
+            if (config.getBoolean("Permissions.ResetSpellsOther.Required")) {
+                if (!(player.hasPermission(config.getString("Permissions.ResetSpellsOther.Name")))) {
                     player.sendMessage(Message.TAG + "§6Du hast keine Berechtigung für diese Aktion!");
                     return true;
                 }

@@ -94,21 +94,21 @@ public class InventoryListener implements Listener {
 
         if (isSpellChooseInventory(inventory)) {
             Player player = (Player) event.getWhoClicked();
-            HashMap<Integer, String> zidMapping = getSpellChooseInventory(inventory).getZidMapping();
+            HashMap<Integer, String> idMapping = getSpellChooseInventory(inventory).getIdMapping();
             event.setCancelled(true);
             int slot = event.getRawSlot();
-            if (!zidMapping.containsKey(slot)) {
+            if (!idMapping.containsKey(slot)) {
                 return;
             }
             inventory.close();
-            String zid = zidMapping.get(slot);
-            player.sendMessage(Message.TAG + "§7Der Zauber §c" + spellManager.getSpellByZid(zid).getName() + "§7 wurde gelernt.");
-            spellManager.playerAddSpell(player.getUniqueId().toString(), zid);
+            String id = idMapping.get(slot);
+            player.sendMessage(Message.TAG + "§7Der Zauber §c" + spellManager.getSpellById(id).getName() + "§7 wurde gelernt.");
+            spellManager.playerAddSpell(player.getUniqueId().toString(), id);
         }
 
         if (isSpellCastInventory(inventory)) {
             Player player = (Player) event.getWhoClicked();
-            HashMap<Integer, String> zidMapping = getSpellCastInventory(inventory).getZidMapping();
+            HashMap<Integer, String> zidMapping = getSpellCastInventory(inventory).getIdMapping();
             event.setCancelled(true);
             int slot = event.getRawSlot();
             if (!zidMapping.containsKey(slot)) {
@@ -129,7 +129,7 @@ public class InventoryListener implements Listener {
             }
 
             String zid = zidMapping.get(slot);
-            EffectSpell spell = spellManager.getSpellByZid(zid);
+            Spell spell = spellManager.getSpellById(zid);
 
             StringBuilder message;
             PlainResult result = new PlainResult(-1, 100, true);
@@ -154,7 +154,7 @@ public class InventoryListener implements Listener {
 
         if (isSpellTargetInventory(inventory)) {
             Player player = (Player) event.getWhoClicked();
-            HashMap<Integer, String> zidMapping = getSpellTargetInventory(inventory).getZidMapping();
+            HashMap<Integer, String> zidMapping = getSpellTargetInventory(inventory).getIdMapping();
             event.setCancelled(true);
 
             Player target = FTSKampf.spellTargetInventory.get(getSpellTargetInventory(inventory));
@@ -195,8 +195,8 @@ public class InventoryListener implements Listener {
                 targetName = targetAusweis.getFirstName() + " " + targetAusweis.getLastName();
             }
 
-            String zid = zidMapping.get(slot);
-            EffectSpell spell = spellManager.getSpellByZid(zid);
+            String id = zidMapping.get(slot);
+            Spell spell = spellManager.getSpellById(id);
 
             StringBuilder message;
             PlainResult result = new PlainResult(-1, 100, true);
@@ -222,15 +222,15 @@ public class InventoryListener implements Listener {
 
         if (isSpellChooseInventory(inventory)) {
             Player player = (Player) event.getWhoClicked();
-            HashMap<Integer, String> zidMapping = getSpellChooseInventory(inventory).getZidMapping();
+            HashMap<Integer, String> zidMapping = getSpellChooseInventory(inventory).getIdMapping();
             event.setCancelled(true);
             int slot = event.getRawSlot();
             if (!zidMapping.containsKey(slot)) {
                 return;
             }
             inventory.close();
-            String zid = zidMapping.get(slot);
-            player.sendMessage(Message.TAG + "§7Der Zauber §c " + spellManager.getSpellByZid(zid) + "§7 wurde gelernt.");
+            String id = zidMapping.get(slot);
+            player.sendMessage(Message.TAG + "§7Der Zauber §c " + spellManager.getSpellById(id) + "§7 wurde gelernt.");
             spellManager.playerAddSpell(player.getUniqueId().toString(), zid);
         }
     }

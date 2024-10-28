@@ -38,4 +38,8 @@ public class Spell {
         if(compare == null) return false;
         return compare.getId().equals(id);
     }
+
+    public boolean skipsPreDicing() {
+        return effect.skipsPreDicing();
+    }
 }
