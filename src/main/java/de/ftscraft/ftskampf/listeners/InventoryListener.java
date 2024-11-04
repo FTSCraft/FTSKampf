@@ -29,6 +29,7 @@ public class InventoryListener implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         Inventory inventory = event.getInventory();
+
         if (FTSKampf.kampfInventorys.contains(inventory)) {
             event.setCancelled(true);
             int slot = event.getRawSlot();
@@ -222,16 +223,16 @@ public class InventoryListener implements Listener {
 
         if (isSpellChooseInventory(inventory)) {
             Player player = (Player) event.getWhoClicked();
-            HashMap<Integer, String> zidMapping = getSpellChooseInventory(inventory).getIdMapping();
+            HashMap<Integer, String> idMapping = getSpellChooseInventory(inventory).getIdMapping();
             event.setCancelled(true);
             int slot = event.getRawSlot();
-            if (!zidMapping.containsKey(slot)) {
+            if (!idMapping.containsKey(slot)) {
                 return;
             }
             inventory.close();
-            String id = zidMapping.get(slot);
+            String id = idMapping.get(slot);
             player.sendMessage(Message.TAG + "§7Der Zauber §c " + spellManager.getSpellById(id) + "§7 wurde gelernt.");
-            spellManager.playerAddSpell(player.getUniqueId().toString(), zid);
+            spellManager.playerAddSpell(player.getUniqueId().toString(), id);
         }
     }
 

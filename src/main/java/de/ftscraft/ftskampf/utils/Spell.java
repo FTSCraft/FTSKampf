@@ -42,4 +42,12 @@ public class Spell {
     public boolean skipsPreDicing() {
         return effect.skipsPreDicing();
     }
+
+    public boolean isSelfApplicable() {
+        return effect.isSelfApplicable();
+    }
+
+    public boolean isTargetApplicable() {
+        return effect.isTargetApplicable();
+    }
 }

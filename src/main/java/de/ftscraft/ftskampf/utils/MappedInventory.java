@@ -29,6 +29,7 @@ public class MappedInventory {
 
     public enum MappedInventoryType {
         CLASS_INVENTORY,
-        SPELL_INVENTORY;
+        SPELL_INVENTORY,
+        CAST_INVENTORY;
     }
 }

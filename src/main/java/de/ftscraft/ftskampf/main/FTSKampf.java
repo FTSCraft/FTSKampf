@@ -27,7 +27,7 @@ public final class FTSKampf extends JavaPlugin {
     private static ConfigManager configManager;
     private static DiceManager diceManager;
     public static List<Inventory> kampfInventorys;
-    public static List<MappedInventory> spellChooseInventory;//contains inventory and zid mapping
+    public static List<MappedInventory> spellChooseInventory;//contains inventory and id mapping
     public static List<MappedInventory> spellCastInventory;
     public static HashMap<MappedInventory, Player> spellTargetInventory;
     public static HashMap<Inventory, Player> targetInventorys;
