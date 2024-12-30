@@ -32,6 +32,6 @@ public class SpellClass {
     }
 
     public boolean raceMatches(String race) {
-        return this.race.toLowerCase() == race.toLowerCase() || this.race.toLowerCase() == "all";
+        return (this.race.toLowerCase().equals(race.toLowerCase()) || this.race.toLowerCase().equals("all"));
     }
 }

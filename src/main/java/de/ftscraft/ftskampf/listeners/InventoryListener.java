@@ -9,6 +9,8 @@ import de.ftscraft.ftskampf.main.FTSKampf;
 import de.ftscraft.ftskampf.spells.EffectSpell;
 import de.ftscraft.ftskampf.utils.*;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,6 +18,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,6 +98,32 @@ public class InventoryListener implements Listener {
             }
         }
 
+        if (isSpellClassChooseInventory(inventory)) {
+            Player player = (Player) event.getWhoClicked();
+            HashMap<Integer, String> idMapping = getSpellClassChooseInventory(inventory).getIdMapping();
+            event.setCancelled(true);
+            int slot = event.getRawSlot();
+            if (!idMapping.containsKey(slot)) {
+                return;
+            }
+            inventory.close();
+            String id = idMapping.get(slot);
+            Inventory newInventory = Bukkit.createInventory(null, 9 * 5, "Zauber auswählen");
+            int i = 0;
+            HashMap<Integer, String> newMapping = new HashMap<>();
+            for (Spell spell : spellManager.getClassById(id).getSpells()) {
+                ItemStack item = new ItemStack(Material.ENCHANTED_BOOK);
+                ItemMeta itemMeta = item.getItemMeta();
+                itemMeta.setDisplayName(spell.getName());
+                itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+                item.setItemMeta(itemMeta);
+                newInventory.setItem(i, item);
+                newMapping.put(i++, spell.getId());
+            }
+            FTSKampf.spellChooseInventory.add(new MappedInventory(newInventory, newMapping, MappedInventory.MappedInventoryType.SPELL_INVENTORY));
+            player.openInventory(newInventory);
+        }
+
         if (isSpellChooseInventory(inventory)) {
             Player player = (Player) event.getWhoClicked();
             HashMap<Integer, String> idMapping = getSpellChooseInventory(inventory).getIdMapping();
@@ -134,9 +165,9 @@ public class InventoryListener implements Listener {
 
             StringBuilder message;
             PlainResult result = new PlainResult(-1, 100, true);
-            if(!spell.skipsPreDicing()) {
+            if (!spell.skipsPreDicing()) {
                 result = diceManager.rollMagicPreDice(player);
-                message = new StringBuilder(Message.TAG +"§7" + article + " §o" + raceName + " §r§e" + diceManager.getName(player) + " §7setzt §a" + spell.getName() + " §7ein und würfelt: §e");
+                message = new StringBuilder(Message.TAG + "§7" + article + " §o" + raceName + " §r§e" + diceManager.getName(player) + " §7setzt §a" + spell.getName() + " §7ein und würfelt: §e");
                 if (result.isSuccess()) {
                     message.append("§2").append(result.getResult()).append(" §7und hat damit den Wurf §2geschafft!").append(" §5[").append(Dice.MAGIC.getName()).append("]");
                 } else {
@@ -201,7 +232,7 @@ public class InventoryListener implements Listener {
 
             StringBuilder message;
             PlainResult result = new PlainResult(-1, 100, true);
-            if(!spell.skipsPreDicing()) {
+            if (!spell.skipsPreDicing()) {
                 result = diceManager.rollMagicPreDice(player);
                 message = new StringBuilder(Message.TAG + "§7" + article + " §o" + raceName + " §r§e" + diceManager.getName(player) + " §7wirkt §a" + spell.getName() + " §7auf " + articleTarget + " §o" + raceNameTarget + " §e" + targetName + " §7und würfelt: §e");
                 if (result.isSuccess()) {
@@ -219,26 +250,19 @@ public class InventoryListener implements Listener {
                 spell.doEffect(player, target, result.getResult());
             }
         }
-
-
-        if (isSpellChooseInventory(inventory)) {
-            Player player = (Player) event.getWhoClicked();
-            HashMap<Integer, String> idMapping = getSpellChooseInventory(inventory).getIdMapping();
-            event.setCancelled(true);
-            int slot = event.getRawSlot();
-            if (!idMapping.containsKey(slot)) {
-                return;
-            }
-            inventory.close();
-            String id = idMapping.get(slot);
-            player.sendMessage(Message.TAG + "§7Der Zauber §c " + spellManager.getSpellById(id) + "§7 wurde gelernt.");
-            spellManager.playerAddSpell(player.getUniqueId().toString(), id);
-        }
     }
 
     private boolean isSpellChooseInventory(Inventory inventory) {
         for (MappedInventory mappedInventory : FTSKampf.spellChooseInventory) {
-            if (mappedInventory.equals(inventory))
+            if (mappedInventory.equals(inventory) & mappedInventory.getType().equals(MappedInventory.MappedInventoryType.SPELL_INVENTORY))
+                return true;
+        }
+        return false;
+    }
+
+    private boolean isSpellClassChooseInventory(Inventory inventory) {
+        for (MappedInventory mappedInventory : FTSKampf.spellChooseInventory) {
+            if (mappedInventory.equals(inventory) & mappedInventory.getType().equals(MappedInventory.MappedInventoryType.CLASS_INVENTORY))
                 return true;
         }
         return false;
@@ -264,7 +288,15 @@ public class InventoryListener implements Listener {
 
     private MappedInventory getSpellChooseInventory(Inventory inventory) {
         for (MappedInventory mappedInventory : FTSKampf.spellChooseInventory) {
-            if (mappedInventory.equals(inventory))
+            if (mappedInventory.equals(inventory) & mappedInventory.getType().equals(MappedInventory.MappedInventoryType.SPELL_INVENTORY))
+                return mappedInventory;
+        }
+        return null;
+    }
+
+    private MappedInventory getSpellClassChooseInventory(Inventory inventory) {
+        for (MappedInventory mappedInventory : FTSKampf.spellChooseInventory) {
+            if (mappedInventory.equals(inventory) & mappedInventory.getType().equals(MappedInventory.MappedInventoryType.CLASS_INVENTORY))
                 return mappedInventory;
         }
         return null;

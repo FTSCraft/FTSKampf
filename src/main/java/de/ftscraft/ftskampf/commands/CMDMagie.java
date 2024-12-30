@@ -80,13 +80,15 @@ public class CMDMagie implements CommandExecutor {
             HashMap<Integer, String> idMapping = new HashMap<>();
             for (SpellClass spellClass : spellManager.getAllClasses()) {
                 if (spellClass.raceMatches(ausweis.getRace())) {
-                    ItemStack item = new ItemStack(Material.ENCHANTED_BOOK);
-                    ItemMeta itemMeta = item.getItemMeta();
-                    itemMeta.setDisplayName(spellClass.getName());
-                    itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                    item.setItemMeta(itemMeta);
-                    inventory.setItem(i, item);
-                    idMapping.put(i++, spellClass.getId());
+                    if(spellClass.getSpells().size() > 0) {
+                        ItemStack item = new ItemStack(Material.ENCHANTED_BOOK);
+                        ItemMeta itemMeta = item.getItemMeta();
+                        itemMeta.setDisplayName(spellClass.getName());
+                        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+                        item.setItemMeta(itemMeta);
+                        inventory.setItem(i, item);
+                        idMapping.put(i++, spellClass.getId());
+                    }
                 }
             }
             FTSKampf.spellChooseInventory.add(new MappedInventory(inventory, idMapping, MappedInventory.MappedInventoryType.CLASS_INVENTORY));
@@ -106,7 +108,6 @@ public class CMDMagie implements CommandExecutor {
                 player.sendMessage(Message.TAG + "§6Deine Zauber wurden zurückgesetzt!");
                 return true;
             }
-
 
             //Reset Spells of others
             if (config.getBoolean("Permissions.ResetSpellsOther.Required")) {
@@ -133,7 +134,7 @@ public class CMDMagie implements CommandExecutor {
             return true;
         }
 
-        if (args[0].equalsIgnoreCase("lookup")) {
+        if (args[0].equalsIgnoreCase("info")) {
             SpellCollection spellCollection = spellManager.getSpellCollection(player);
             if (spellCollection.getNumberOfSpells() < 1) {
                 player.sendMessage(Message.TAG + "§7Du hast keine Zauber gelernt!");

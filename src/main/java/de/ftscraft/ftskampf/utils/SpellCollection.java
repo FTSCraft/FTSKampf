@@ -1,7 +1,6 @@
 package de.ftscraft.ftskampf.utils;
 
 import de.ftscraft.ftskampf.db.SpellManager;
-import de.ftscraft.ftskampf.spells.EffectSpell;
 import de.ftscraft.ftskampf.main.FTSKampf;
 
 import java.util.ArrayList;

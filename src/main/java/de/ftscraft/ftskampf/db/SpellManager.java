@@ -18,13 +18,17 @@ public class SpellManager {
     private final FTSKampf plugin = FTSKampf.getPlugin();
     private HashMap<String, SpellCollection> spells;
     List<SpellClass> allClasses = new ArrayList<>();
-    List<Spell> allSpells = new ArrayList<>();
 
     public SpellManager() {
+
+    }
+
+    public void init() {
+        spells = new HashMap<>();
         try {
             initClasses();
             initSpells();
-            loadZauber();
+            spells = loadZauber();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -66,14 +70,11 @@ public class SpellManager {
     }
 
     public Spell getSpellById(String id) {
-        for (Spell spell : allSpells) {
-            if (spell.getId().equals(id)) return spell;
-        }
+        for (SpellClass spellClass : allClasses)
+            for (Spell spell : spellClass.getSpells()) {
+                if (spell.getId().equals(id)) return spell;
+            }
         return null;
-    }
-
-    public List<Spell> getAllSpells() {
-        return allSpells;
     }
 
     public List<SpellClass> getAllClasses() {
@@ -90,10 +91,6 @@ public class SpellManager {
     public int playerGetNumberOfSpells(String uuid) {
         if (spells.containsKey(uuid)) return spells.get(uuid).getNumberOfSpells();
         return 0;
-    }
-
-    public boolean playerHasSpell(String uuid, Spell spell) {
-        return getSpellCollection(uuid).contains(spell);
     }
 
     public boolean playerResetSpells(String uuid) {
@@ -145,7 +142,7 @@ public class SpellManager {
         if (!saveDirectory.exists()) {
             saveDirectory.mkdirs();
         }
-        File file = new File(path + "/plugins/" + plugin.getName() + "/saves/spellClasses.csv");
+        File file = new File(path + "/plugins/" + plugin.getName() + "/spells/spellClasses.csv");
         if (!file.exists()) {
             file.createNewFile();
         }

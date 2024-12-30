@@ -2,7 +2,6 @@ package de.ftscraft.ftskampf.inventorys;
 
 import de.ftscraft.ftskampf.db.SpellManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
-import de.ftscraft.ftskampf.spells.EffectSpell;
 import de.ftscraft.ftskampf.utils.MappedInventory;
 import de.ftscraft.ftskampf.utils.Spell;
 import de.ftscraft.ftskampf.utils.SpellCollection;
