@@ -5,23 +5,31 @@ import org.bukkit.inventory.Inventory;
 import java.util.HashMap;
 
 public class MappedInventory {
-    private Inventory inventory;
-    private HashMap<Integer, String> zidMapping;
+    private final Inventory inventory;
+    private final HashMap<Integer, String> idMapping;
+    private final MappedInventoryType type;
 
-    public MappedInventory(Inventory inventory, HashMap<Integer, String> zidMapping) {
+    public MappedInventory(Inventory inventory, HashMap<Integer, String> idMapping, MappedInventoryType type) {
         this.inventory = inventory;
-        this.zidMapping = zidMapping;
+        this.idMapping = idMapping;
+        this.type = type;
     }
 
-    public Inventory getInventory() {
-        return inventory;
+    public HashMap<Integer, String> getIdMapping() {
+        return idMapping;
     }
 
-    public HashMap<Integer, String> getZidMapping() {
-        return zidMapping;
+    public MappedInventoryType getType() {
+        return type;
     }
 
     public boolean equals(Inventory inventory) {
         return this.inventory.equals(inventory);
+    }
+
+    public enum MappedInventoryType {
+        CLASS_INVENTORY,
+        SPELL_INVENTORY,
+        CAST_INVENTORY;
     }
 }

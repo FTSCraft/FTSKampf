@@ -6,7 +6,6 @@ import de.ftscraft.ftskampf.spells.effects.effectDefinitions.ContinuousEffectId;
 
 public class ContinuousEffectFactory {
 
-    // Methode zur Erstellung eines ContinuousEffect basierend auf einem String-Array
     public static ContinuousEffect createEffect(String[] effectData) {
         String effectId = effectData[0];
         String target = effectData[1];
@@ -17,7 +16,6 @@ public class ContinuousEffectFactory {
         return createEffect(effectId, target, caster, modifier, durability);
     }
 
-    // Methode zur Erstellung eines ContinuousEffect basierend auf den Einzelparametern
     public static ContinuousEffect createEffect(String effectId, String target, String caster, double modifier, int durability) {
         switch (effectId) {
             case "001":  // BUFF_AGILITY

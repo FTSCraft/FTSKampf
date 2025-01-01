@@ -4,7 +4,7 @@ main: de.ftscraft.ftskampf.main.FTSKampf
 api-version: '1.20'
 depend:
   - FTSEngine
-authors: [ Melleming, CiraThomasen ]
+author: Melleming
 commands:
   kampf:
   hp:

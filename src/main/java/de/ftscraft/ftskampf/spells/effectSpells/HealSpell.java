@@ -1,11 +1,11 @@
 package de.ftscraft.ftskampf.spells.effectSpells;
 
-import de.ftscraft.ftskampf.spells.Spell;
+import de.ftscraft.ftskampf.spells.EffectSpell;
 import de.ftscraft.ftskampf.spells.effects.Heal;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
 import org.bukkit.entity.Player;
 
-public class HealSpell extends Spell {
+public class HealSpell extends EffectSpell {
 
     public HealSpell() {
         super("Heilzauber", "0182", "Heilt das Ziel und stellt seine Lebenspunkte wieder her.");

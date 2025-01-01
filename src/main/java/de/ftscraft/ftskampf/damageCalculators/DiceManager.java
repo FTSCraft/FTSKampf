@@ -7,10 +7,7 @@ import de.ftscraft.ftskampf.db.EffectManager;
 import de.ftscraft.ftskampf.db.HpManager;
 import de.ftscraft.ftskampf.db.SpellManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
-import de.ftscraft.ftskampf.spells.Spell;
-import de.ftscraft.ftskampf.spells.effects.DamageOverTime;
 import de.ftscraft.ftskampf.spells.effects.effectDefinitions.ContinuousEffect;
-import de.ftscraft.ftskampf.spells.effects.effectDefinitions.Effect;
 import de.ftscraft.ftskampf.utils.*;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -24,7 +21,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.lang.annotation.Target;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 

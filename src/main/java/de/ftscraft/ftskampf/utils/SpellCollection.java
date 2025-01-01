@@ -1,7 +1,6 @@
 package de.ftscraft.ftskampf.utils;
 
 import de.ftscraft.ftskampf.db.SpellManager;
-import de.ftscraft.ftskampf.spells.Spell;
 import de.ftscraft.ftskampf.main.FTSKampf;
 
 import java.util.ArrayList;
@@ -22,13 +21,16 @@ public class SpellCollection {
     public SpellCollection(String owner, List<String> spells) {
         this.owner = owner;
         this.spells = new ArrayList<>();
-        for(String zid : spells) {
-            this.spells.add(spellManager.getSpellByZid(zid));
+        for(String id : spells) {
+            Spell spell = spellManager.getSpellById(id);
+            if(spell != null) {
+                this.spells.add(spell);
+            }
         }
     }
 
-    public void addSpell(String zid) {
-        spells.add(spellManager.getSpellByZid(zid));
+    public void addSpell(String id) {
+        spells.add(spellManager.getSpellById(id));
     }
 
     public List<Spell> getSpells() {

@@ -1,11 +1,11 @@
 package de.ftscraft.ftskampf.spells.effectSpells;
 
-import de.ftscraft.ftskampf.spells.Spell;
+import de.ftscraft.ftskampf.spells.EffectSpell;
 import de.ftscraft.ftskampf.spells.effects.DamageAbsorption;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
 import org.bukkit.entity.Player;
 
-public class DamageAbsorptionSpell extends Spell {
+public class DamageAbsorptionSpell extends EffectSpell {
 
     public DamageAbsorptionSpell() {
         super("Absorptionszauber", "0176", "Absorbiert Leben vom Ziel zum Anwender.");

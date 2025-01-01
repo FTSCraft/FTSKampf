@@ -1,11 +1,11 @@
 package de.ftscraft.ftskampf.spells.effectSpells;
 
-import de.ftscraft.ftskampf.spells.Spell;
+import de.ftscraft.ftskampf.spells.EffectSpell;
 import de.ftscraft.ftskampf.spells.effects.HealLimitRange;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
 import org.bukkit.entity.Player;
 
-public class HealLimitRangeSpell extends Spell {
+public class HealLimitRangeSpell extends EffectSpell {
 
     public HealLimitRangeSpell() {
         super("Heilung in der Nähe", "0183", "Heilt ein Ziel besser als normal, jedoch nur in einer Reichweite von 2 Meter.");

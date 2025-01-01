@@ -2,8 +2,8 @@ package de.ftscraft.ftskampf.inventorys;
 
 import de.ftscraft.ftskampf.db.SpellManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
-import de.ftscraft.ftskampf.spells.Spell;
 import de.ftscraft.ftskampf.utils.MappedInventory;
+import de.ftscraft.ftskampf.utils.Spell;
 import de.ftscraft.ftskampf.utils.SpellCollection;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -32,7 +32,7 @@ public class MagicInventory {
     public void show() {
         Inventory inventory = Bukkit.createInventory(null, 9 * 5, "Zauber auswählen");
         int i = 0;
-        HashMap<Integer, String> zidMapping = new HashMap<>();
+        HashMap<Integer, String> idMapping = new HashMap<>();
         for(Spell spell : spellCollection.getSpells()) {
             if(spell.isSelfApplicable()) {
                 ItemStack item = new ItemStack(Material.ENCHANTED_BOOK);
@@ -44,17 +44,17 @@ public class MagicInventory {
                 itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                 item.setItemMeta(itemMeta);
                 inventory.setItem(i, item);
-                zidMapping.put(i++, spell.getZid());
+                idMapping.put(i++, spell.getId());
             }
         }
-        FTSKampf.spellCastInventory.add(new MappedInventory(inventory, zidMapping));
+        FTSKampf.spellCastInventory.add(new MappedInventory(inventory, idMapping, MappedInventory.MappedInventoryType.CAST_INVENTORY));
         player.openInventory(inventory);
     }
 
     public void show(Player target) {
         Inventory inventory = Bukkit.createInventory(null, 9 * 5, "Zauber auswählen, Ziel: " + target.getName());
         int i = 0;
-        HashMap<Integer, String> zidMapping = new HashMap<>();
+        HashMap<Integer, String> idMapping = new HashMap<>();
         for(Spell spell : spellCollection.getSpells()) {
             if(spell.isTargetApplicable()) {
                 ItemStack item = new ItemStack(Material.ENCHANTED_BOOK);
@@ -66,10 +66,10 @@ public class MagicInventory {
                 itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                 item.setItemMeta(itemMeta);
                 inventory.setItem(i, item);
-                zidMapping.put(i++, spell.getZid());
+                idMapping.put(i++, spell.getId());
             }
         }
-        FTSKampf.spellTargetInventory.put(new MappedInventory(inventory, zidMapping), target);
+        FTSKampf.spellTargetInventory.put(new MappedInventory(inventory, idMapping, MappedInventory.MappedInventoryType.CAST_INVENTORY), target);
         player.openInventory(inventory);
     }
 }
