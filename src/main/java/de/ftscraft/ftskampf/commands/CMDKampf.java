@@ -94,8 +94,6 @@ public class CMDKampf implements CommandExecutor {
 
 
 
-
-        //Kampf
         Player target = Bukkit.getPlayer(args[0]);
         if(target == null) {
             player.sendMessage(Message.TAG + "§6Der Spieler §c" + args[0] + " §6konnte nicht gefunden werden!");

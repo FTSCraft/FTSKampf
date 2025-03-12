@@ -77,7 +77,7 @@ public class CMDHeal implements CommandExecutor {
             return true;
         }
 
-        Logger.log(player, "healed " + target.getName() + ", " + Integer.parseInt(args[1]));
+        Logger.log(player, "healed " + target.getName() + ", " + Integer.parseInt(args[1]) + " by command /heal");
 
         String name;
         if (ausweis == null || ausweis.getFirstName() == null || ausweis.getLastName() == null) {

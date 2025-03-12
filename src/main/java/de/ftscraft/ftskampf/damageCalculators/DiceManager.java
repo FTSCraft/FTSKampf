@@ -7,6 +7,7 @@ import de.ftscraft.ftskampf.db.EffectManager;
 import de.ftscraft.ftskampf.db.HpManager;
 import de.ftscraft.ftskampf.db.SpellManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
+import de.ftscraft.ftskampf.main.Logger;
 import de.ftscraft.ftskampf.spells.effects.effectDefinitions.ContinuousEffect;
 import de.ftscraft.ftskampf.utils.*;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
@@ -32,7 +33,6 @@ public class DiceManager {
     HpManager hpManager = plugin.getHpManager();
     DamageModifier damageModifier = new DamageModifier();
     FileConfiguration config = plugin.getConfig();
-    SpellManager spellManager = plugin.getSpellManager();
     EffectManager effectManager = plugin.getEffectManager();
 
     public void registerAttack(Player target, Attack attack) {
@@ -193,6 +193,7 @@ public class DiceManager {
             message.append("§c").append(value).append(" §7hätte aber §c").append(skill).append(" §7oder niedriger würfeln müssen!").append(" §5[").append(dice.getName()).append("]");
         }
         sendMessageInRange(message, player);
+        Logger.log(player, "Tries to attack with target dice: " + target.getName() + " ," + dice.getName());
         if (success) {
             int attackStrength = calculateAttackStrength(player, dice, value);
             sendMessageInRange(Message.TAG + getName(player) + " §7greift an mit der Stärke von §c" + attackStrength + " §5[" + dice.getName() + "]", player);
@@ -212,7 +213,7 @@ public class DiceManager {
             text.addExtra(message3);
             target.sendMessage(text);
             registerAttack(target, new Attack(player, dice, attackStrength, absorptionRate, penetrateArmor));
-
+            Logger.log(player, "Attacks with target dice: " + target.getName() + " ," + dice.getName() + " ," + value);
         }
     }
 
@@ -268,6 +269,7 @@ public class DiceManager {
             message.append("§c").append(value).append(" §7hätte aber §c").append(skill).append(" §7oder niedriger würfeln müssen!").append(" §5[").append(dice.getName()).append("]");
         }
         sendMessageInRange(message, player);
+        Logger.log(player, "Tries to heal " + target.getName());
         if (success) {
             sendMessageInRange(Message.TAG + "§7Geheilt werden §c" + (int) Math.round(modifier * finalValue) + " §7LP!", player);
             if (hpManager.isMaxHealthReached(target)) {
@@ -275,6 +277,7 @@ public class DiceManager {
             } else {
                 target.sendMessage(Message.TAG + "§7Du hast nun §c" + hpManager.getHealth(target) + " §7Lebenspunkte!");
             }
+            Logger.log(player, "healed " + target.getName());
         }
     }
 
@@ -311,14 +314,18 @@ public class DiceManager {
         }
         removeAttack(target);
         sendMessageInRange(message, target);
+        Logger.log(target, "dodges attack from " + attack.getAttacker().getName() + ", " + attack.getType().getName());
         if (!success) {
             Player attacker = attack.getAttacker();
             int damage = calculateDefendValue(target, attack.getStrength(), attack.getType());
             sendMessageInRange(Message.TAG + getName(attack.getAttacker()) + " §7verursacht Schaden in Höhe von §c" + damage + " §7an §2" + getName(target) + " §5[" + attack.getType().getName() + "]", target);
             hpManager.hurtPlayer(target, damage);
 
+            Logger.log(target,"Dodge failed, Damage: " + damage);
+
             if (attack.getAbsorptionRate() > 0) {
                 int absorbedLife = (int) Math.round(damage * attack.getAbsorptionRate());
+                Logger.log(target, absorbedLife + " HP got absorbed by " + attack.getAttacker().getName());
                 hpManager.healPlayer(attacker, absorbedLife);
                 sendMessageInRange(Message.TAG + "§c" + getName(attacker) + " §7absorbiert §c" + absorbedLife + " §7Lebenspunkte", attacker);
             }
@@ -359,6 +366,7 @@ public class DiceManager {
         removeAttack(target);
         boolean success = value <= skill;
         int attackDmg;
+        Logger.log(target, "tries to counter attack from " + attack.getAttacker().getName() + ", " + attack.getType().getName());
         if (success) {
             message.append("§2").append(value).append(" §7und hat damit den Wurf §2geschafft!").append(" §5[").append(dice.getName()).append("]");
             int counterDamage = calculateAttackStrength(target, dice, value);
@@ -378,10 +386,8 @@ public class DiceManager {
             attackDmg = Math.abs(attackDmg);
         }
 
-        ItemStack item = new ItemStack(Material.SHIELD);
-        item.getItemMeta().getPersistentDataContainer();
-
         sendMessageInRange(Message.TAG + getName(attacker) + " §7greift an mit der Stärke von §c" + attackDmg + " §5[" + dice.getName() + "]", attacker);
+        Logger.log(attacker, "Attack after counter: " + target.getName() + ", " + attack.getType().getName() + ", " + attackDmg);
 
         int damage = calculateDefendValue(target, attackDmg, dice);
         sendMessageInRange(Message.TAG + "§e" + getName(attacker) + " §7verursacht Schaden in Höhe von §c" + damage + " §7an §e" + getName(target) + " §5[" + attack.getType().getName() + "]", target);

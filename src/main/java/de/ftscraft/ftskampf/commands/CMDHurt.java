@@ -46,7 +46,7 @@ public class CMDHurt implements CommandExecutor {
             return true;
         }
 
-        Logger.log(player, "healed " + target.getName() + ", " + Integer.parseInt(args[1]));
+        Logger.log("ADMINCOMMAND: " + player, "hurt " + target.getName() + ", " + Integer.parseInt(args[1]));
 
         String name;
         Ausweis ausweis = engine.getAusweis(target);
