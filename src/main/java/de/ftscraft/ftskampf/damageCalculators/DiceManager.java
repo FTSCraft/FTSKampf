@@ -212,6 +212,7 @@ public class DiceManager {
             text.addExtra(message3);
             target.sendMessage(text);
             registerAttack(target, new Attack(player, dice, attackStrength, absorptionRate, penetrateArmor));
+
         }
     }
 

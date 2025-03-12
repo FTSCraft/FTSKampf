@@ -4,6 +4,7 @@ import de.ftscraft.ftsengine.main.Engine;
 import de.ftscraft.ftsengine.utils.Ausweis;
 import de.ftscraft.ftskampf.db.HpManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
+import de.ftscraft.ftskampf.main.Logger;
 import de.ftscraft.ftskampf.utils.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -28,11 +29,6 @@ public class CMDHurt implements CommandExecutor {
             return true;
         }
 
-        if (plugin.getConfig().getBoolean("Testmode")) {
-            player.sendMessage(Message.TAG + "§6Befehl nicht verfügbar!");
-            return true;
-        }
-
         if (args.length < 2) {
             player.sendMessage(Message.TAG + "§6Bitte verwende den Befehl so: §c/hurt [Spieler] [HP zum heilen]]");
             return true;
@@ -46,9 +42,11 @@ public class CMDHurt implements CommandExecutor {
         try {
             hpManager.hurtPlayer(target, Integer.parseInt(args[1]));
         } catch (NumberFormatException e) {
-            player.sendMessage(Message.TAG + "§6Bitte verwende den Befehl so: §c/hurt [Spieler] [HP zum heilen]]");
+            player.sendMessage(Message.TAG + "§6Bitte verwende den Befehl so: §c/hurt [Spieler] [HP zum Abziehen]]");
             return true;
         }
+
+        Logger.log(player, "healed " + target.getName() + ", " + Integer.parseInt(args[1]));
 
         String name;
         Ausweis ausweis = engine.getAusweis(target);

@@ -51,7 +51,7 @@ public class CMDKampfskill implements CommandExecutor {
             return true;
         }
 
-        Race race = null;
+        Race race;
         try {
             race = plugin.getRace(player);
         } catch (RaceDoNotExistException e) {

@@ -4,6 +4,7 @@ import de.ftscraft.ftsengine.main.Engine;
 import de.ftscraft.ftsengine.utils.Ausweis;
 import de.ftscraft.ftskampf.db.HpManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
+import de.ftscraft.ftskampf.main.Logger;
 import de.ftscraft.ftskampf.utils.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -75,6 +76,9 @@ public class CMDHeal implements CommandExecutor {
             player.sendMessage(Message.TAG + "§6Bitte verwende den Befehl so: §c/ftskampf heal [Spieler] [HP zum heilen]");
             return true;
         }
+
+        Logger.log(player, "healed " + target.getName() + ", " + Integer.parseInt(args[1]));
+
         String name;
         if (ausweis == null || ausweis.getFirstName() == null || ausweis.getLastName() == null) {
             name = player.getName();
