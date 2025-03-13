@@ -5,6 +5,7 @@ import de.ftscraft.ftskampf.db.EffectManager;
 import de.ftscraft.ftskampf.db.HpManager;
 import de.ftscraft.ftskampf.db.SpellManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
+import de.ftscraft.ftskampf.main.Logger;
 import de.ftscraft.ftskampf.utils.Message;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -42,7 +43,7 @@ public class CMDftskampfdb implements CommandExecutor {
         }
 
         if(args.length < 1) {
-            player.sendMessage(Message.TAG + "§6Bitte verwende den Befehl so: §c/ftskampfdb [magie/effekte/skills/hp]");
+            player.sendMessage(Message.TAG + "§6Bitte verwende den Befehl so: §c/ftskampfdb [magie/effekte/skills/hp/log]");
             return true;
         }
 
@@ -50,18 +51,30 @@ public class CMDftskampfdb implements CommandExecutor {
         switch (type) {
             case "magie":
                 spellManager.reset();
+                player.sendMessage(Message.TAG + "§6Datenbank zurückgesetzt!");
+                Logger.log(player, "Spell DB resetted");
                 break;
             case "effekte":
                 effectManager.reset();
+                player.sendMessage(Message.TAG + "§6Datenbank zurückgesetzt!");
+                Logger.log(player, "Effect DB resetted");
                 break;
             case "skills":
                 dbManager.reset();
+                player.sendMessage(Message.TAG + "§6Datenbank zurückgesetzt!");
+                Logger.log(player, "Skill DB resetted");
                 break;
             case "hp":
                 hpManager.reset();
+                player.sendMessage(Message.TAG + "§6Datenbank zurückgesetzt!");
+                Logger.log(player, "HP DB resetted");
+                break;
+            case "log":
+                Logger.closeLogFile();
+                player.sendMessage(Message.TAG + "§6Logfile closed!");
                 break;
             default:
-                player.sendMessage(Message.TAG + "§6Bitte verwende den Befehl so: §c/ftskampfdb [magie/effekte/skills/hp]");
+                player.sendMessage(Message.TAG + "§6Bitte verwende den Befehl so: §c/ftskampfdb [magie/effekte/skills/hp/log]");
         }
 
 

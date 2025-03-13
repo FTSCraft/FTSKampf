@@ -38,6 +38,8 @@ public class CMDKampfskill implements CommandExecutor {
             return true;
         }
 
+        assert player != null;
+
         if (config.getBoolean("Permissions.SetSkills.Required")) {
             if (!(player.hasPermission(config.getString("Permissions.SetSkills.Name")))) {
                 player.sendMessage(Message.TAG + "§6Du hast keine Berechtigung für diese Aktion!");
@@ -51,7 +53,7 @@ public class CMDKampfskill implements CommandExecutor {
             return true;
         }
 
-        Race race = null;
+        Race race;
         try {
             race = plugin.getRace(player);
         } catch (RaceDoNotExistException e) {
@@ -64,12 +66,12 @@ public class CMDKampfskill implements CommandExecutor {
             return true;
         }
 
-        if (args[0].toLowerCase().equals("help")) {
+        if (args[0].equalsIgnoreCase("help")) {
             showHelp(player);
             return true;
         }
 
-        if (args[0].toLowerCase().equals("info")) {
+        if (args[0].equalsIgnoreCase("info")) {
             player.sendMessage(Message.TAG + "§7Du hast folgende Skills:");
             if (race.getSkill(Dice.MELEE) > 0) {
                 player.sendMessage("§7Nahkampf: §c" + (db.getPlayerSkill(player).getMelee() + race.getMelee()) + " §7Skillpunkte");
@@ -90,7 +92,7 @@ public class CMDKampfskill implements CommandExecutor {
             return true;
         }
 
-        if (args[0].toLowerCase().equals("reset") && args.length < 2) {
+        if (args[0].equalsIgnoreCase("reset") && args.length < 2) {
             if (config.getBoolean("Permissions.ResetSkills.Required")) {
                 if (!(player.hasPermission(config.getString("Permissions.ResetSkills.Name")))) {
                     player.sendMessage(Message.TAG + "§6Du hast keine Berechtigung für diese Aktion!");
@@ -101,7 +103,7 @@ public class CMDKampfskill implements CommandExecutor {
             return true;
         }
 
-        if (args[0].toLowerCase().equals("remove") && args.length < 2) {
+        if (args[0].equalsIgnoreCase("remove") && args.length < 2) {
             if (config.getBoolean("Permissions.ResetOtherSkills.Required")) {
                 if (!(player.hasPermission(config.getString("Permissions.ResetOtherSkills.Name")))) {
                     player.sendMessage(Message.TAG + "§6Du hast keine Berechtigung für diese Aktion!");
@@ -112,7 +114,7 @@ public class CMDKampfskill implements CommandExecutor {
             return true;
         }
 
-        if (args[0].toLowerCase().equals("reset") && args[1].toLowerCase().equals("confirm")) {
+        if (args[0].equalsIgnoreCase("reset") && args[1].equalsIgnoreCase("confirm")) {
             if (config.getBoolean("Permissions.ResetSkills.Required")) {
                 if (!(player.hasPermission(config.getString("Permissions.ResetSkills.Name")))) {
                     player.sendMessage(Message.TAG + "§6Du hast keine Berechtigung für diese Aktion!");
@@ -131,7 +133,7 @@ public class CMDKampfskill implements CommandExecutor {
             return true;
         }
 
-        if (args[0].toLowerCase().equals("remove")) {
+        if (args[0].equalsIgnoreCase("remove")) {
             if (config.getBoolean("Permissions.ResetOtherSkills.Required")) {
                 if (!(player.hasPermission(config.getString("Permissions.ResetOtherSkills.Name")))) {
                     player.sendMessage(Message.TAG + "§6Du hast keine Berechtigung für diese Aktion!");
@@ -151,7 +153,7 @@ public class CMDKampfskill implements CommandExecutor {
             return true;
         }
 
-        if (args[0].toLowerCase().equals("nahkampf")) {
+        if (args[0].equalsIgnoreCase("nahkampf")) {
             if (args.length < 2) {
                 player.sendMessage(Message.TAG + "§6Bitte benutze den Befehl so: §c/kampfskill nahkampf [Skillpunkte]");
                 return true;
@@ -175,7 +177,7 @@ public class CMDKampfskill implements CommandExecutor {
             return true;
         }
 
-        if (args[0].toLowerCase().equals("fernkampf")) {
+        if (args[0].equalsIgnoreCase("fernkampf")) {
             if (args.length < 2) {
                 player.sendMessage(Message.TAG + "§6Bitte benutze den Befehl so: §c/kampfskill fernkampf [Skillpunkte]");
                 return true;
@@ -199,7 +201,7 @@ public class CMDKampfskill implements CommandExecutor {
             return true;
         }
 
-        if (args[0].toLowerCase().equals("magie")) {
+        if (args[0].equalsIgnoreCase("magie")) {
             if (args.length < 2) {
                 player.sendMessage(Message.TAG + "§6Bitte benutze den Befehl so: §c/kampfskill magie [Skillpunkte]");
                 return true;
@@ -223,7 +225,7 @@ public class CMDKampfskill implements CommandExecutor {
             return true;
         }
 
-        if (args[0].toLowerCase().equals("agilität")) {
+        if (args[0].equalsIgnoreCase("agilität")) {
             if (args.length < 2) {
                 player.sendMessage(Message.TAG + "§6Bitte benutze den Befehl so: §c/kampfskill agilität [Skillpunkte]");
                 return true;
@@ -247,7 +249,7 @@ public class CMDKampfskill implements CommandExecutor {
             return true;
         }
 
-        if (args[0].toLowerCase().equals("hp")) {
+        if (args[0].equalsIgnoreCase("hp")) {
             if (args.length < 2) {
                 player.sendMessage(Message.TAG + "§6Bitte benutze den Befehl so: §c/kampfskill hp [Skillpunkte]");
                 return true;

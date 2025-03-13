@@ -2,6 +2,7 @@ package de.ftscraft.ftskampf.commands;
 
 import de.ftscraft.ftskampf.damageCalculators.DiceManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
+import de.ftscraft.ftskampf.main.Logger;
 import de.ftscraft.ftskampf.utils.Message;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -42,6 +43,7 @@ public class CMDReact implements CommandExecutor {
                 break;
             case "deny":
                 diceManager.sendMessageInRange(Message.TAG + "§c§o" + player.getName() + " §r§chat den Angriff abgebrochen!", player);
+                Logger.log(player, "canceld attack");
                 break;
             default:
                 return true;

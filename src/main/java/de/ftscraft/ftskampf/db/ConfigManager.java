@@ -51,24 +51,24 @@ public class ConfigManager {
         HashMap<String, Object> defaultValues = new HashMap<>();
         defaultValues.put("Testmode", false);
         defaultValues.put("Permissions.UseDices.Name", "ftskampf.useDices");
-        defaultValues.put("Permissions.UseDices.Required", false);
+        defaultValues.put("Permissions.UseDices.Required", true);
         defaultValues.put("Permissions.SetSkills.Name", "ftskampf.setSkills");
-        defaultValues.put("Permissions.SetSkills.Required", false);
+        defaultValues.put("Permissions.SetSkills.Required", true);
         defaultValues.put("Permissions.ResetSkills.Name", "ftskampf.resetSkills");
-        defaultValues.put("Permissions.ResetSkills.Required", false);
+        defaultValues.put("Permissions.ResetSkills.Required", true);
         defaultValues.put("Permissions.ResetOtherSkills.Name", "ftskampf.resetOtherSkills");
-        defaultValues.put("Permissions.ResetOtherSkills.Required", false);
+        defaultValues.put("Permissions.ResetOtherSkills.Required", true);
         defaultValues.put("Permissions.Heal.Name", "ftskampf.heal");
-        defaultValues.put("Permissions.Heal.Required", false);
+        defaultValues.put("Permissions.Heal.Required", true);
         defaultValues.put("Permissions.DBAdmin.Name", "ftskampf.dbadmin");
         defaultValues.put("Permissions.DBAdmin.Required", true);
 
         defaultValues.put("Permissions.ChooseSpells.Name", "ftskampf.chooseSpells");
-        defaultValues.put("Permissions.ChooseSpells.Required", false);
+        defaultValues.put("Permissions.ChooseSpells.Required", true);
         defaultValues.put("Permissions.ResetSpells.Name", "ftskampf.resetSpells");
-        defaultValues.put("Permissions.ResetSpells.Required", false);
+        defaultValues.put("Permissions.ResetSpells.Required", true);
         defaultValues.put("Permissions.ResetSpellsOther.Name", "ftskampf.resetOtherSpells");
-        defaultValues.put("Permissions.ResetSpellsOther.Required", false);
+        defaultValues.put("Permissions.ResetSpellsOther.Required", true);
 
         defaultValues.put("MaxSpells", 4);
         defaultValues.put("EffectLifetime", 30);
@@ -88,6 +88,7 @@ public class ConfigManager {
         defaultValues.put("Health.RegenRate", 30);
         defaultValues.put("Health.RegenPoints", 1);
         defaultValues.put("Health.SkillMultiplier", 5);
+        defaultValues.put("Health.HealtimeOffsetMinutes", 30);
         defaultValues.put("MinimumDamage", 5);
 
         defaultValues.put("Armor.Leather", 20);
