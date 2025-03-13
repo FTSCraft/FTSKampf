@@ -132,7 +132,7 @@ public class HpManager {
             if(mins < OFFSET_MINUTES) {
                 newOffset.put(player, mins);
             }
-            Logger.log(player, "Offset minute trriggered, raised to" + mins);
+            Logger.log(player, "Offset minute trriggered, raised to " + mins);
         }
         offset = newOffset;
         saveOffset();

@@ -213,7 +213,7 @@ public class DiceManager {
             text.addExtra(message3);
             target.sendMessage(text);
             registerAttack(target, new Attack(player, dice, attackStrength, absorptionRate, penetrateArmor));
-            Logger.log(player, "Attacks with target dice: " + target.getName() + " ," + dice.getName() + " ," + value);
+            Logger.log(player, "Attacks with target dice: " + target.getName() + ", " + dice.getName() + ", " + value);
         }
     }
 
