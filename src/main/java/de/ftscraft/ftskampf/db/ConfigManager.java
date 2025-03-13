@@ -88,6 +88,7 @@ public class ConfigManager {
         defaultValues.put("Health.RegenRate", 30);
         defaultValues.put("Health.RegenPoints", 1);
         defaultValues.put("Health.SkillMultiplier", 5);
+        defaultValues.put("Health.HealtimeOffsetMinutes", 30);
         defaultValues.put("MinimumDamage", 5);
 
         defaultValues.put("Armor.Leather", 20);

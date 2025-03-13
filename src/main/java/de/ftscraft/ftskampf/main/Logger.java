@@ -24,19 +24,27 @@ public class Logger {
         try {
             FTSKampf plugin = FTSKampf.getPlugin();
             String fileTimestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+
             String path = System.getProperty("user.dir");
+            File logDirectory = new File(path + "/plugins/" + plugin.getName() + "/logs/");
+            if (!logDirectory.exists()) {
+                logDirectory.mkdirs();
+            }
             File logFile = new File(path + "/plugins/" + plugin.getName() + "/logs/" + "FTSKampf-log-" + fileTimestamp + ".txt");
             if (!logFile.exists()) {
                 logFile.createNewFile();
             }
-
             writer = new BufferedWriter(new FileWriter(logFile, true));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private static void log(String playerName, String uuid, String message) {
+        if(writer == null) {
+            initializeLogFile();
+        }
         String currentTimestamp = LocalDateTime.now().format(TIMESTAMP_FORMATTER);
         String logLine = currentTimestamp + " - " + playerName + " (" + uuid + "): " + message;
         try {
@@ -46,6 +54,10 @@ public class Logger {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void log(String message) {
+        log("","No Player", message);
     }
 
     public static void log(Player player, String message) {

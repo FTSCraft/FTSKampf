@@ -6,10 +6,7 @@ import de.ftscraft.ftskampf.damageCalculators.DiceManager;
 import de.ftscraft.ftskampf.db.*;
 import de.ftscraft.ftskampf.listeners.InventoryListener;
 import de.ftscraft.ftskampf.listeners.JoinListener;
-import de.ftscraft.ftskampf.utils.HealthRunner;
-import de.ftscraft.ftskampf.utils.LivingEffectRunner;
-import de.ftscraft.ftskampf.utils.MappedInventory;
-import de.ftscraft.ftskampf.utils.Race;
+import de.ftscraft.ftskampf.utils.*;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -77,6 +74,7 @@ public final class FTSKampf extends JavaPlugin {
         getServer().getPluginManager().registerEvents(joinListener, plugin);
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new HealthRunner(), 20L, 20L);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new HealOffsetRunner(), 20L, 20L);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new LivingEffectRunner(), 20L, 20L);
     }
 
