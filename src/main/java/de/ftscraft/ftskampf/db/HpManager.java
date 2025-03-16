@@ -63,7 +63,7 @@ public class HpManager {
 
     public void healPlayer(Player player, int hpToHeal) {
         String uuid = player.getUniqueId().toString();
-        if(!health.containsKey(uuid) || offset.containsKey(uuid)) {
+        if(!health.containsKey(uuid)) {
             return;
         }
         int oldHealth = health.get(uuid);
@@ -82,7 +82,9 @@ public class HpManager {
     public void healAllPlayers(int hpTpHeal) {
         Logger.log("Triggered heal for all players");
         for(Player player : activePlayers) {
-            healPlayer(player, hpTpHeal);
+            if(!offset.containsKey(player.getUniqueId().toString())) {
+                healPlayer(player, hpTpHeal);
+            }
         }
     }
 
