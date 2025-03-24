@@ -148,6 +148,13 @@ public class HpManager {
         saveOffset();
     }
 
+    public int isPlayerInOffset(Player player) {
+        String uuid = player.getUniqueId().toString();
+        if (!offset.containsKey(uuid))
+            return -1;
+        return OFFSET_MINUTES - offset.get(uuid);
+    }
+
     private String getHealthPath() throws IOException {
         String path = System.getProperty("user.dir");
         File saveDirectory = new File(path + "/plugins/" + plugin.getName() + "/saves/");
