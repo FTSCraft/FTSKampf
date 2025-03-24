@@ -46,6 +46,7 @@ public class CMDHeal implements CommandExecutor {
             player.sendMessage(Message.TAG + "§6Bitte lege dir zuerst einen Ausweis an (/ausweis). Für das Würfeln ist folgendes wichtig: §cName, Rasse, Geschlecht");
             return true;
         }
+
         if (config.getBoolean("Permissions.Heal.Required")) {
             if (!(player.hasPermission(config.getString("Permissions.Heal.Name")))) {
                 player.sendMessage(Message.TAG + "§6Du hast keine Berechtigung für diese Aktion!");
@@ -77,9 +78,9 @@ public class CMDHeal implements CommandExecutor {
             return true;
         }
 
-        int remainingMins = hpManager.isPlayerInOffset(player);
+        int remainingMins = hpManager.isPlayerInOffset(target);
 
-        if(remainingMins > -1) {
+        if(remainingMins != -1) {
             player.sendMessage(Message.TAG + "§7Der Spieler hat erst vor kurzem Schaden erlitten und kann erst wieder in " + remainingMins + " Minuten geheilt werden!");
             Logger.log(player, "Tried to heal " + target.getName() + " by command /heal, declined by offset, remaining " + remainingMins);
             return true;
