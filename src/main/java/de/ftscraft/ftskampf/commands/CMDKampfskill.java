@@ -14,18 +14,38 @@ import de.ftscraft.ftskampf.utils.exceptions.SkillLimitException;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-public class CMDKampfskill implements CommandExecutor {
+public class CMDKampfskill implements CommandExecutor, TabCompleter {
     FTSKampf plugin = FTSKampf.getPlugin();
     Engine engine = plugin.getEngine();
     DBManager db = plugin.getDB();
     FileConfiguration config = plugin.getConfig();
     HpManager hpManager = plugin.getHpManager();
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (args.length == 1) {
+            List<String> argumentListe = Arrays.asList("nahkampf", "fernkampf", "agilität", "magie", "info", "help");
+            List<String> result = new ArrayList<>();
+            for (String arg : argumentListe) {
+                if (arg.toLowerCase().startsWith(args[0].toLowerCase())) {
+                    result.add(arg);
+                }
+            }
+            return result;
+        }
+        return Collections.emptyList();
+    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -270,6 +290,8 @@ public class CMDKampfskill implements CommandExecutor {
         player.sendMessage(Message.TAG + "§6Bitte benutze den Befehl so: §c/kampfskill [Skill] [Skillpunkte]");
         return true;
     }
+
+
 
 
     private void showHelp(Player player) {

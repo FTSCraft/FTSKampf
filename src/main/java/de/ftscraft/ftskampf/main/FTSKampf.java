@@ -60,7 +60,9 @@ public final class FTSKampf extends JavaPlugin {
         getCommand("kampf").setExecutor(new CMDKampf());
         getCommand("hp").setExecutor(new CMDHp());
         getCommand("heilen").setExecutor(new CMDHeal());
-        getCommand("kampfskill").setExecutor(new CMDKampfskill());
+        CMDKampfskill cmdKampfskill = new CMDKampfskill();
+        getCommand("kampfskill").setExecutor(cmdKampfskill);
+        getCommand("kampfskill").setTabCompleter(cmdKampfskill);
         if (getConfig().getBoolean("Testmode")) {
             getCommand("hurt").setExecutor(new CMDHurt());
         }
