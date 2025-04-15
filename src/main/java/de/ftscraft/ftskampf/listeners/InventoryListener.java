@@ -112,13 +112,16 @@ public class InventoryListener implements Listener {
             int i = 0;
             HashMap<Integer, String> newMapping = new HashMap<>();
             for (Spell spell : spellManager.getClassById(id).getSpells()) {
-                ItemStack item = new ItemStack(Material.ENCHANTED_BOOK);
-                ItemMeta itemMeta = item.getItemMeta();
-                itemMeta.setDisplayName(spell.getName());
-                itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                item.setItemMeta(itemMeta);
-                newInventory.setItem(i, item);
-                newMapping.put(i++, spell.getId());
+                if (!spellManager.playerHasSpell(spell)) {
+                    ItemStack item = new ItemStack(Material.ENCHANTED_BOOK);
+                    ItemMeta itemMeta = item.getItemMeta();
+                    itemMeta.setDisplayName(spell.getName());
+                    itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+                    item.setItemMeta(itemMeta);
+                    newInventory.setItem(i, item);
+                    newMapping.put(i++, spell.getId());
+                }
+
             }
             FTSKampf.spellChooseInventory.add(new MappedInventory(newInventory, newMapping, MappedInventory.MappedInventoryType.SPELL_INVENTORY));
             player.openInventory(newInventory);
@@ -270,8 +273,7 @@ public class InventoryListener implements Listener {
 
     private boolean isSpellCastInventory(Inventory inventory) {
         for (MappedInventory mappedInventory : FTSKampf.spellCastInventory) {
-            if (mappedInventory.equals(inventory))
-                return true;
+            if (mappedInventory.equals(inventory)) return true;
         }
         return false;
     }
@@ -280,8 +282,7 @@ public class InventoryListener implements Listener {
         List<MappedInventory> mappedInventories = new ArrayList<>();
         mappedInventories.addAll(FTSKampf.spellTargetInventory.keySet());
         for (MappedInventory mappedInventory : mappedInventories) {
-            if (mappedInventory.equals(inventory))
-                return true;
+            if (mappedInventory.equals(inventory)) return true;
         }
         return false;
     }
@@ -304,8 +305,7 @@ public class InventoryListener implements Listener {
 
     private MappedInventory getSpellCastInventory(Inventory inventory) {
         for (MappedInventory mappedInventory : FTSKampf.spellCastInventory) {
-            if (mappedInventory.equals(inventory))
-                return mappedInventory;
+            if (mappedInventory.equals(inventory)) return mappedInventory;
         }
         return null;
     }
@@ -314,8 +314,7 @@ public class InventoryListener implements Listener {
         List<MappedInventory> mappedInventories = new ArrayList<>();
         mappedInventories.addAll(FTSKampf.spellTargetInventory.keySet());
         for (MappedInventory mappedInventory : mappedInventories) {
-            if (mappedInventory.equals(inventory))
-                return mappedInventory;
+            if (mappedInventory.equals(inventory)) return mappedInventory;
         }
         return null;
     }

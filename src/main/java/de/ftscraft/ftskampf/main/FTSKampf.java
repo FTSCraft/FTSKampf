@@ -47,10 +47,10 @@ public final class FTSKampf extends JavaPlugin {
         raceList = getRaceList();
 
         engine = (Engine) getServer().getPluginManager().getPlugin("FTSEngine");
-        spellManager = new SpellManager();
-        spellManager.init();
         effectManager = new EffectManager();
         effectManager.init();
+        spellManager = new SpellManager();
+        spellManager.init();
         dbManager = new DBManager();
         hpManager = new HpManager();
         diceManager = new DiceManager();
