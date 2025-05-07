@@ -8,6 +8,7 @@ import de.ftscraft.ftskampf.main.FTSKampf;
 import de.ftscraft.ftskampf.spells.effects.effectDefinitions.Effect;
 import de.ftscraft.ftskampf.utils.Message;
 import de.ftscraft.ftskampf.utils.Race;
+import de.ftscraft.ftskampf.utils.exceptions.NumberNegativeException;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -35,7 +36,10 @@ public class HealRadius implements Effect {
         int healPoints = (int) Math.round(modifier * value);
         diceManager.sendMessageInRange(Message.TAG + "§7Geheilt werden §c" + healPoints + " §7LP!",player);
         for(Player target : targets) {
-            hpManager.healPlayer(target,healPoints);
+            try {
+                hpManager.healPlayer(target,healPoints);
+            } catch (NumberNegativeException ignored) {
+            }
 
             Race race = plugin.getRaceOrDefault(target);
             String article = "Der";

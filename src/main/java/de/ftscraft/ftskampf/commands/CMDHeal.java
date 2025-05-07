@@ -6,6 +6,7 @@ import de.ftscraft.ftskampf.db.HpManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
 import de.ftscraft.ftskampf.main.Logger;
 import de.ftscraft.ftskampf.utils.Message;
+import de.ftscraft.ftskampf.utils.exceptions.NumberNegativeException;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -76,6 +77,8 @@ public class CMDHeal implements CommandExecutor {
         } catch (NumberFormatException e) {
             player.sendMessage(Message.TAG + "§6Bitte verwende den Befehl so: §c/ftskampf heal [Spieler] [HP zum heilen]");
             return true;
+        } catch (NumberNegativeException e) {
+            player.sendMessage(Message.TAG + "§7Du musst mehr als 0 Punkte angeben!");
         }
 
         int remainingMins = hpManager.isPlayerInOffset(target);

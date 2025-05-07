@@ -6,9 +6,9 @@ import de.ftscraft.ftskampf.damageCalculators.DiceManager;
 import de.ftscraft.ftskampf.db.HpManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
 import de.ftscraft.ftskampf.spells.effects.effectDefinitions.Effect;
-import de.ftscraft.ftskampf.utils.Dice;
 import de.ftscraft.ftskampf.utils.Message;
 import de.ftscraft.ftskampf.utils.Race;
+import de.ftscraft.ftskampf.utils.exceptions.NumberNegativeException;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
 import org.bukkit.entity.Player;
 
@@ -27,7 +27,10 @@ public class HealSelfDamage implements Effect {
         int healPoints = (int) Math.round(healModifier * value);
         diceManager.sendMessageInRange(Message.TAG + "§7Geheilt werden §c" + healPoints + " §7LP!", player);
 
-        hpManager.healPlayer(target, healPoints);
+        try {
+            hpManager.healPlayer(target, healPoints);
+        } catch (NumberNegativeException ignored) {
+        }
         Race race = plugin.getRaceOrDefault(target);
         String article = "Der";
         String raceName = race.getmName();

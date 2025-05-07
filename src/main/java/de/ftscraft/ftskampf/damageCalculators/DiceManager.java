@@ -5,11 +5,11 @@ import de.ftscraft.ftsengine.utils.Ausweis;
 import de.ftscraft.ftskampf.db.DBManager;
 import de.ftscraft.ftskampf.db.EffectManager;
 import de.ftscraft.ftskampf.db.HpManager;
-import de.ftscraft.ftskampf.db.SpellManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
 import de.ftscraft.ftskampf.main.Logger;
 import de.ftscraft.ftskampf.spells.effects.effectDefinitions.ContinuousEffect;
 import de.ftscraft.ftskampf.utils.*;
+import de.ftscraft.ftskampf.utils.exceptions.NumberNegativeException;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -175,7 +175,7 @@ public class DiceManager {
             targetName = targetAusweis.getFirstName() + " " + targetAusweis.getLastName();
         }
 
-        if(isProtected(target)) {
+        if (isProtected(target)) {
             sendMessageInRange(Message.TAG + "§7" + article + " §o" + raceName + " §r§e" + getName(player) + " §7greift §7" + articleTarget + " §o" + raceNameTarget + " §e" + targetName + " §7an, doch §e" + targetName + " §7ist zur Zeit immun", player);
             return;
         }
@@ -264,7 +264,10 @@ public class DiceManager {
         int finalValue = calculateAttackStrength(player, dice, value);
         if (success) {
             message.append("§2").append(value).append(" §7und hat damit den Wurf §2geschafft!").append(" §5[").append(dice.getName()).append("]");
-            hpManager.healPlayer(target, (int) Math.round(modifier * finalValue));
+            try {
+                hpManager.healPlayer(target, (int) Math.round(modifier * finalValue));
+            } catch (NumberNegativeException ignored) {
+            }
         } else {
             message.append("§c").append(value).append(" §7hätte aber §c").append(skill).append(" §7oder niedriger würfeln müssen!").append(" §5[").append(dice.getName()).append("]");
         }
@@ -321,12 +324,15 @@ public class DiceManager {
             sendMessageInRange(Message.TAG + getName(attack.getAttacker()) + " §7verursacht Schaden in Höhe von §c" + damage + " §7an §2" + getName(target) + " §5[" + attack.getType().getName() + "]", target);
             hpManager.hurtPlayer(target, damage);
 
-            Logger.log(target,"Dodge failed, Damage: " + damage);
+            Logger.log(target, "Dodge failed, Damage: " + damage);
 
             if (attack.getAbsorptionRate() > 0) {
                 int absorbedLife = (int) Math.round(damage * attack.getAbsorptionRate());
                 Logger.log(target, absorbedLife + " HP got absorbed by " + attack.getAttacker().getName());
-                hpManager.healPlayer(attacker, absorbedLife);
+                try {
+                    hpManager.healPlayer(attacker, absorbedLife);
+                } catch (NumberNegativeException ignored) {
+                }
                 sendMessageInRange(Message.TAG + "§c" + getName(attacker) + " §7absorbiert §c" + absorbedLife + " §7Lebenspunkte", attacker);
             }
 
@@ -395,7 +401,10 @@ public class DiceManager {
 
         if (!success && attack.getAbsorptionRate() > 0) {
             int absorbedLife = (int) Math.round(damage * attack.getAbsorptionRate());
-            hpManager.healPlayer(attacker, absorbedLife);
+            try {
+                hpManager.healPlayer(attacker, absorbedLife);
+            } catch (NumberNegativeException ignored) {
+            }
             sendMessageInRange(Message.TAG + "§c" + getName(attacker) + " §7absorbiert §c" + absorbedLife + " §7Lebenspunkte", attacker);
         }
 
@@ -510,7 +519,7 @@ public class DiceManager {
         for (String target : targets) {
             int damage = targetMap.get(target);
             Player tarPlayer = Bukkit.getPlayer(UUID.fromString(target));
-            if(tarPlayer == null)
+            if (tarPlayer == null)
                 return;
             if (!tarPlayer.isOnline())
                 return;
@@ -536,8 +545,8 @@ public class DiceManager {
     }
 
     private boolean isProtected(Player player) {
-        for(ContinuousEffect effect : effectManager.getPlayerEffects(player.getUniqueId().toString())) {
-            if(effect.isProtected()) {
+        for (ContinuousEffect effect : effectManager.getPlayerEffects(player.getUniqueId().toString())) {
+            if (effect.isProtected()) {
                 return true;
             }
         }

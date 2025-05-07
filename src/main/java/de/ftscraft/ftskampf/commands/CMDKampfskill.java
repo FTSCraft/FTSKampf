@@ -9,6 +9,7 @@ import de.ftscraft.ftskampf.utils.Dice;
 import de.ftscraft.ftskampf.utils.Message;
 import de.ftscraft.ftskampf.utils.Race;
 import de.ftscraft.ftskampf.utils.exceptions.NotEnoughPointsException;
+import de.ftscraft.ftskampf.utils.exceptions.NumberNegativeException;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
 import de.ftscraft.ftskampf.utils.exceptions.SkillLimitException;
 import org.bukkit.command.Command;
@@ -193,6 +194,8 @@ public class CMDKampfskill implements CommandExecutor, TabCompleter {
                 player.sendMessage(Message.TAG + "§7Du hast das maximale Limit für diesen Skill erreicht! Dir wurden §c" + e.getRemainingPoints() + " §7Skillpoints gutgeschrieben.");
             } catch (IOException e) {
                 throw new RuntimeException(e);
+            } catch (NumberNegativeException e) {
+                player.sendMessage(Message.TAG + "§7Du musst mehr als 0 Skillpunkte angeben!");
             }
             return true;
         }
@@ -217,6 +220,8 @@ public class CMDKampfskill implements CommandExecutor, TabCompleter {
                 player.sendMessage(Message.TAG + "§7Du hast das maximale Limit für diesen Skill erreicht! Dir wurden §c" + e.getRemainingPoints() + " §7Skillpoints gutgeschrieben.");
             } catch (IOException e) {
                 throw new RuntimeException(e);
+            } catch (NumberNegativeException e) {
+                player.sendMessage(Message.TAG + "§7Du musst mehr als 0 Skillpunkte angeben!");
             }
             return true;
         }
@@ -241,6 +246,8 @@ public class CMDKampfskill implements CommandExecutor, TabCompleter {
                 player.sendMessage(Message.TAG + "§7Du hast das maximale Limit für diesen Skill erreicht! Dir wurden §c" + e.getRemainingPoints() + " §7Skillpoints gutgeschrieben.");
             } catch (IOException e) {
                 throw new RuntimeException(e);
+            } catch (NumberNegativeException e) {
+                player.sendMessage(Message.TAG + "§7Du musst mehr als 0 Skillpunkte angeben!");
             }
             return true;
         }
@@ -265,6 +272,8 @@ public class CMDKampfskill implements CommandExecutor, TabCompleter {
                 player.sendMessage(Message.TAG + "§7Du hast das maximale Limit für diesen Skill erreicht! Dir wurden §c" + e.getRemainingPoints() + " §7Skillpoints gutgeschrieben.");
             } catch (IOException e) {
                 throw new RuntimeException(e);
+            } catch (NumberNegativeException e) {
+                player.sendMessage(Message.TAG + "§7Du musst mehr als 0 Skillpunkte angeben!");
             }
             return true;
         }
@@ -283,6 +292,8 @@ public class CMDKampfskill implements CommandExecutor, TabCompleter {
                 player.sendMessage(Message.TAG + "§7Dafür reichen deine Punkte nicht aus! Du hast noch §c" + db.getPlayerSkill(player).getPoints() + " §7Skillpoints");
             } catch (IOException e) {
                 throw new RuntimeException(e);
+            } catch (NumberNegativeException e) {
+                player.sendMessage(Message.TAG + "§7Du musst mehr als 0 Punkte angeben!");
             }
             return true;
         }

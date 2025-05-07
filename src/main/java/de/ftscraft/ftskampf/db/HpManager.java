@@ -2,6 +2,7 @@ package de.ftscraft.ftskampf.db;
 
 import de.ftscraft.ftskampf.main.FTSKampf;
 import de.ftscraft.ftskampf.main.Logger;
+import de.ftscraft.ftskampf.utils.exceptions.NumberNegativeException;
 import org.bukkit.entity.Player;
 
 import java.io.*;
@@ -61,8 +62,11 @@ public class HpManager {
         Logger.log(player, "Unregistered in health list");
     }
 
-    public void healPlayer(Player player, int hpToHeal) {
+    public void healPlayer(Player player, int hpToHeal) throws NumberNegativeException {
         String uuid = player.getUniqueId().toString();
+        if(hpToHeal < 1) {
+            throw new NumberNegativeException();
+        }
         if(!health.containsKey(uuid)) {
             return;
         }
@@ -79,7 +83,7 @@ public class HpManager {
         Logger.log(player, "Healed from " + oldHealth + " to " + newHealth);
     }
 
-    public void healAllPlayers(int hpTpHeal) {
+    public void healAllPlayers(int hpTpHeal) throws NumberNegativeException {
         Logger.log("Triggered heal for all players");
         for(Player player : activePlayers) {
             if(!offset.containsKey(player.getUniqueId().toString())) {
