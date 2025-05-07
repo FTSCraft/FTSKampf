@@ -2,6 +2,7 @@ package de.ftscraft.ftskampf.utils;
 
 import de.ftscraft.ftskampf.db.HpManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
+import de.ftscraft.ftskampf.utils.exceptions.NumberNegativeException;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class HealthRunner implements Runnable{
@@ -21,7 +22,10 @@ public class HealthRunner implements Runnable{
     public void run() {
         healthIterator++;
         if(healthIterator >= HEAL_PERIOD) {
-            hpManager.healAllPlayers(HEAL_POINTS);
+            try {
+                hpManager.healAllPlayers(HEAL_POINTS);
+            } catch (NumberNegativeException ignored) {
+            }
             healthIterator = 0;
         }
     }

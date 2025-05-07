@@ -4,6 +4,7 @@ import de.ftscraft.ftskampf.main.FTSKampf;
 import de.ftscraft.ftskampf.utils.Dice;
 import de.ftscraft.ftskampf.utils.Skill;
 import de.ftscraft.ftskampf.utils.exceptions.NotEnoughPointsException;
+import de.ftscraft.ftskampf.utils.exceptions.NumberNegativeException;
 import de.ftscraft.ftskampf.utils.exceptions.SkillLimitException;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -61,7 +62,10 @@ public class DBManager {
         return skills;
     }
 
-    public void addSkillpoints(int points, Player player, Dice dice) throws NotEnoughPointsException, SkillLimitException, IOException {
+    public void addSkillpoints(int points, Player player, Dice dice) throws NotEnoughPointsException, SkillLimitException, IOException, NumberNegativeException {
+        if(points < 1) {
+            throw new NumberNegativeException();
+        }
         Skill skill = getPlayerSkill(player);
         int skillpoints = skill.getSkill(dice);
         if (points > skill.getPoints()) {
@@ -90,7 +94,10 @@ public class DBManager {
         addSkill(skill);
     }
 
-    public void addHp(int points, Player player) throws NotEnoughPointsException, IOException {
+    public void addHp(int points, Player player) throws NotEnoughPointsException, IOException, NumberNegativeException {
+        if(points < 1) {
+            throw new NumberNegativeException();
+        }
         Skill skill = getPlayerSkill(player);
         int skillpoints = skill.getMaxHp();
         if (points > skill.getPoints()) {
