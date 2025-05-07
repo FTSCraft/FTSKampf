@@ -149,7 +149,7 @@ public class DiceManager {
 
         Race targetRace = plugin.getRaceOrDefault(target);
         if (targetRace.getSkill(dice) < 0) {
-            player.sendMessage(Message.TAG + "§6Die Rasse §o" + race.getmName() + " §6von §c" + target.getName() + " §6verfügt nicht über die Fähigkeit §o" + dice.getName() + "!");
+            player.sendMessage(Message.TAG + "§6Die Rasse §o" + race.getmName() + " §6von §c" + target.getName() + " §6kann nicht mit §o" + dice.getName() + " §6angegriffen werden!");
             return;
         }
 
