@@ -149,7 +149,7 @@ public class DiceManager {
 
         Race targetRace = plugin.getRaceOrDefault(target);
         if (targetRace.getSkill(dice) < 0) {
-            player.sendMessage(Message.TAG + "§6Die Rasse §o" + race.getmName() + " §6von §c" + target.getName() + " §6kann nicht mit §o" + dice.getName() + " §6angegriffen werden!");
+            player.sendMessage(Message.TAG + "§6Die Rasse §o" + targetRace.getmName() + " §6von §c" + target.getName() + " §6kann nicht mit §o" + dice.getName() + " §6angegriffen werden!");
             return;
         }
 
@@ -168,7 +168,7 @@ public class DiceManager {
         String targetName = target.getName();
         if (engine.hasAusweis(target)) {
             Ausweis targetAusweis = engine.getAusweis(target);
-            if (gender.equals(Ausweis.Gender.FEMALE)) {
+            if (targetAusweis.getGender().equals(Ausweis.Gender.FEMALE)) {
                 articleTarget = "die";
                 raceNameTarget = race.getfName();
             }
@@ -187,7 +187,7 @@ public class DiceManager {
 
         boolean success = value <= skill;
         if (success) {
-            value = Math.min((int) Math.round(value * modifier), 100);
+            value = Math.min(value, 100);
             message.append("§2").append(value).append(" §7und hat damit den Wurf §2geschafft!").append(" §5[").append(dice.getName()).append("]");
         } else {
             message.append("§c").append(value).append(" §7hätte aber §c").append(skill).append(" §7oder niedriger würfeln müssen!").append(" §5[").append(dice.getName()).append("]");
@@ -195,7 +195,7 @@ public class DiceManager {
         sendMessageInRange(message, player);
         Logger.log(player, "Tries to attack with target dice: " + target.getName() + " ," + dice.getName());
         if (success) {
-            int attackStrength = calculateAttackStrength(player, dice, value);
+            int attackStrength = calculateAttackStrength(player, dice, value, modifier);
             sendMessageInRange(Message.TAG + getName(player) + " §7greift an mit der Stärke von §c" + attackStrength + " §5[" + dice.getName() + "]", player);
             TextComponent message1 = new TextComponent(Message.TAG + "§7Du wirst angegriffen! Klicke hier um ");
             TextComponent reaction1 = new TextComponent("§a[Auszuweichen]");
@@ -229,6 +229,12 @@ public class DiceManager {
             return;
         }
 
+        Race targetRace = plugin.getRaceOrDefault(target);
+        if (targetRace.getSkill(dice) < 0) {
+            player.sendMessage(Message.TAG + "§6Die Rasse §o" + targetRace.getmName() + " §6von §c" + target.getName() + " §6kann nicht mit §o" + dice.getName() + " §6geheilt werden!");
+            return;
+        }
+
         if (!hpManager.isPlayerHurt(target)) {
             sendMessageInRange(Message.TAG + "§c" + target.getName() + " §6ist nicht verletzt!", player);
             return;
@@ -242,7 +248,6 @@ public class DiceManager {
             raceName = race.getfName();
         }
 
-        Race targetRace = plugin.getRaceOrDefault(target);
         String articleTarget = "den";
         String raceNameTarget = targetRace.getmName();
         String targetName = getName(target);
@@ -320,7 +325,7 @@ public class DiceManager {
         Logger.log(target, "dodges attack from " + attack.getAttacker().getName() + ", " + attack.getType().getName());
         if (!success) {
             Player attacker = attack.getAttacker();
-            int damage = calculateDefendValue(target, attack.getStrength(), attack.getType());
+            int damage = calculateValueAfterDefend(target, attack.getStrength(), attack.getType(), attack.doPenetrateArmor());
             sendMessageInRange(Message.TAG + getName(attack.getAttacker()) + " §7verursacht Schaden in Höhe von §c" + damage + " §7an §2" + getName(target) + " §5[" + attack.getType().getName() + "]", target);
             hpManager.hurtPlayer(target, damage);
 
@@ -395,7 +400,7 @@ public class DiceManager {
         sendMessageInRange(Message.TAG + getName(attacker) + " §7greift an mit der Stärke von §c" + attackDmg + " §5[" + dice.getName() + "]", attacker);
         Logger.log(attacker, "Attack after counter: " + target.getName() + ", " + attack.getType().getName() + ", " + attackDmg);
 
-        int damage = calculateDefendValue(target, attackDmg, dice);
+        int damage = calculateValueAfterDefend(target, attackDmg, dice, attack.doPenetrateArmor());
         sendMessageInRange(Message.TAG + "§e" + getName(attacker) + " §7verursacht Schaden in Höhe von §c" + damage + " §7an §e" + getName(target) + " §5[" + attack.getType().getName() + "]", target);
         hpManager.hurtPlayer(target, damage);
 
@@ -438,25 +443,27 @@ public class DiceManager {
     }
 
     private int calculateAttackStrength(Player player, Dice dice, int initialValue) {
+        return calculateAttackStrength(player, dice, initialValue, 1);
+    }
+
+    private int calculateAttackStrength(Player player, Dice dice, int initialValue, double modifier) {
         initialValue = damageModifier.getModifiedAttack(initialValue, dice, player.getInventory().getItemInMainHand());
         for (ContinuousEffect effect : effectManager.getPlayerEffects(player.getUniqueId().toString())) {
             initialValue = effect.modifyAttackValue(initialValue, dice, damageModifier.isArmed(player));
         }
-        return initialValue;
+        return (int) Math.round(initialValue*modifier);
     }
 
-    private int calculateDefendValue(Player player, int value, Dice dice) {
+    private int calculateValueAfterDefend(Player player, int value, Dice dice, boolean armorPen) {
         ItemStack[] armor = player.getInventory().getArmorContents();
         boolean hasShield = player.getInventory().getItemInMainHand().getType().equals(Material.SHIELD) || player.getInventory().getItemInOffHand().getType().equals(Material.SHIELD);
-        int defendValue = damageModifier.getModifiedDefend(value, armor, hasShield);
+        int defendValue = damageModifier.getModifiedDefend(value, armor, hasShield, armorPen);
 
         for (ContinuousEffect effect : effectManager.getPlayerEffects(player.getUniqueId().toString())) {
             defendValue = effect.modifyDefendValue(defendValue, dice);
         }
 
-        if (defendValue < 5)
-            return 5;
-        return defendValue;
+        return Math.min(defendValue, 5);
     }
 
     private int calculateDifference(int valueAttack, int valueDefend) {
@@ -523,7 +530,7 @@ public class DiceManager {
                 return;
             if (!tarPlayer.isOnline())
                 return;
-            hpManager.hurtPlayer(tarPlayer, calculateDefendValue(tarPlayer, damage, Dice.MAGIC));
+            hpManager.hurtPlayer(tarPlayer, calculateValueAfterDefend(tarPlayer, damage, Dice.MAGIC, false));
             StringBuilder message = new StringBuilder(Message.TAG + "§e" + getName(player) + " §7verursacht Schaden in Höhe von §c" + damage + " §7 an §e" + getName(tarPlayer) + " §7(Schaden über Zeit) " + "§5[" + Dice.MAGIC.getName() + "]");
             List<Player> receivers = new ArrayList<>();
             receivers.add(player);

@@ -1,5 +1,6 @@
 package de.ftscraft.ftskampf.db;
 
+import de.ftscraft.ftskampf.main.Logger;
 import de.ftscraft.ftskampf.spells.EffectSpell;
 import de.ftscraft.ftskampf.main.FTSKampf;
 import de.ftscraft.ftskampf.utils.Spell;
@@ -56,6 +57,7 @@ public class SpellManager {
                     Spell spell = new Spell(values[0], values[1], EffectFactory.getEffect(values[3]));
                     spellClass.addSpell(spell);
                 } catch (EffectNotImplementedException e) {
+                    Logger.log(e.getMessage());
                 }
             }
         }
@@ -108,6 +110,16 @@ public class SpellManager {
 
     public SpellCollection getSpellCollection(Player player) {
         return getSpellCollection(player.getUniqueId().toString());
+    }
+
+    public boolean playerHasSpell(Player player, Spell spell) {
+        return playerHasSpell(player.getUniqueId().toString(), spell);
+    }
+
+    public boolean playerHasSpell(String uuid, Spell spell) {
+        if(spells.containsKey(uuid))
+            return spells.get(uuid).contains(spell);
+        return false;
     }
 
     private String getSavePath() throws IOException {

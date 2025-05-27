@@ -112,7 +112,7 @@ public class InventoryListener implements Listener {
             int i = 0;
             HashMap<Integer, String> newMapping = new HashMap<>();
             for (Spell spell : spellManager.getClassById(id).getSpells()) {
-                if (!spellManager.playerHasSpell(spell)) {
+                if (!spellManager.playerHasSpell(player, spell)) {
                     ItemStack item = new ItemStack(Material.ENCHANTED_BOOK);
                     ItemMeta itemMeta = item.getItemMeta();
                     itemMeta.setDisplayName(spell.getName());
@@ -209,6 +209,8 @@ public class InventoryListener implements Listener {
             Ausweis.Gender gender = ausweis.getGender();
             Race race = plugin.getRaceOrDefault(player);
 
+            Race targetRace = plugin.getRaceOrDefault(target);
+
             String article = "Der";
             String raceName = race.getmName();
             if (gender.equals(Ausweis.Gender.FEMALE)) {
@@ -216,14 +218,12 @@ public class InventoryListener implements Listener {
                 raceName = race.getfName();
             }
 
-            Race targetRace = plugin.getRaceOrDefault(target);
-
             String articleTarget = "den";
             String raceNameTarget = targetRace.getmName();
             String targetName = target.getName();
             if (engine.hasAusweis(target)) {
                 Ausweis targetAusweis = engine.getAusweis(target);
-                if (gender.equals(Ausweis.Gender.FEMALE)) {
+                if (targetAusweis.getGender().equals(Ausweis.Gender.FEMALE)) {
                     articleTarget = "die";
                     raceNameTarget = race.getfName();
                 }
