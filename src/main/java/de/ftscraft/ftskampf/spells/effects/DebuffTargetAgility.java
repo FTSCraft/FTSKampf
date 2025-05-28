@@ -7,7 +7,7 @@ import de.ftscraft.ftskampf.utils.Dice;
 public class DebuffTargetAgility extends ContinuousEffect {
 
     public DebuffTargetAgility(String target, String caster) {
-        this(target, caster, 1.5, 3);
+        this(target, caster, 0.7, 3);
     }
 
     public DebuffTargetAgility(String target, String caster, double modifier, int durability) {

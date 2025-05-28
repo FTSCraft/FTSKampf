@@ -80,6 +80,12 @@ public class CMDKampf implements CommandExecutor {
             item.setItemMeta(itemMeta);
             inventory.setItem(29, item);
 
+            item = new ItemStack(Material.ENDER_EYE);
+            itemMeta = item.getItemMeta();
+            itemMeta.setDisplayName("Magie-Aktionswürfel");
+            item.setItemMeta(itemMeta);
+            inventory.setItem(31, item);
+
             item = new ItemStack(Material.LEATHER_BOOTS);
             itemMeta = item.getItemMeta();
             itemMeta.setDisplayName("Agilitätswürfel");

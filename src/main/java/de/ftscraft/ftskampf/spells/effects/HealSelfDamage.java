@@ -60,13 +60,13 @@ public class HealSelfDamage implements Effect {
         raceName = race.getmName();
         Ausweis ausweis = engine.getAusweis(player);
         Ausweis.Gender gender = ausweis.getGender();
-        if (ausweis.equals(Ausweis.Gender.FEMALE)) {
+        if (gender.equals(Ausweis.Gender.FEMALE)) {
             article = "Die";
             raceName = race.getfName();
         }
         int damage = (int) Math.round(damageModifier * value);
         hpManager.hurtPlayer(player, damage);
-        message = new StringBuilder("§7" + article + " §o" + raceName + " §r§e" + diceManager.getName(target) + " §7fügt sich dabei §c" + damage + " §7LP Schaden zu!");
+        message = new StringBuilder("§7" + article + " §o" + raceName + " §r§e" + diceManager.getName(player) + " §7fügt sich dabei §c" + damage + " §7LP Schaden zu!");
         diceManager.sendMessageInRange(message, player);
 
         if (hpManager.getHealth(target) <= 0) {

@@ -58,6 +58,10 @@ public class InventoryListener implements Listener {
                         MagicInventory inv = new MagicInventory(player);
                         inv.show();
                         break;
+                    case 31:
+                        inventory.close();
+                        diceManager.rollActionDice(Dice.MAGIC, player);
+                        break;
                     case 33:
                         inventory.close();
                         diceManager.rollDice(Dice.AGILITY, player);
@@ -175,6 +179,7 @@ public class InventoryListener implements Listener {
                     message.append("§2").append(result.getResult()).append(" §7und hat damit den Wurf §2geschafft!").append(" §5[").append(Dice.MAGIC.getName()).append("]");
                 } else {
                     message.append("§c").append(result.getResult()).append(" §7hätte aber §c").append(result.getSkill()).append(" §7oder niedriger würfeln müssen!").append(" §5[").append(Dice.MAGIC.getName()).append("]");
+                    diceManager.sendMessageInRange(message, player);
                     return;
                 }
             } else {
@@ -204,12 +209,16 @@ public class InventoryListener implements Listener {
             }
             inventory.close();
 
+            Race targetRace = plugin.getRaceOrDefault(target);
+            if (targetRace.getSkill(Dice.MAGIC) < 0) {
+                player.sendMessage(Message.TAG + "§6Die Rasse §o" + targetRace.getmName() + " §6von §c" + target.getName() + " §6ist immun gegen §o" + Dice.MAGIC.getName() + " §6!");
+                return;
+            }
+
             Engine engine = plugin.getEngine();
             Ausweis ausweis = engine.getAusweis(player);
             Ausweis.Gender gender = ausweis.getGender();
             Race race = plugin.getRaceOrDefault(player);
-
-            Race targetRace = plugin.getRaceOrDefault(target);
 
             String article = "Der";
             String raceName = race.getmName();
@@ -225,7 +234,7 @@ public class InventoryListener implements Listener {
                 Ausweis targetAusweis = engine.getAusweis(target);
                 if (targetAusweis.getGender().equals(Ausweis.Gender.FEMALE)) {
                     articleTarget = "die";
-                    raceNameTarget = race.getfName();
+                    raceNameTarget = targetRace.getfName();
                 }
                 targetName = targetAusweis.getFirstName() + " " + targetAusweis.getLastName();
             }
@@ -242,6 +251,7 @@ public class InventoryListener implements Listener {
                     message.append("§2").append(result.getResult()).append(" §7und hat damit den Wurf §2geschafft!").append(" §5[").append(Dice.MAGIC.getName()).append("]");
                 } else {
                     message.append("§c").append(result.getResult()).append(" §7hätte aber §c").append(result.getSkill()).append(" §7oder niedriger würfeln müssen!").append(" §5[").append(Dice.MAGIC.getName()).append("]");
+                    diceManager.sendMessageInRange(message, player);
                     return;
                 }
             } else {

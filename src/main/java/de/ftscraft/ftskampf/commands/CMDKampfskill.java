@@ -36,7 +36,7 @@ public class CMDKampfskill implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            List<String> argumentListe = Arrays.asList("nahkampf", "fernkampf", "agilität", "magie", "info", "help");
+            List<String> argumentListe = Arrays.asList("nahkampf", "fernkampf", "agilität", "magie", "info", "hp", "help");
             List<String> result = new ArrayList<>();
             for (String arg : argumentListe) {
                 if (arg.toLowerCase().startsWith(args[0].toLowerCase())) {

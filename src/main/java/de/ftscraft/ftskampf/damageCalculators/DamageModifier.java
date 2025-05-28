@@ -129,7 +129,7 @@ public class DamageModifier {
     }
 
     protected int getModifiedDefend(int blankDefend, ItemStack[] armor, boolean hasShield, boolean penetrateArmor) {
-        if(penetrateArmor) return 0;
+        if(penetrateArmor) return blankDefend;
         double defendPercentages = calculateArmorPercentage(armor);
         if (hasShield) {
             defendPercentages += defendModifier.get(Material.SHIELD);
