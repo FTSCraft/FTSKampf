@@ -113,7 +113,9 @@ public class DiceManager {
 
         int value = calculateAttackValue(dice, player);
 
-        String colourCode = value < 51 ? "§c" : "§2";
+        int skill = dice.equals(Dice.ACTION) ? 51 : db.getPlayerSkill(player).getSkill(dice);
+
+        String colourCode = value < skill ? "§2" : "§c";
 
         StringBuilder message = new StringBuilder("§7" + article + " §o" + raceName + " §r§e" + getName(player) + " §7würfelt: §e").append(colourCode).append(value).append(" §5[").append(dice.getName()).append("]");
         sendMessageInRange(message, player);
@@ -463,7 +465,7 @@ public class DiceManager {
             defendValue = effect.modifyDefendValue(defendValue, dice);
         }
 
-        return Math.min(defendValue, 5);
+        return Math.max(defendValue, plugin.getConfig().getInt("MinimumDamage"));
     }
 
     private int calculateDifference(int valueAttack, int valueDefend) {
