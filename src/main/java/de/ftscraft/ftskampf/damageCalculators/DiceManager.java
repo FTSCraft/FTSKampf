@@ -172,7 +172,7 @@ public class DiceManager {
             Ausweis targetAusweis = engine.getAusweis(target);
             if (targetAusweis.getGender().equals(Ausweis.Gender.FEMALE)) {
                 articleTarget = "die";
-                raceNameTarget = race.getfName();
+                raceNameTarget = targetRace.getfName();
             }
             targetName = targetAusweis.getFirstName() + " " + targetAusweis.getLastName();
         }
