@@ -10,7 +10,7 @@ public class EffectFactory {
             case "1":
                 return new DamageSpell();
             case "2":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
+                return new ProtectAttackSpell();
             case "3":
                 return new DamagePenetrationSpell();
             case "4":
