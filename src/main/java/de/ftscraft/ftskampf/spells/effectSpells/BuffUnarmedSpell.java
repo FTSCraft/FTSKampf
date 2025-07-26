@@ -12,7 +12,7 @@ public class BuffUnarmedSpell extends EffectSpell {
     EffectManager effectManager = plugin.getEffectManager();
 
     public BuffUnarmedSpell() {
-        super("Unbewaffneter Kampf Boost", "0174", "Erhöht die Angriffskraft des Anwenders im unbewaffneten Kampf.");
+        super("Unbewaffneter Kampf Boost", "0174", "Erhöht die Angriffskraft des Anwenders/Ziels im unbewaffneten Kampf.");
     }
 
     @Override

@@ -1,7 +1,5 @@
 package de.ftscraft.ftskampf.spells.effects;
 
-import de.ftscraft.ftskampf.db.DBManager;
-import de.ftscraft.ftskampf.main.FTSKampf;
 import de.ftscraft.ftskampf.spells.effects.effectDefinitions.ContinuousEffectDeliverer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;

@@ -12,7 +12,7 @@ public class BuffAgilitySpell extends EffectSpell {
     EffectManager effectManager = plugin.getEffectManager();
 
     public BuffAgilitySpell() {
-        super("Agilitätsboost", "0169", "Erhöht die Agilität des Anwenders, wodurch er sich schneller und geschickter im Kampf bewegen kann.");
+        super("Agilitätsboost", "0169", "Erhöht die Agilität des Anwenders/Ziels, wodurch er sich schneller und geschickter im Kampf bewegen kann.");
     }
 
     @Override

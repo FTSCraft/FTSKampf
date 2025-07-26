@@ -1,7 +1,5 @@
 package de.ftscraft.ftskampf.spells.effects.effectDefinitions;
 
-import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
 import java.util.List;
 

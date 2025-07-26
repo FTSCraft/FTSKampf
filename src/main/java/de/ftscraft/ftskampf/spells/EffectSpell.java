@@ -27,14 +27,6 @@ public abstract class EffectSpell {
 
     public abstract void doEffect(Player caster, Player target, int value);
 
-    public double modifyAttack(double initialAttack) {
-        return initialAttack;
-    }
-
-    public double modifyDefend(double initialDefend) {
-        return initialDefend;
-    }
-
     public abstract boolean isSelfApplicable();
     public abstract boolean isTargetApplicable();
     public abstract boolean skipsPreDicing();

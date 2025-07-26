@@ -4,8 +4,6 @@ import de.ftscraft.ftskampf.db.HpManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
 import de.ftscraft.ftskampf.spells.effects.effectDefinitions.ContinuousEffect;
 import de.ftscraft.ftskampf.spells.effects.effectDefinitions.ContinuousEffectId;
-import org.bukkit.Bukkit;
-import org.bukkit.Server;
 
 public class DamageOverTime extends ContinuousEffect {
 

@@ -12,7 +12,7 @@ public class BuffArmorSpell extends EffectSpell {
     EffectManager effectManager = plugin.getEffectManager();
 
     public BuffArmorSpell() {
-        super("Rüstungsboost", "0170", "Erhöht die Rüstung des Anwenders, wodurch er besser vor Angriffen geschützt ist.");
+        super("Rüstungsboost", "0170", "Erhöht die Rüstung des Anwenders/Ziels, wodurch er besser vor Angriffen geschützt ist.");
     }
 
     @Override

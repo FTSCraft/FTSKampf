@@ -2,7 +2,6 @@ package de.ftscraft.ftskampf.utils;
 
 import de.ftscraft.ftskampf.db.EffectManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
-import org.bukkit.configuration.file.FileConfiguration;
 
 public class LivingEffectRunner implements Runnable {
 

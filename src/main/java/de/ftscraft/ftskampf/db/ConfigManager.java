@@ -2,6 +2,7 @@ package de.ftscraft.ftskampf.db;
 
 import de.ftscraft.ftskampf.main.FTSKampf;
 import org.bukkit.configuration.file.FileConfiguration;
+
 import java.util.HashMap;
 
 public class ConfigManager {

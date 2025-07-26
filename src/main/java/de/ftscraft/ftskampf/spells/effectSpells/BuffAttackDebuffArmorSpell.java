@@ -12,7 +12,7 @@ public class BuffAttackDebuffArmorSpell extends EffectSpell {
     EffectManager effectManager = plugin.getEffectManager();
 
     public BuffAttackDebuffArmorSpell() {
-        super("Kraftvoller Angriff, Schwache Rüstung", "0173", "Erhöht die Angriffskraft des Zeils stark, schwächt jedoch gleichzeitig seine Rüstung.");
+        super("Kraftvoller Angriff, Schwache Rüstung", "0173", "Erhöht die Angriffskraft des Anwenders/Ziels stark, schwächt jedoch gleichzeitig seine Rüstung.");
     }
 
     @Override

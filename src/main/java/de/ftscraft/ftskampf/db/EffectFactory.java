@@ -10,7 +10,7 @@ public class EffectFactory {
             case "1":
                 return new DamageSpell();
             case "2":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
+                return new DamageKnockbackSpell();
             case "3":
                 return new DamagePenetrationSpell();
             case "4":
@@ -38,7 +38,7 @@ public class EffectFactory {
             case "15":
                 return new BuffAttackArmorRangeSpell();
             case "16":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
+                return new ProtectAttackSpell();
             case "17":
                 return new DebuffTargetAttackSpell();
             case "18":
@@ -46,41 +46,41 @@ public class EffectFactory {
             case "19":
                 return new DebuffTargetAgilitySpell();
             case "20":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
+                return new StunSpell();
             case "21":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
+                return new BlockMagicSpell();
             case "1E":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
+                return new RaceDamageSpell("E");
             case "1Z":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
+                return new RaceDamageSpell("Z");
             case "1O":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
+                return new RaceDamageSpell("O");
             case "22E":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-            case "23E":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-            case "24E":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-            case "25E":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
+                return new RaceHealSpell("E");
             case "22Z":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-            case "23Z":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-            case "24Z":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-            case "25Z":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
+                return new RaceHealSpell("Z");
             case "22O":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
+                return new RaceHealSpell("O");
+            case "23E":
+                return new RaceBuffAttackRadiusSpell("E");
+            case "23Z":
+                return new RaceBuffAttackRadiusSpell("Z");
             case "23O":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
+                return new RaceBuffAttackRadiusSpell("O");
+            case "24E":
+                return new RaceBuffArmorRadiusSpell("E");
+            case "24Z":
+                return new RaceBuffArmorRadiusSpell("Z");
             case "24O":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
+                return new RaceBuffArmorRadiusSpell("O");
+            case "25E":
+                return new RaceHealRadiusSpell("E");
+            case "25Z":
+                return new RaceHealRadiusSpell("Z");
             case "25O":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
+                return new RaceHealRadiusSpell("O");
             default:
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
+                throw new EffectNotImplementedException(STR."Unknown spellEffect id: \{spellEffectID}");
         }
     }
 }
