@@ -43,7 +43,7 @@ public class EffectFactory {
             case "25E" -> new RaceHealRadiusSpell("E");
             case "25Z" -> new RaceHealRadiusSpell("Z");
             case "25O" -> new RaceHealRadiusSpell("O");
-            default -> throw new EffectNotImplementedException(STR."Unknown spellEffect id: \{spellEffectID}");
+            default -> throw new EffectNotImplementedException("Unknown spellEffect id:" + spellEffectID);
         };
     }
 }

@@ -7,11 +7,10 @@ import org.bukkit.entity.Player;
 
 public class RaceHealRadiusSpell extends RaceSpell {
     public RaceHealRadiusSpell(String raceCode) {
-        String pl1 = RaceSpell.getPlural1(raceCode);
         super(
-                STR."Flächenheilung für \{pl1}",
-                STR."0205\{raceCode}",
-                STR."Heilt alle \{pl1} im Umkreis.",
+                "Flächenheilung für " + RaceSpell.getPlural1(raceCode),
+                "0205" + raceCode,
+                "Heilt alle " + RaceSpell.getPlural1(raceCode) + " im Umkreis.",
                 raceCode
         );
     }

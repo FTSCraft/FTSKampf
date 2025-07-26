@@ -6,14 +6,14 @@ import org.bukkit.entity.Player;
 
 public class RaceBuffArmorRadiusSpell extends RaceSpell {
     public RaceBuffArmorRadiusSpell(String raceCode) {
-        String pl2 = RaceSpell.getPlural2(raceCode);
         super(
-                STR."Erhöht die Rüstung von \{pl2}",
-                STR."0202\{raceCode}",
-                STR."Erhöht die Rüstung von \{pl2} im Radius von 5 Metern.",
+                "Erhöht die Rüstung von " + RaceSpell.getPlural2(raceCode),
+                "0202" + raceCode,
+                "Erhöht die Rüstung von " + RaceSpell.getPlural2(raceCode) + " im Radius von 5 Metern.",
                 raceCode
         );
     }
+
 
     @Override
     public void doEffect(Player caster, Player target, int value) {

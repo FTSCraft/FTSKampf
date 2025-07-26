@@ -8,12 +8,10 @@ import org.bukkit.entity.Player;
 public class RaceDamageSpell extends RaceSpell {
 
     public RaceDamageSpell(String raceCode) {
-        String pl1 = RaceSpell.getPlural1(raceCode);
-        String pl2 = RaceSpell.getPlural2(raceCode);
         super(
-                STR."Schadenszauber gegen \{pl1}",
-                STR."0201\{raceCode}",
-                STR."Verursacht stärkeren Schaden an \{pl2}.",
+                "Schadenszauber gegen " + RaceSpell.getPlural1(raceCode),
+                "0201" + raceCode,
+                "Verursacht stärkeren Schaden an " + RaceSpell.getPlural2(raceCode) + ".",
                 raceCode
         );
     }

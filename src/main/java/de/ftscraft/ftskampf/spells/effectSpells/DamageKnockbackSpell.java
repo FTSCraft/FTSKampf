@@ -16,7 +16,7 @@ public class DamageKnockbackSpell extends EffectSpell {
     public void doEffect(Player caster, Player target, int value) {
         try {
             new Damage(caster, target, 1.4);
-            FTSKampf.getPlugin().getDiceManager().sendMessageInRange(STR."\{Message.TAG}§6\{target.getName()} §awird 3 Blöcke zurückgestoßen!", target);
+            FTSKampf.getPlugin().getDiceManager().sendMessageInRange(Message.TAG + "§6" + target.getName() + " §awird 3 Blöcke zurückgestoßen!", target);
         } catch (RaceDoNotExistException e) {
             //Sollte nicht dazu kommen da vorher abgefangen bei Würfelwurf auf Target
             //Wenn doch Melleming hauen

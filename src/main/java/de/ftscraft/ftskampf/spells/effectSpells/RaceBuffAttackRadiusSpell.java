@@ -5,11 +5,10 @@ import org.bukkit.entity.Player;
 
 public class RaceBuffAttackRadiusSpell extends RaceSpell{
     public RaceBuffAttackRadiusSpell(String raceCode) {
-        String pl2 = RaceSpell.getPlural2(raceCode);
         super(
-                STR."Erhöht den Angriff von \{pl2}",
-                STR."0203\{raceCode}",
-                STR."Erhöht den Angriff von \{pl2} im Radius von 5 Metern.",
+                "Erhöht den Angriff von " + RaceSpell.getPlural2(raceCode),
+                "0203" + raceCode,
+                "Erhöht den Angriff von " + RaceSpell.getPlural2(raceCode) + " im Radius von 5 Metern.",
                 raceCode
         );
     }

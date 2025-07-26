@@ -16,7 +16,7 @@ public class RaceDamage extends RaceEffect {
         if(checkTargetRace(raceName, target)) {
             diceManager.rollTargetDice(Dice.MAGIC, player, target, 1.7);
         } else {
-            player.sendMessage(STR."\{Message.TAG}§cDieser Zauber ist nur auf die Rasse §6\{raceName} §canwendbar!");
+            player.sendMessage(Message.TAG + "§cDieser Zauber ist nur auf die Rasse §6" + raceName + " §canwendbar!");
         }
 
     }
