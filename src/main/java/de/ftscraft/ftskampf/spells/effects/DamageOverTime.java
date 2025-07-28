@@ -8,7 +8,7 @@ import de.ftscraft.ftskampf.spells.effects.effectDefinitions.ContinuousEffectId;
 public class DamageOverTime extends ContinuousEffect {
 
     FTSKampf plugin = FTSKampf.getPlugin();
-    HpManager hpManager = plugin.getHpManager();
+    //HpManager hpManager = plugin.getHpManager();
 
     private int damage;
 

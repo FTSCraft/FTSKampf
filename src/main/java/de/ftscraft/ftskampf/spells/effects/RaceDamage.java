@@ -14,7 +14,7 @@ public class RaceDamage extends RaceEffect {
 
     public RaceDamage(Player player, Player target, String raceName) throws RaceDoNotExistException {
         if(checkTargetRace(raceName, target)) {
-            diceManager.rollTargetDice(Dice.MAGIC, player, target, 1.7);
+            diceManager.rollTargetDice(Dice.MAGIC, player, target, 1.8);
         } else {
             player.sendMessage(Message.TAG + "§cDieser Zauber ist nur auf die Rasse §6" + raceName + " §canwendbar!");
         }

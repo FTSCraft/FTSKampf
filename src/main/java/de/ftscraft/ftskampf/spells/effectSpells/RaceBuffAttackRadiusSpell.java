@@ -1,6 +1,7 @@
 package de.ftscraft.ftskampf.spells.effectSpells;
 
 import de.ftscraft.ftskampf.spells.RaceSpell;
+import de.ftscraft.ftskampf.spells.effects.RaceBuffAttackRadius;
 import org.bukkit.entity.Player;
 
 public class RaceBuffAttackRadiusSpell extends RaceSpell{
@@ -15,7 +16,7 @@ public class RaceBuffAttackRadiusSpell extends RaceSpell{
 
     @Override
     public void doEffect(Player caster, Player target, int value) {
-
+        new RaceBuffAttackRadius(caster.getUniqueId().toString(), race);
     }
 
     @Override

@@ -10,11 +10,17 @@ import de.ftscraft.ftskampf.utils.Message;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class CMDftskampfdb implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class CMDftskampfdb implements CommandExecutor, TabCompleter {
 
 
     FTSKampf plugin = FTSKampf.getPlugin();
@@ -23,6 +29,21 @@ public class CMDftskampfdb implements CommandExecutor {
     EffectManager effectManager = plugin.getEffectManager();
     HpManager hpManager = plugin.getHpManager();
     SpellManager spellManager = plugin.getSpellManager();
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (args.length == 1) {
+            List<String> argumentListe = Arrays.asList("magie", "effekte", "skills", "hp", "log");
+            List<String> result = new ArrayList<>();
+            for (String arg : argumentListe) {
+                if (arg.toLowerCase().startsWith(args[0].toLowerCase())) {
+                    result.add(arg);
+                }
+            }
+            return result;
+        }
+        return Collections.emptyList();
+    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {

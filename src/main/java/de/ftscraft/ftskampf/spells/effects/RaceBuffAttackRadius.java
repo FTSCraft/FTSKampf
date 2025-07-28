@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class RaceBuffAttackRadius extends ContinuousEffectDeliverer {
 
@@ -17,8 +18,10 @@ public class RaceBuffAttackRadius extends ContinuousEffectDeliverer {
     EffectManager effectManager = FTSKampf.getPlugin().getEffectManager();
 
     public RaceBuffAttackRadius(String caster, String raceName) {
-        for (Player effTarget : getTargets(Objects.requireNonNull(Bukkit.getPlayer(caster)), raceName)) {
-            effectManager.addEffect(new BuffAttack(effTarget.getUniqueId().toString(), caster, 1.5));
+        for (Player effTarget : getTargets(Objects.requireNonNull(Bukkit.getPlayer(UUID.fromString(caster))), raceName)) {
+            BuffAttack buffAttack = new BuffAttack(effTarget.getUniqueId().toString(), caster, 1.5);
+            effectManager.addEffect(buffAttack);
+            sendEffectConfirmation(buffAttack, caster, effTarget.getUniqueId().toString());
         }
     }
 

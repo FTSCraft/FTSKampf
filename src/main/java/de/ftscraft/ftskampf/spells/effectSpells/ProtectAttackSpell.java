@@ -14,11 +14,6 @@ import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
 import org.bukkit.entity.Player;
 
 public class ProtectAttackSpell extends EffectSpell {
-    FTSKampf plugin = FTSKampf.getPlugin();
-    HpManager hpManager = plugin.getHpManager();
-    DiceManager diceManager = plugin.getDiceManager();
-    Engine engine = plugin.getEngine();
-    EffectManager effectManager = plugin.getEffectManager();
 
     private final double damageModifier = 0.5;
 
@@ -28,10 +23,16 @@ public class ProtectAttackSpell extends EffectSpell {
 
     @Override
     public void doEffect(Player caster, Player target, int value) {
-        effectManager.addEffect(new ProtectAttack(target.getUniqueId().toString(), caster.getUniqueId().toString()));
 
+        FTSKampf plugin = FTSKampf.getPlugin();
+        DiceManager diceManager = plugin.getDiceManager();
+        Engine engine = plugin.getEngine();
+        EffectManager effectManager = plugin.getEffectManager();
+        HpManager hpManager = plugin.getHpManager();
+
+        effectManager.addEffect(new ProtectAttack(target.getUniqueId().toString(), caster.getUniqueId().toString()));
         //Self Damage
-        Race race = null;
+        Race race;
         race = plugin.getRaceOrDefault(caster);
         String article = "Der";
         String raceName = race.getmName();
@@ -42,6 +43,7 @@ public class ProtectAttackSpell extends EffectSpell {
             raceName = race.getfName();
         }
         int damage = (int) Math.round(damageModifier * value);
+
         hpManager.hurtPlayer(caster, damage);
         StringBuilder message = new StringBuilder("§7" + article + " §o" + raceName + " §r§e" + diceManager.getName(caster) + " §7fügt sich dabei §c" + damage + " §7LP Schaden zu!");
         diceManager.sendMessageInRange(message, caster);

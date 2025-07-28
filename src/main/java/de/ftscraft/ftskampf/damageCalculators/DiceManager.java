@@ -25,6 +25,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static org.apache.commons.lang3.ClassUtils.getName;
+
 public class DiceManager {
     FTSKampf plugin = FTSKampf.getPlugin();
     private HashMap<Player, Attack> attacks = new HashMap<>();
@@ -177,11 +179,6 @@ public class DiceManager {
             targetName = targetAusweis.getFirstName() + " " + targetAusweis.getLastName();
         }
 
-        if (isProtected(target)) {
-            sendMessageInRange(Message.TAG + "§7" + article + " §o" + raceName + " §r§e" + getName(player) + " §7greift §7" + articleTarget + " §o" + raceNameTarget + " §e" + targetName + " §7an, doch §e" + targetName + " §7ist zur Zeit immun", player);
-            return;
-        }
-
         StringBuilder message = new StringBuilder("§7" + article + " §o" + raceName + " §r§e" + getName(player) + " §7greift §7" + articleTarget + " §o" + raceNameTarget + " §e" + targetName + " §7an und würfelt: §e");
 
         int value = calculateAttackValue(dice, player);
@@ -196,6 +193,10 @@ public class DiceManager {
         }
         sendMessageInRange(message, player);
         Logger.log(player, "Tries to attack with target dice: " + target.getName() + " ," + dice.getName());
+        if (isProtected(target)) {
+            sendMessageInRange(Message.TAG + "§7" + article + " §o" + raceName + " §r§e" + getName(player) + " §7greift §7" + articleTarget + " §o" + raceNameTarget + " §e" + targetName + " §7an, doch §e" + targetName + " §7ist zur Zeit immun", player);
+            return;
+        }
         if (success) {
             int attackStrength = calculateAttackStrength(player, dice, value, modifier);
             sendMessageInRange(Message.TAG + getName(player) + " §7greift an mit der Stärke von §c" + attackStrength + " §5[" + dice.getName() + "]", player);
@@ -314,8 +315,8 @@ public class DiceManager {
         StringBuilder message = new StringBuilder("§7" + article + " §o" + raceName + " §r§e" + getName(target) + " §7versucht Auszuweichen und würfelt: §e");
 
         int value = calculateAttackValue(Dice.AGILITY, target);
-        value = calculateAttackStrength(target, Dice.AGILITY, value);
         int skill = calculateSkill(target, Dice.AGILITY, race);
+        skill = calculateAttackStrength(target, Dice.AGILITY, skill);
         boolean success = value <= skill;
         if (success) {
             message.append("§2").append(value).append(" §7und hat damit den Wurf §2geschafft!").append(" §5[").append(Dice.AGILITY.getName()).append("]");
@@ -451,7 +452,7 @@ public class DiceManager {
     private int calculateAttackStrength(Player player, Dice dice, int initialValue, double modifier) {
         initialValue = damageModifier.getModifiedAttack(initialValue, dice, player.getInventory().getItemInMainHand());
         for (ContinuousEffect effect : effectManager.getPlayerEffects(player.getUniqueId().toString())) {
-            initialValue = effect.modifyAttackValue(initialValue, dice, damageModifier.isArmed(player));
+            initialValue = effect.modifyAttackValue(initialValue, dice, !damageModifier.isArmed(player));
         }
         return (int) Math.round(initialValue*modifier);
     }
@@ -528,10 +529,12 @@ public class DiceManager {
         for (String target : targets) {
             int damage = targetMap.get(target);
             Player tarPlayer = Bukkit.getPlayer(UUID.fromString(target));
-            if (tarPlayer == null)
+            if (tarPlayer == null) {
                 return;
-            if (!tarPlayer.isOnline())
+            }
+            if (!tarPlayer.isOnline()) {
                 return;
+            }
             hpManager.hurtPlayer(tarPlayer, calculateValueAfterDefend(tarPlayer, damage, Dice.MAGIC, false));
             StringBuilder message = new StringBuilder(Message.TAG + "§e" + getName(player) + " §7verursacht Schaden in Höhe von §c" + damage + " §7 an §e" + getName(tarPlayer) + " §7(Schaden über Zeit) " + "§5[" + Dice.MAGIC.getName() + "]");
             List<Player> receivers = new ArrayList<>();

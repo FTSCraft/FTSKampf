@@ -119,6 +119,9 @@ public class InventoryListener implements Listener {
                     ItemStack item = new ItemStack(Material.ENCHANTED_BOOK);
                     ItemMeta itemMeta = item.getItemMeta();
                     itemMeta.setDisplayName(spell.getName());
+                    List<String> lore = new ArrayList<>();
+                    lore.add(spell.getDescription());
+                    itemMeta.setLore(lore);
                     itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                     item.setItemMeta(itemMeta);
                     newInventory.setItem(i, item);

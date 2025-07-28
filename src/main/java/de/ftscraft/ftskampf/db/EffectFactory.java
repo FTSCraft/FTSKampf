@@ -8,7 +8,7 @@ public class EffectFactory {
     public static EffectSpell getEffect(String spellEffectID) throws EffectNotImplementedException {
         return switch (spellEffectID) {
             case "1" -> new DamageSpell();
-            case "2" -> new DamageKnockbackSpell();
+           // case "2" -> new DamageKnockbackSpell(); TODO Entfernt bis Rundensystem
             case "3" -> new DamagePenetrationSpell();
             case "4" -> new DamageAbsorptionSpell();
             case "5" -> new DamageOverTimeSpell();
