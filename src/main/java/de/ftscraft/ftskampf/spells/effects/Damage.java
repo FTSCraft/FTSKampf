@@ -12,7 +12,7 @@ public class Damage implements Effect {
     FTSKampf plugin = FTSKampf.getPlugin();
     DiceManager diceManager = plugin.getDiceManager();
 
-    public Damage(Player player, Player target) throws RaceDoNotExistException {
-        diceManager.rollTargetDice(Dice.MAGIC, player, target, 1.5);
+    public Damage(Player player, Player target, double modifier) throws RaceDoNotExistException {
+        diceManager.rollTargetDice(Dice.MAGIC, player, target, modifier);
     }
 }

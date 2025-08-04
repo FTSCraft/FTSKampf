@@ -6,81 +6,44 @@ import de.ftscraft.ftskampf.utils.exceptions.EffectNotImplementedException;
 
 public class EffectFactory {
     public static EffectSpell getEffect(String spellEffectID) throws EffectNotImplementedException {
-        switch (spellEffectID) {
-            case "1":
-                return new DamageSpell();
-            case "2":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-            case "3":
-                return new DamagePenetrationSpell();
-            case "4":
-                return new DamageAbsorptionSpell();
-            case "5":
-                return new DamageOverTimeSpell();
-            case "6":
-                return new HealSpell();
-            case "7":
-                return new HealLimitRangeSpell();
-            case "8":
-                return new HealRadiusSpell();
-            case "9":
-                return new HealSelfDamageSpell();
-            case "10":
-                return new BuffAttackSpell();
-            case "11":
-                return new BuffAttackDebuffArmorSpell();
-            case "12":
-                return new BuffUnarmedSpell();
-            case "13":
-                return new BuffArmorSpell();
-            case "14":
-                return new BuffAgilitySpell();
-            case "15":
-                return new BuffAttackArmorRangeSpell();
-            case "16":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-            case "17":
-                return new DebuffTargetAttackSpell();
-            case "18":
-                return new DebuffTargetArmorSpell();
-            case "19":
-                return new DebuffTargetAgilitySpell();
-            case "20":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-            case "21":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-            case "1E":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-            case "1Z":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-            case "1O":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-            case "22E":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-            case "23E":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-            case "24E":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-            case "25E":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-            case "22Z":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-            case "23Z":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-            case "24Z":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-            case "25Z":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-            case "22O":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-            case "23O":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-            case "24O":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-            case "25O":
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-            default:
-                throw new EffectNotImplementedException("Unknown spellEffect id: " + spellEffectID);
-        }
+        return switch (spellEffectID) {
+            case "1" -> new DamageSpell();
+            case "2" -> new DamageKnockbackSpell();
+            case "3" -> new DamagePenetrationSpell();
+            case "4" -> new DamageAbsorptionSpell();
+            case "5" -> new DamageOverTimeSpell();
+            case "6" -> new HealSpell();
+            case "7" -> new HealLimitRangeSpell();
+            case "8" -> new HealRadiusSpell();
+            case "9" -> new HealSelfDamageSpell();
+            case "10" -> new BuffAttackSpell();
+            case "11" -> new BuffAttackDebuffArmorSpell();
+            case "12" -> new BuffUnarmedSpell();
+            case "13" -> new BuffArmorSpell();
+            case "14" -> new BuffAgilitySpell();
+            case "15" -> new BuffAttackArmorRangeSpell();
+            case "16" -> new ProtectAttackSpell();
+            case "17" -> new DebuffTargetAttackSpell();
+            case "18" -> new DebuffTargetArmorSpell();
+            case "19" -> new DebuffTargetAgilitySpell();
+            case "20" -> new StunSpell();
+            case "21" -> new BlockMagicSpell();
+            case "1E" -> new RaceDamageSpell("E");
+            case "1Z" -> new RaceDamageSpell("Z");
+            case "1O" -> new RaceDamageSpell("O");
+            case "22E" -> new RaceHealSpell("E");
+            case "22Z" -> new RaceHealSpell("Z");
+            case "22O" -> new RaceHealSpell("O");
+            case "23E" -> new RaceBuffAttackRadiusSpell("E");
+            case "23Z" -> new RaceBuffAttackRadiusSpell("Z");
+            case "23O" -> new RaceBuffAttackRadiusSpell("O");
+            case "24E" -> new RaceBuffArmorRadiusSpell("E");
+            case "24Z" -> new RaceBuffArmorRadiusSpell("Z");
+            case "24O" -> new RaceBuffArmorRadiusSpell("O");
+            case "25E" -> new RaceHealRadiusSpell("E");
+            case "25Z" -> new RaceHealRadiusSpell("Z");
+            case "25O" -> new RaceHealRadiusSpell("O");
+            default -> throw new EffectNotImplementedException("Unknown spellEffect id:" + spellEffectID);
+        };
     }
 }

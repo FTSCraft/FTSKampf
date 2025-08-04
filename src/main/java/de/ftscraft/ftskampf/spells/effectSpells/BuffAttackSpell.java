@@ -12,7 +12,7 @@ public class BuffAttackSpell extends EffectSpell {
     EffectManager effectManager = plugin.getEffectManager();
 
     public BuffAttackSpell() {
-        super("Angriffsboost", "0171", "Erhöht die Angriffskraft des Anwenders, sodass seine Schläge und Angriffe mehr Schaden verursachen.");
+        super("Angriffsboost", "0171", "Erhöht die Angriffskraft des Anwenders/Ziels, sodass seine Schläge und Angriffe mehr Schaden verursachen.");
     }
 
     @Override

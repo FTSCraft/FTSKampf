@@ -72,7 +72,7 @@ public class HealSelfDamage implements Effect {
         if (hpManager.getHealth(target) <= 0) {
             diceManager.sendMessageInRange(Message.TAG + "§c" + diceManager.getName(player) + " §7ist kampfunfähig!", target);
         } else {
-            diceManager.sendMessageInRange(Message.TAG + "§c" + diceManager.getName(player) + " §7hat nun §c" + hpManager.getHealth(target) + " §7HP!", target);
+            diceManager.sendMessageInRange(Message.TAG + "§c" + diceManager.getName(target) + " §7hat nun §c" + hpManager.getHealth(target) + " §7HP!", target);
         }
     }
 }

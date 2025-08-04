@@ -1,5 +1,8 @@
 package de.ftscraft.ftskampf.main;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -7,9 +10,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 public class Logger {
 

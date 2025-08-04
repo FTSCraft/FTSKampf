@@ -6,7 +6,6 @@ import de.ftscraft.ftskampf.damageCalculators.DiceManager;
 import de.ftscraft.ftskampf.db.SpellManager;
 import de.ftscraft.ftskampf.inventorys.MagicInventory;
 import de.ftscraft.ftskampf.main.FTSKampf;
-import de.ftscraft.ftskampf.spells.EffectSpell;
 import de.ftscraft.ftskampf.utils.*;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
 import org.bukkit.Bukkit;
@@ -120,6 +119,9 @@ public class InventoryListener implements Listener {
                     ItemStack item = new ItemStack(Material.ENCHANTED_BOOK);
                     ItemMeta itemMeta = item.getItemMeta();
                     itemMeta.setDisplayName(spell.getName());
+                    List<String> lore = new ArrayList<>();
+                    lore.add(spell.getDescription());
+                    itemMeta.setLore(lore);
                     itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                     item.setItemMeta(itemMeta);
                     newInventory.setItem(i, item);
@@ -158,6 +160,9 @@ public class InventoryListener implements Listener {
             Engine engine = plugin.getEngine();
             Ausweis ausweis = engine.getAusweis(player);
             Ausweis.Gender gender = ausweis.getGender();
+            if(gender == null) {
+                gender = Ausweis.Gender.MALE;
+            }
             Race race = plugin.getRaceOrDefault(player);
 
             String article = "Der";
@@ -232,7 +237,11 @@ public class InventoryListener implements Listener {
             String targetName = target.getName();
             if (engine.hasAusweis(target)) {
                 Ausweis targetAusweis = engine.getAusweis(target);
-                if (targetAusweis.getGender().equals(Ausweis.Gender.FEMALE)) {
+                Ausweis.Gender tarGender = targetAusweis.getGender();
+                if(tarGender == null) {
+                    tarGender = Ausweis.Gender.MALE;
+                }
+                if (tarGender.equals(Ausweis.Gender.FEMALE)) {
                     articleTarget = "die";
                     raceNameTarget = targetRace.getfName();
                 }

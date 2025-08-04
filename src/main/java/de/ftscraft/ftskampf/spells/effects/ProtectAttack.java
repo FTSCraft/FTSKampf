@@ -11,6 +11,7 @@ public class ProtectAttack extends ContinuousEffect {
 
     public ProtectAttack(String target, String caster, double modifier, int durability) {
         super(target, caster, ContinuousEffectId.PROTECT_ATTACK, modifier, durability);
+
     }
 
     @Override

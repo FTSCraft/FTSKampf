@@ -1,8 +1,7 @@
 package de.ftscraft.ftskampf.db;
 
-import de.ftscraft.ftskampf.main.Logger;
-import de.ftscraft.ftskampf.spells.EffectSpell;
 import de.ftscraft.ftskampf.main.FTSKampf;
+import de.ftscraft.ftskampf.main.Logger;
 import de.ftscraft.ftskampf.utils.Spell;
 import de.ftscraft.ftskampf.utils.SpellClass;
 import de.ftscraft.ftskampf.utils.SpellCollection;

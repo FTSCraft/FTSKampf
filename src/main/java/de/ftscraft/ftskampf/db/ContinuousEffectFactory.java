@@ -2,7 +2,6 @@ package de.ftscraft.ftskampf.db;
 
 import de.ftscraft.ftskampf.spells.effects.*;
 import de.ftscraft.ftskampf.spells.effects.effectDefinitions.ContinuousEffect;
-import de.ftscraft.ftskampf.spells.effects.effectDefinitions.ContinuousEffectId;
 
 public class ContinuousEffectFactory {
 

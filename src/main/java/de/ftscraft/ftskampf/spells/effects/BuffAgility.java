@@ -7,7 +7,7 @@ import de.ftscraft.ftskampf.utils.Dice;
 public class BuffAgility extends ContinuousEffect {
 
     public BuffAgility(String target, String caster) {
-        this(target, caster, 0.7, 3);
+        this(target, caster, 1.2, 3);
     }
 
     public BuffAgility(String target, String caster, double modifier, int durability) {

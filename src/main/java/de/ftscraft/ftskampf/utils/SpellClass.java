@@ -7,7 +7,7 @@ public class SpellClass {
     private String name;
     private String id;
     private List<Spell> spells = new ArrayList<>();
-    String race;
+    protected String race;
 
     public SpellClass(String name, String id, String race) {
         this.name = name;

@@ -4,8 +4,6 @@ import de.ftscraft.ftskampf.db.EffectManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
 import de.ftscraft.ftskampf.utils.Dice;
 
-import java.util.Objects;
-
 public abstract class ContinuousEffect implements Effect {
 
     FTSKampf plugin = FTSKampf.getPlugin();

@@ -1,0 +1,22 @@
+package de.ftscraft.ftskampf.spells.effects;
+
+import de.ftscraft.ftskampf.damageCalculators.DiceManager;
+import de.ftscraft.ftskampf.main.FTSKampf;
+import de.ftscraft.ftskampf.spells.effects.effectDefinitions.RaceEffect;
+import de.ftscraft.ftskampf.utils.Dice;
+import de.ftscraft.ftskampf.utils.Message;
+import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
+import org.bukkit.entity.Player;
+
+public class RaceHeal extends RaceEffect {
+    FTSKampf plugin = FTSKampf.getPlugin();
+    DiceManager diceManager = plugin.getDiceManager();
+
+    public RaceHeal(Player player, Player target, String raceName) throws RaceDoNotExistException {
+        if(checkTargetRace(raceName, target)) {
+            diceManager.rollHealDice(Dice.MAGIC, player, target, 1.3);
+        } else {
+            player.sendMessage(Message.TAG + "§cDieser Zauber ist nur auf die Rasse §6" + raceName + " §canwendbar!");
+        }
+    }
+}
