@@ -20,8 +20,8 @@ public class StunSpell extends EffectSpell {
     public void doEffect(Player caster, Player target, int value) {
         EffectManager effectManager = plugin.getEffectManager();
         DiceManager diceManager = plugin.getDiceManager();
-        diceManager.sendMessageInRange(Message.TAG + "§e" + diceManager.getName(caster) + " §7betäubt §e" + diceManager.getName(target) + " §7für die nächsten drei Runden! (Auf Vertrauensbasis)", caster);
-        effectManager.addEffect(new BuffArmor(target.getUniqueId().toString(), caster.getUniqueId().toString()));
+        diceManager.sendMessageInRange(Message.TAG + "§e" + diceManager.getName(caster) + " §7betäubt §e" + diceManager.getName(target) + " §7für die nächste Runde! (Auf Vertrauensbasis)", caster);
+        effectManager.addEffect(new BuffArmor(target.getUniqueId().toString(), caster.getUniqueId().toString(), 0.7, 1));
     }
 
     @Override
