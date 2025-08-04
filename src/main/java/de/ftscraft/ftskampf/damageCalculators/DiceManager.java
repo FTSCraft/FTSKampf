@@ -325,7 +325,7 @@ public class DiceManager {
             }
         }
 
-        StringBuilder message = new StringBuilder("§7" + article + " §o" + raceName + " §r§e" + getName(target) + " §7versucht Auszuweichen und würfelt: §e");
+        StringBuilder message = new StringBuilder("§7" + article + " §o" + raceName + " §r§e" + getName(target) + " §7versucht auszuweichen und würfelt: §e");
 
         int value = calculateAttackValue(Dice.AGILITY, target);
         int skill = calculateSkill(target, Dice.AGILITY, race);
