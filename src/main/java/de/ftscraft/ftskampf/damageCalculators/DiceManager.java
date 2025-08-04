@@ -342,7 +342,7 @@ public class DiceManager {
         if (!success) {
             Player attacker = attack.getAttacker();
             int damage = calculateValueAfterDefend(target, attack.getStrength(), attack.getType(), attack.doPenetrateArmor());
-            sendMessageInRange(Message.TAG + getName(attack.getAttacker()) + " §7verursacht Schaden in Höhe von §c" + damage + " §7an §2" + getName(target) + " §5[" + attack.getType().getName() + "]", target);
+            sendMessageInRange(Message.TAG + "§e" + getName(attack.getAttacker()) + " §7verursacht Schaden in Höhe von §c" + damage + " §7an §e" + getName(target) + " §5[" + attack.getType().getName() + "]", target);
             hpManager.hurtPlayer(target, damage);
 
             Logger.log(target, "Dodge failed, Damage: " + damage);
