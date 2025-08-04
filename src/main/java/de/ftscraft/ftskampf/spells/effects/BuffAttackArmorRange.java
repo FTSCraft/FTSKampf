@@ -18,7 +18,7 @@ public class BuffAttackArmorRange extends ContinuousEffectDeliverer {
         for (Player effTarget : getTargets(Objects.requireNonNull(Bukkit.getPlayer(UUID.fromString(target))))) {
             BuffAttack buffAttack = new BuffAttack(effTarget.getUniqueId().toString(), caster, 1.2);
             continuousEffects.add(buffAttack);
-            BuffArmor buffArmor = new BuffArmor(effTarget.getUniqueId().toString(), caster, 1.2);
+            BuffArmor buffArmor = new BuffArmor(effTarget.getUniqueId().toString(), caster, 0.8);
             continuousEffects.add(buffArmor);
             sendEffectConfirmation(buffAttack, caster, effTarget.getUniqueId().toString());
             sendEffectConfirmation(buffArmor, caster, effTarget.getUniqueId().toString());

@@ -160,6 +160,9 @@ public class InventoryListener implements Listener {
             Engine engine = plugin.getEngine();
             Ausweis ausweis = engine.getAusweis(player);
             Ausweis.Gender gender = ausweis.getGender();
+            if(gender == null) {
+                gender = Ausweis.Gender.MALE;
+            }
             Race race = plugin.getRaceOrDefault(player);
 
             String article = "Der";
@@ -234,7 +237,11 @@ public class InventoryListener implements Listener {
             String targetName = target.getName();
             if (engine.hasAusweis(target)) {
                 Ausweis targetAusweis = engine.getAusweis(target);
-                if (targetAusweis.getGender().equals(Ausweis.Gender.FEMALE)) {
+                Ausweis.Gender tarGender = targetAusweis.getGender();
+                if(tarGender == null) {
+                    tarGender = Ausweis.Gender.MALE;
+                }
+                if (tarGender.equals(Ausweis.Gender.FEMALE)) {
                     articleTarget = "die";
                     raceNameTarget = targetRace.getfName();
                 }

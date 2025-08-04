@@ -49,9 +49,9 @@ public class ProtectAttackSpell extends EffectSpell {
         diceManager.sendMessageInRange(message, caster);
 
         if (hpManager.getHealth(target) <= 0) {
-            diceManager.sendMessageInRange(Message.TAG + "§c" + diceManager.getName(caster) + " §7ist kampfunfähig!", target);
+            diceManager.sendMessageInRange(Message.TAG + "§c" + diceManager.getName(caster) + " §7ist kampfunfähig!", caster);
         } else {
-            diceManager.sendMessageInRange(Message.TAG + "§c" + diceManager.getName(caster) + " §7hat nun §c" + hpManager.getHealth(target) + " §7HP!", target);
+            diceManager.sendMessageInRange(Message.TAG + "§c" + diceManager.getName(caster) + " §7hat nun §c" + hpManager.getHealth(caster) + " §7HP!", caster);
         }
 
     }

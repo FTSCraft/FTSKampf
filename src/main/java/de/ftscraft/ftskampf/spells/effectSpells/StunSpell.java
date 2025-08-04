@@ -12,7 +12,6 @@ public class StunSpell extends EffectSpell {
 
     FTSKampf plugin = FTSKampf.getPlugin();
     DiceManager diceManager = plugin.getDiceManager();
-    EffectManager effectManager = plugin.getEffectManager();
 
     public StunSpell() {
         super("Betäubungszauber", "0187", "Betäubt das Ziel, sodass es sich für kurze Zeit nicht bewegen oder handeln kann.");
@@ -20,6 +19,7 @@ public class StunSpell extends EffectSpell {
 
     @Override
     public void doEffect(Player caster, Player target, int value) {
+        EffectManager effectManager = plugin.getEffectManager();
         diceManager.sendMessageInRange(Message.TAG + "§e" + diceManager.getName(caster) + " §7betäubt §e" + diceManager.getName(target) + " §7für die nächsten drei Runden! (Auf Vertrauensbasis)", caster);
         effectManager.addEffect(new BuffArmor(target.getUniqueId().toString(), caster.getUniqueId().toString()));
     }

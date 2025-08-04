@@ -160,6 +160,9 @@ public class DiceManager {
         doDamageOverTime(player);
 
         Ausweis.Gender gender = ausweis.getGender();
+        if(gender == null) {
+            gender = Ausweis.Gender.MALE;
+        }
         String article = "Der";
         String raceName = race.getmName();
         if (gender.equals(Ausweis.Gender.FEMALE)) {
@@ -172,7 +175,11 @@ public class DiceManager {
         String targetName = target.getName();
         if (engine.hasAusweis(target)) {
             Ausweis targetAusweis = engine.getAusweis(target);
-            if (targetAusweis.getGender().equals(Ausweis.Gender.FEMALE)) {
+            Ausweis.Gender tarGender = targetAusweis.getGender();
+            if(tarGender == null) {
+                tarGender = Ausweis.Gender.MALE;
+            }
+            if (tarGender.equals(Ausweis.Gender.FEMALE)) {
                 articleTarget = "die";
                 raceNameTarget = targetRace.getfName();
             }
@@ -193,11 +200,11 @@ public class DiceManager {
         }
         sendMessageInRange(message, player);
         Logger.log(player, "Tries to attack with target dice: " + target.getName() + " ," + dice.getName());
-        if (isProtected(target)) {
-            sendMessageInRange(Message.TAG + "§7" + article + " §o" + raceName + " §r§e" + getName(player) + " §7greift §7" + articleTarget + " §o" + raceNameTarget + " §e" + targetName + " §7an, doch §e" + targetName + " §7ist zur Zeit immun", player);
-            return;
-        }
         if (success) {
+            if (isProtected(target)) {
+                sendMessageInRange(Message.TAG + "§7" + article + " §o" + raceName + " §r§e" + getName(player) + " §7greift §7" + articleTarget + " §o" + raceNameTarget + " §e" + targetName + " §7an, doch §e" + targetName + " §7ist zur Zeit immun", player);
+                return;
+            }
             int attackStrength = calculateAttackStrength(player, dice, value, modifier);
             sendMessageInRange(Message.TAG + getName(player) + " §7greift an mit der Stärke von §c" + attackStrength + " §5[" + dice.getName() + "]", player);
             TextComponent message1 = new TextComponent(Message.TAG + "§7Du wirst angegriffen! Klicke hier um ");
@@ -257,6 +264,9 @@ public class DiceManager {
         if (engine.hasAusweis(target)) {
             Ausweis targetAusweis = engine.getAusweis(player);
             Ausweis.Gender tarGender = targetAusweis.getGender();
+            if(tarGender == null) {
+                tarGender = Ausweis.Gender.MALE;
+            }
             if (tarGender.equals(Ausweis.Gender.FEMALE)) {
                 articleTarget = "die";
                 raceNameTarget = race.getfName();
@@ -306,6 +316,9 @@ public class DiceManager {
         if (engine.hasAusweis(target)) {
             Ausweis targetAusweis = engine.getAusweis(target);
             Ausweis.Gender tarGender = targetAusweis.getGender();
+            if(tarGender == null) {
+                tarGender = Ausweis.Gender.MALE;
+            }
             if (tarGender.equals(Ausweis.Gender.FEMALE)) {
                 article = "Die";
                 raceName = race.getfName();
@@ -365,6 +378,9 @@ public class DiceManager {
         if (engine.hasAusweis(target)) {
             Ausweis targetAusweis = engine.getAusweis(target);
             Ausweis.Gender tarGender = targetAusweis.getGender();
+            if(tarGender == null) {
+                tarGender = Ausweis.Gender.MALE;
+            }
             if (tarGender.equals(Ausweis.Gender.FEMALE)) {
                 article = "Die";
                 raceName = race.getfName();

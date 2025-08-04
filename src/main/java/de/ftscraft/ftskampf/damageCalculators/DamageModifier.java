@@ -168,7 +168,7 @@ public class DamageModifier {
     }
 
     public boolean isArmed(Player player) {
-        return (getModifiedAttack(1, Dice.MELEE, player.getItemInHand()) > 1) || (getModifiedAttack(1, Dice.DISTANCE, player.getItemInHand()) > 1);
+        return (getModifiedAttack(80, Dice.MELEE, player.getItemInHand()) > 80) || (getModifiedAttack(80, Dice.DISTANCE, player.getItemInHand()) > 80);
     }
 
 }

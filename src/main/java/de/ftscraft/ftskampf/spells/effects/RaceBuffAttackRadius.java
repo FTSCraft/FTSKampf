@@ -29,7 +29,7 @@ public class RaceBuffAttackRadius extends ContinuousEffectDeliverer {
         List<Player> targets = new ArrayList<>();
         for (Entity nearbyEntity : target.getLocation().getWorld().getNearbyEntities(target.getLocation(), RANGE, RANGE, RANGE)) {
             if (nearbyEntity instanceof Player) {
-                if(checkTargetRace(raceName, target))
+                if(checkTargetRace(raceName, (Player) nearbyEntity))
                     targets.add((Player) nearbyEntity);
             }
         }

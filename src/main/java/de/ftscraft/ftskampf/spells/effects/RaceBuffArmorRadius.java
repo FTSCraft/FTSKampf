@@ -19,7 +19,7 @@ public class RaceBuffArmorRadius extends ContinuousEffectDeliverer {
 
     public RaceBuffArmorRadius(String caster, String raceName) {
         for (Player effTarget : getTargets(Objects.requireNonNull(Bukkit.getPlayer(UUID.fromString(caster))), raceName)) {
-            BuffArmor buffArmor = new BuffArmor(effTarget.getUniqueId().toString(), caster, 1.5);
+            BuffArmor buffArmor = new BuffArmor(effTarget.getUniqueId().toString(), caster, 0.7);
             effectManager.addEffect(buffArmor);
             sendEffectConfirmation(buffArmor, caster, effTarget.getUniqueId().toString());
         }
@@ -29,7 +29,7 @@ public class RaceBuffArmorRadius extends ContinuousEffectDeliverer {
         List<Player> targets = new ArrayList<>();
         for (Entity nearbyEntity : target.getLocation().getWorld().getNearbyEntities(target.getLocation(), RANGE, RANGE, RANGE)) {
             if (nearbyEntity instanceof Player) {
-                if(checkTargetRace(raceName, target))
+                if(checkTargetRace(raceName, (Player) nearbyEntity))
                     targets.add((Player) nearbyEntity);
             }
         }
