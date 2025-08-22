@@ -6,6 +6,7 @@ import de.ftscraft.ftskampf.damageCalculators.DiceManager;
 import de.ftscraft.ftskampf.db.SpellManager;
 import de.ftscraft.ftskampf.inventorys.MagicInventory;
 import de.ftscraft.ftskampf.main.FTSKampf;
+import de.ftscraft.ftskampf.main.Logger;
 import de.ftscraft.ftskampf.utils.*;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
 import org.bukkit.Bukkit;
@@ -167,6 +168,7 @@ public class InventoryListener implements Listener {
             String id = idMapping.get(slot);
             player.sendMessage(Message.TAG + "§7Der Zauber §c" + spellManager.getSpellById(id).getName() + "§7 wurde gelernt.");
             spellManager.playerAddSpell(player.getUniqueId().toString(), id);
+            Logger.log(player, "Zauber " + id + "/" + spellManager.getSpellById(id).getName() + " gelernt");
         }
 
         if (isSpellCastInventory(inventory)) {

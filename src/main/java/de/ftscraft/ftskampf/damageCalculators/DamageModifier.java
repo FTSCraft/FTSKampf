@@ -28,6 +28,7 @@ public class DamageModifier {
     private HashMap<Material, Double> attackModifierMelee = new HashMap();
     private HashMap<Material, Double> attackModifierDistance = new HashMap();
     private HashMap<Material, Double> defendModifier = new HashMap();
+    private HashMap<Material, Double> agilityModifier = new HashMap();
 
     private List<Material> precisionLossMelee = new ArrayList<>();
     private List<Material> precisionLossDistance = new ArrayList<>();
@@ -69,6 +70,42 @@ public class DamageModifier {
         defendModifier.put(Material.NETHERITE_CHESTPLATE, (netheriteArmor * chestplateProportion) / 100);
         defendModifier.put(Material.NETHERITE_LEGGINGS, (netheriteArmor * legginsProportion) / 100);
         defendModifier.put(Material.NETHERITE_BOOTS, (netheriteArmor * bootProportion) / 100);
+
+        double leatherAgility = config.getInt("Agility.Leather");
+        agilityModifier.put(Material.LEATHER_HELMET, (leatherAgility * helmetProportion) / 100);
+        agilityModifier.put(Material.LEATHER_CHESTPLATE, (leatherAgility * chestplateProportion) / 100);
+        agilityModifier.put(Material.LEATHER_LEGGINGS, (leatherAgility * legginsProportion) / 100);
+        agilityModifier.put(Material.LEATHER_BOOTS, (leatherAgility * bootProportion) / 100);
+
+        double goldAgility = config.getInt("Agility.Gold");
+        agilityModifier.put(Material.GOLDEN_HELMET, (goldAgility * helmetProportion) / 100);
+        agilityModifier.put(Material.GOLDEN_CHESTPLATE, (goldAgility * chestplateProportion) / 100);
+        agilityModifier.put(Material.GOLDEN_LEGGINGS, (goldAgility * legginsProportion) / 100);
+        agilityModifier.put(Material.GOLDEN_BOOTS, (goldAgility * bootProportion) / 100);
+
+        double chainAgility = config.getInt("Agility.Chain");
+        agilityModifier.put(Material.CHAINMAIL_HELMET, (chainAgility * helmetProportion) / 100);
+        agilityModifier.put(Material.CHAINMAIL_CHESTPLATE, (chainAgility * chestplateProportion) / 100);
+        agilityModifier.put(Material.CHAINMAIL_LEGGINGS, (chainAgility * legginsProportion) / 100);
+        agilityModifier.put(Material.CHAINMAIL_BOOTS, (chainAgility * bootProportion) / 100);
+
+        double ironAgility = config.getInt("Agility.Iron");
+        agilityModifier.put(Material.IRON_HELMET, (ironAgility * helmetProportion) / 100);
+        agilityModifier.put(Material.IRON_CHESTPLATE, (ironAgility * chestplateProportion) / 100);
+        agilityModifier.put(Material.IRON_LEGGINGS, (ironAgility * legginsProportion) / 100);
+        agilityModifier.put(Material.IRON_BOOTS, (ironAgility * bootProportion) / 100);
+
+        double diamondAgility = config.getInt("Agility.Diamond");
+        agilityModifier.put(Material.DIAMOND_HELMET, (diamondAgility * helmetProportion) / 100);
+        agilityModifier.put(Material.DIAMOND_CHESTPLATE, (diamondAgility * chestplateProportion) / 100);
+        agilityModifier.put(Material.DIAMOND_LEGGINGS, (diamondAgility * legginsProportion) / 100);
+        agilityModifier.put(Material.DIAMOND_BOOTS, (diamondAgility * bootProportion) / 100);
+
+        double netheriteAgility = config.getInt("Agility.Netherite");
+        agilityModifier.put(Material.NETHERITE_HELMET, (netheriteAgility * helmetProportion) / 100);
+        agilityModifier.put(Material.NETHERITE_CHESTPLATE, (netheriteAgility * chestplateProportion) / 100);
+        agilityModifier.put(Material.NETHERITE_LEGGINGS, (netheriteAgility * legginsProportion) / 100);
+        agilityModifier.put(Material.NETHERITE_BOOTS, (netheriteAgility * bootProportion) / 100);
 
         defendModifier.put(Material.SHIELD, (config.getDouble("Armor.Shield")) / 100);
 
@@ -138,6 +175,12 @@ public class DamageModifier {
         return blankDefend - (int) Math.round(defendModifier);
     }
 
+    protected int getModifiedAgility(int blankAgility, ItemStack[] armor) {
+        double agilityPercentages = calculateArmorAgilityPercentage(armor);
+        double agilityModifier = blankAgility * agilityPercentages;
+        return blankAgility - (int) Math.round(agilityModifier);
+    }
+
     protected int getModifiedHitchance(int blankHit, Dice dice, ItemStack item) {
         Material material = item.getType();
         if (dice.equals(Dice.MELEE)) {
@@ -165,6 +208,18 @@ public class DamageModifier {
             }
         }
         return defendPercentage;
+    }
+
+    private double calculateArmorAgilityPercentage(ItemStack[] armor) {
+        double agilityPercentage = 0;
+        for (ItemStack item : armor) {
+            if (!(item == null)) {
+                if (agilityModifier.containsKey(item.getType())) {
+                    agilityPercentage += agilityModifier.get(item.getType());
+                }
+            }
+        }
+        return agilityPercentage;
     }
 
     public boolean isArmed(Player player) {

@@ -98,6 +98,12 @@ public class ConfigManager {
         defaultValues.put("Armor.Iron", 35);
         defaultValues.put("Armor.Diamond", 55);
         defaultValues.put("Armor.Netherite", 70);
+        defaultValues.put("Agility.Leather", 5);
+        defaultValues.put("Agility.Gold", 10);
+        defaultValues.put("Agility.Chain", 10);
+        defaultValues.put("Agility.Iron", 25);
+        defaultValues.put("Agility.Diamond", 40);
+        defaultValues.put("Agility.Netherite", 50);
 
         defaultValues.put("Armor.Shield", 8);
 

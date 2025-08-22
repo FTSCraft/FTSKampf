@@ -330,6 +330,7 @@ public class DiceManager {
         int value = calculateAttackValue(Dice.AGILITY, target);
         int skill = calculateSkill(target, Dice.AGILITY, race);
         skill = calculateAttackStrength(target, Dice.AGILITY, skill);
+        skill = calculateAgilityWithArmor(target, skill);
         boolean success = value <= skill;
         if (success) {
             message.append("§2").append(value).append(" §7und hat damit den Wurf §2geschafft!").append(" §5[").append(Dice.AGILITY.getName()).append("]");
@@ -483,6 +484,11 @@ public class DiceManager {
         }
 
         return Math.max(defendValue, plugin.getConfig().getInt("MinimumDamage"));
+    }
+
+    private int calculateAgilityWithArmor(Player player, int value) {
+        ItemStack[] armor = player.getInventory().getArmorContents();
+        return damageModifier.getModifiedAgility(value, armor);
     }
 
     private int calculateDifference(int valueAttack, int valueDefend) {
