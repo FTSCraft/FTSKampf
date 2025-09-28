@@ -13,6 +13,6 @@ public class DamagePenetration implements Effect {
     DiceManager diceManager = plugin.getDiceManager();
 
     public DamagePenetration(Player player, Player target) throws RaceDoNotExistException {
-        diceManager.rollTargetDice(Dice.MAGIC, player, target, 1.2, true);
+        diceManager.rollTargetDice(Dice.MAGIC, player, target, 0.8, true);
     }
 }
