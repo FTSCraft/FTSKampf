@@ -25,8 +25,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static org.apache.commons.lang3.ClassUtils.getName;
-
 public class DiceManager {
     FTSKampf plugin = FTSKampf.getPlugin();
     private HashMap<Player, Attack> attacks = new HashMap<>();
@@ -115,7 +113,7 @@ public class DiceManager {
 
         int value = calculateAttackValue(dice, player);
 
-        int skill = dice.equals(Dice.ACTION) ? 51 : db.getPlayerSkill(player).getSkill(dice);
+        int skill = dice.equals(Dice.ACTION) ? 51 : db.getPlayerSkill(player).getSkill(dice) + race.getSkill(dice);
 
         String colourCode = value < skill ? "§2" : "§c";
 

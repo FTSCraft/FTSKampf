@@ -13,18 +13,18 @@ import org.bukkit.entity.Player;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class DBManager {
     FTSKampf plugin = FTSKampf.getPlugin();
     FileConfiguration config = plugin.getConfig();
     private final List<Skill> skills;
+    private final HashMap<String, Integer> maxPoints;
 
     {
         try {
             skills = loadSkills();
+            maxPoints = loadMaxPoints();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -37,6 +37,19 @@ public class DBManager {
             saveDirectory.mkdirs();
         }
         File file = new File(path + "/plugins/" + plugin.getName() + "/saves/saves.csv");
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        return file.getAbsolutePath();
+    }
+
+    private String getMaxPointsPath() throws IOException {
+        String path = System.getProperty("user.dir");
+        File saveDirectory = new File(path + "/plugins/" + plugin.getName() + "/saves/");
+        if (!saveDirectory.exists()) {
+            saveDirectory.mkdirs();
+        }
+        File file = new File(path + "/plugins/" + plugin.getName() + "/saves/maxPoints.csv");
         if (!file.exists()) {
             file.createNewFile();
         }
@@ -60,6 +73,20 @@ public class DBManager {
         }
         reader.close();
         return skills;
+    }
+
+    public HashMap<String, Integer> loadMaxPoints() throws IOException {
+        HashMap<String, Integer> maxPoints = new HashMap<>();
+        BufferedReader reader = new BufferedReader(new FileReader(getPath()));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] values = line.split(";");
+            String uuid = values[0];
+            int points = Integer.parseInt(values[1]);
+            maxPoints.put(uuid, points);
+        }
+        reader.close();
+        return maxPoints;
     }
 
     public void addSkillpoints(int points, Player player, Dice dice) throws NotEnoughPointsException, SkillLimitException, IOException, NumberNegativeException {
@@ -141,6 +168,22 @@ public class DBManager {
         return false;
     }
 
+    public void setMaxSkillpoints(String username, int points) throws Exception {
+        if(points < 0) throw new NumberNegativeException();
+        String uuid = getUUID(username);
+        maxPoints.remove(uuid);
+        maxPoints.put(uuid, points);
+        saveMaxPoints();
+        removeSkill(username);
+    }
+
+    public void resetMaxSkillpoints(String username) throws Exception {
+        String uuid = getUUID(username);
+        maxPoints.remove(uuid);
+        saveMaxPoints();
+        removeSkill(username);
+    }
+
     public String getUUID(String username) throws Exception {
         String urlString = "https://api.mojang.com/users/profiles/minecraft/" + username;
         URL url = new URL(urlString);
@@ -185,6 +228,17 @@ public class DBManager {
         writer.close();
     }
 
+    private void saveMaxPoints() throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(getMaxPointsPath()));
+        for (String key : maxPoints.keySet()) {
+            String uuid = key;
+            int points = maxPoints.get(uuid);
+            writer.write(uuid + ";" + points);
+            writer.newLine();
+        }
+        writer.close();
+    }
+
     public Skill getPlayerSkill(Player player) {
         String uuid = player.getUniqueId().toString();
         for (Skill skill : skills) {
@@ -192,7 +246,9 @@ public class DBManager {
                 return skill;
             }
         }
-        return new Skill(uuid, plugin.getRaceOrDefault(player).getPoints());
+        int points = plugin.getRaceOrDefault(player).getPoints();
+        if(maxPoints.containsKey(uuid)) points = maxPoints.get(uuid);
+        return new Skill(uuid, points);
     }
 
     public void reset() {

@@ -69,6 +69,7 @@ public final class FTSKampf extends JavaPlugin {
         getCommand("react").setExecutor(new CMDReact());
         getCommand("magie").setExecutor(new CMDMagie());
         getCommand("ftskampfdb").setExecutor(new CMDftskampfdb());
+        getCommand("setpoints").setExecutor(new CMDSetpoints());
 
         InventoryListener inventoryListener = new InventoryListener();
         getServer().getPluginManager().registerEvents(inventoryListener, plugin);
