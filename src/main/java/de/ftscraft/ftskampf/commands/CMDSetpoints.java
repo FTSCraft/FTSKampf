@@ -7,11 +7,13 @@ import de.ftscraft.ftskampf.utils.exceptions.NumberNegativeException;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class CMDSetpoints implements CommandExecutor {
     FTSKampf plugin = FTSKampf.getPlugin();
+    FileConfiguration config = plugin.getConfig();
     DBManager dbManager = plugin.getDB();
 
     @Override
@@ -23,6 +25,13 @@ public class CMDSetpoints implements CommandExecutor {
         } else {
             sender.sendMessage("Not a player");
             return true;
+        }
+
+        if (config.getBoolean("Permissions.SetMaxSkillPoints.Required")) {
+            if (!(player.hasPermission(config.getString("Permissions.SetMaxSkillPoints.Name")))) {
+                player.sendMessage(Message.TAG + "§6Du hast keine Berechtigung für diese Aktion!");
+                return true;
+            }
         }
 
         if(args.length < 2) {

@@ -63,6 +63,8 @@ public class ConfigManager {
         defaultValues.put("Permissions.Heal.Required", true);
         defaultValues.put("Permissions.DBAdmin.Name", "ftskampf.dbadmin");
         defaultValues.put("Permissions.DBAdmin.Required", true);
+        defaultValues.put("Permissions.SetMaxSkillPoints.Name", "ftskampf.setMaxSkillPoints");
+        defaultValues.put("Permissions.SetMaxSkillPoints.Required", true);
 
         defaultValues.put("Permissions.ChooseSpells.Name", "ftskampf.chooseSpells");
         defaultValues.put("Permissions.ChooseSpells.Required", true);
