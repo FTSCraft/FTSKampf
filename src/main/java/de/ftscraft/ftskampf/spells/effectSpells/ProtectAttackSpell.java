@@ -11,11 +11,13 @@ import de.ftscraft.ftskampf.spells.effects.ProtectAttack;
 import de.ftscraft.ftskampf.utils.Message;
 import de.ftscraft.ftskampf.utils.Race;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class ProtectAttackSpell extends EffectSpell {
 
-    private final double damageModifier = 0.5;
+    private static final FTSKampf plugin = FTSKampf.getPlugin();
+    private static final FileConfiguration config = plugin.getConfig();
 
     public ProtectAttackSpell() {
         super("Schutz vor Angriff", "0186", "Schützt das Ziel vor dem nächsten Angriff, fügt jedoch dem Anwender Schaden zu.");
@@ -42,7 +44,7 @@ public class ProtectAttackSpell extends EffectSpell {
             article = "Die";
             raceName = race.getfName();
         }
-        int damage = (int) Math.round(damageModifier * value);
+        int damage = (int) Math.round(config.getDouble("SPELL_PROTECTATTACKSPELL_MODIFIER") * value);
 
         hpManager.hurtPlayer(caster, damage);
         StringBuilder message = new StringBuilder("§7" + article + " §o" + raceName + " §r§e" + diceManager.getName(caster) + " §7fügt sich dabei §c" + damage + " §7LP Schaden zu!");

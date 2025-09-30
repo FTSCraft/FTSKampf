@@ -10,20 +10,21 @@ import de.ftscraft.ftskampf.utils.Message;
 import de.ftscraft.ftskampf.utils.Race;
 import de.ftscraft.ftskampf.utils.exceptions.NumberNegativeException;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class HealSelfDamage implements Effect {
 
-    FTSKampf plugin = FTSKampf.getPlugin();
+    private static final FTSKampf plugin = FTSKampf.getPlugin();
+    private static final FileConfiguration config = plugin.getConfig();
     Engine engine = plugin.getEngine();
     DiceManager diceManager = plugin.getDiceManager();
     HpManager hpManager = plugin.getHpManager();
 
-    private final double healModifier = 1.5;
-    private final double damageModifier = 0.5;
-
     public HealSelfDamage(Player player, Player target, int value) throws RaceDoNotExistException {
 
+        //HEAL
+        double healModifier = config.getDouble("SPELL_HEALSELFDAMAGE_HEALMODIFIER");
         int healPoints = (int) Math.round(healModifier * value);
         diceManager.sendMessageInRange(Message.TAG + "§7Geheilt werden §c" + healPoints + " §7LP!", player);
 
@@ -64,6 +65,9 @@ public class HealSelfDamage implements Effect {
             article = "Die";
             raceName = race.getfName();
         }
+
+        //DAMAGE
+        double damageModifier = config.getDouble("SPELL_HEALSELFDAMAGE_DAMAGEMODIFIER");
         int damage = (int) Math.round(damageModifier * value);
         hpManager.hurtPlayer(player, damage);
         message = new StringBuilder("§7" + article + " §o" + raceName + " §r§e" + diceManager.getName(player) + " §7fügt sich dabei §c" + damage + " §7LP Schaden zu!");

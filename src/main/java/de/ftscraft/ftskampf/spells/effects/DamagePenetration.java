@@ -5,14 +5,16 @@ import de.ftscraft.ftskampf.main.FTSKampf;
 import de.ftscraft.ftskampf.spells.effects.effectDefinitions.Effect;
 import de.ftscraft.ftskampf.utils.Dice;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class DamagePenetration implements Effect {
 
-    FTSKampf plugin = FTSKampf.getPlugin();
+    private static final FTSKampf plugin = FTSKampf.getPlugin();
     DiceManager diceManager = plugin.getDiceManager();
+    private static final FileConfiguration config = plugin.getConfig();
 
     public DamagePenetration(Player player, Player target) throws RaceDoNotExistException {
-        diceManager.rollTargetDice(Dice.MAGIC, player, target, 0.8, true);
+        diceManager.rollTargetDice(Dice.MAGIC, player, target, config.getDouble("SPELL_DAMAGEPENETRATION_MODIFIER"), true);
     }
 }

@@ -8,11 +8,14 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 public class BuffAgility extends ContinuousEffect {
 
-    private FTSKampf plugin = FTSKampf.getPlugin();
-    private FileConfiguration config = plugin.getConfig();
+    private static final FTSKampf plugin = FTSKampf.getPlugin();
+    private static final FileConfiguration config = plugin.getConfig();
 
     public BuffAgility(String target, String caster) {
-        this(target, caster, 1.2, 3);
+        this(target,
+                caster,
+                config.getDouble("SPELL_BUFFAGILITY_MODIFIER"),
+                config.getInt("SPELL_BUFFAGILITY_DURABILITY"));
     }
 
     public BuffAgility(String target, String caster, double modifier, int durability) {

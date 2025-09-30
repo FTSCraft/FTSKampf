@@ -10,6 +10,7 @@ import de.ftscraft.ftskampf.utils.Message;
 import de.ftscraft.ftskampf.utils.Race;
 import de.ftscraft.ftskampf.utils.exceptions.NumberNegativeException;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -18,13 +19,13 @@ import java.util.List;
 
 public class RaceHealRadius extends RaceEffect {
 
-    FTSKampf plugin = FTSKampf.getPlugin();
+    private static final FTSKampf plugin = FTSKampf.getPlugin();
+    private static final FileConfiguration config = plugin.getConfig();
     Engine engine = plugin.getEngine();
     DiceManager diceManager = plugin.getDiceManager();
     HpManager hpManager = plugin.getHpManager();
 
-    private final int RANGE = 5;
-    private final double modifier = 0.7;
+    private final int RANGE = config.getInt("SPELL_RACEHEALRADIUS_RANGE");
 
     public RaceHealRadius(Player player, int value, String raceLimit) throws RaceDoNotExistException {
         List<Player> targets = new ArrayList<>();
@@ -34,6 +35,7 @@ public class RaceHealRadius extends RaceEffect {
                     targets.add((Player) nearbyEntity);
             }
         }
+        double modifier = config.getDouble("SPELL_RACEHEALRADIUS_MODIFIER");
         int healPoints = (int) Math.round(modifier * value);
         diceManager.sendMessageInRange(Message.TAG + "§7Geheilt werden §c" + healPoints + " §7LP!",player);
         for(Player target : targets) {
