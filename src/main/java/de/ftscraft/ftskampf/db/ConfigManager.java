@@ -74,7 +74,7 @@ public class ConfigManager {
         defaultValues.put("MaxSpells", 4);
         defaultValues.put("EffectLifetime", 30);
 
-        defaultValues.put("DiceChatRange", 20);
+        defaultValues.put("DiceDefaultChatRange", 20);
 
         defaultValues.put("Dice.Melee.Max", 100);
         defaultValues.put("Dice.Melee.MaxSkillable", 100);
@@ -98,6 +98,12 @@ public class ConfigManager {
         defaultValues.put("Armor.Iron", 35);
         defaultValues.put("Armor.Diamond", 55);
         defaultValues.put("Armor.Netherite", 70);
+        defaultValues.put("Agility.Leather", 5);
+        defaultValues.put("Agility.Gold", 10);
+        defaultValues.put("Agility.Chain", 10);
+        defaultValues.put("Agility.Iron", 25);
+        defaultValues.put("Agility.Diamond", 40);
+        defaultValues.put("Agility.Netherite", 50);
 
         defaultValues.put("Armor.Shield", 8);
 
@@ -160,6 +166,50 @@ public class ConfigManager {
         defaultValues.put("DBVersion.Hp", "0");
         defaultValues.put("DBVersion.Spells", "0");
         defaultValues.put("DBVersion.Effect", "0");
+
+        defaultValues.put("SPELL_DAMAGE_MODIFIER", 1.5);
+        defaultValues.put("SPELL_BUFFAGILITY_MODIFIER", 1.2);
+        defaultValues.put("SPELL_BUFFAGILITY_DURABILITY", 3);
+        defaultValues.put("SPELL_BUFFARMOR_MODIFIER", 0.7);
+        defaultValues.put("SPELL_BUFFARMOR_DURABILITY", 3);
+        defaultValues.put("SPELL_BUFFATTACK_MODIFIER", 1.5);
+        defaultValues.put("SPELL_BUFFATTACKARMORRANGE_MODIFIER_ATTACK", 1.2);
+        defaultValues.put("SPELL_BUFFATTACKARMORRANGE_MODIFIER_ARMOR", 0.8);
+        defaultValues.put("SPELL_BUFFATTACKDEBUFFARMOR_MODIFIER_ATTACK", 1.2);
+        defaultValues.put("SPELL_BUFFATTACKDEBUFFARMOR_MODIFIER_ARMOR", 1.3);
+        defaultValues.put("SPELL_BBUFFATTACKARMORRANG_RANGE", 5);
+        defaultValues.put("SPELL_BUFFUNARMED_MODIFIER", 1.8);
+        defaultValues.put("SPELL_BUFFUNARMED_DURABILITY", 3);
+        defaultValues.put("SPELL_DAMAGEABSORPTION_MODIFIER", 1.2);
+        defaultValues.put("SPELL_DAMAGEABSORPTION_ABSORPTIONRATE", 0.5);
+        defaultValues.put("SPELL_DAMAGEOVERTIME_DURABILTY", 3);
+        defaultValues.put("SPELL_DAMAGEPENETRATION_MODIFIER", 0.8);
+        defaultValues.put("SPELL_DEBUFFTARGETAGILITY_MODIFIER", 0.7);
+        defaultValues.put("SPELL_DEBUFFTARGETAGILITY_DURABILITY", 3);
+        defaultValues.put("SPELL_DEBUFFTARGETARMOR_MODIFIER", 1.3);
+        defaultValues.put("SPELL_DEBUFFTARGETARMOR_DURABILITY", 3);
+        defaultValues.put("SPELL_DEBUFFTARGETATTACK_MODIFIER", 0.7);
+        defaultValues.put("SPELL_DEBUFFTARGETATTACK_DURABILITY", 3);
+        defaultValues.put("SPELL_HEALIMITRANGE_MODIFIER", 1.5);
+        defaultValues.put("SPELL_HEALLIMITRANGE_RANGE", 2);
+        defaultValues.put("SPELL_HEALRADIUS_MODIFIER", 0.5);
+        defaultValues.put("SPELL_HEALRADIUS_RANGE", 5);
+        defaultValues.put("SPELL_HEALSELFDAMAGE_HEALMODIFIER", 1.0);
+        defaultValues.put("SPELL_HEALSELFDAMAGE_DAMAGEMODIFIER", 0.5);
+        defaultValues.put("SPELL_PROTECTATTACK_DURABILITY", 1);
+        defaultValues.put("SPELL_RACEBUFFARMORRADIUS_MODIFIER", 0.7);
+        defaultValues.put("SPELL_RACEBUFFARMORRADIUS_RANGE", 5);
+        defaultValues.put("SPELL_RACEBUFFATTACKRADIUS_MODIFIER", 1.5);
+        defaultValues.put("SPELL_RACEBUFFATTACKRADIUS_RANGE", 5);
+        defaultValues.put("SPELL_RACEDAMAGE_MODIFIER", 1.8);
+        defaultValues.put("SPELL_RACEHEAL_MODIFIER", 1.3);
+        defaultValues.put("SPELL_RACEHEALRADIUS_MODIFIER", 0.7);
+        defaultValues.put("SPELL_RACEHEALRADIUS_RANGE", 5);
+        defaultValues.put("SPELL_DAMAGENOCKBACK_MODIFIER", 1.4);
+        defaultValues.put("SPELL_PROTECTATTACKSPELL_MODIFIER", 0.5);
+        defaultValues.put("SPELL_STUNSPELL_BUFFARMOR_MODIFIER", 0.7);
+        defaultValues.put("SPELL_STUNSPELL_BUFFARMOR_DURABILITY", 1);
+
 
         for(String key : defaultValues.keySet()) {
             if(!config.isSet(key)) config.set(key, defaultValues.get(key));

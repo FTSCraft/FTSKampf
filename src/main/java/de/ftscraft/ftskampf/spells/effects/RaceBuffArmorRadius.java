@@ -4,6 +4,7 @@ import de.ftscraft.ftskampf.db.EffectManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
 import de.ftscraft.ftskampf.spells.effects.effectDefinitions.ContinuousEffectDeliverer;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -14,12 +15,15 @@ import java.util.UUID;
 
 public class RaceBuffArmorRadius extends ContinuousEffectDeliverer {
 
-    private final int RANGE = 5;
+    private static final FTSKampf plugin = FTSKampf.getPlugin();
+    private static final FileConfiguration config = plugin.getConfig();
+
+    private final int RANGE = config.getInt("SPELL_RACEBUFFARMORRADIUS_RANGE");
     EffectManager effectManager = FTSKampf.getPlugin().getEffectManager();
 
     public RaceBuffArmorRadius(String caster, String raceName) {
         for (Player effTarget : getTargets(Objects.requireNonNull(Bukkit.getPlayer(UUID.fromString(caster))), raceName)) {
-            BuffArmor buffArmor = new BuffArmor(effTarget.getUniqueId().toString(), caster, 0.7);
+            BuffArmor buffArmor = new BuffArmor(effTarget.getUniqueId().toString(), caster, config.getDouble("SPELL_RACEBUFFARMORRADIUS_MODIFIER"));
             effectManager.addEffect(buffArmor);
             sendEffectConfirmation(buffArmor, caster, effTarget.getUniqueId().toString());
         }

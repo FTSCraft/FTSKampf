@@ -6,11 +6,13 @@ import de.ftscraft.ftskampf.main.FTSKampf;
 import de.ftscraft.ftskampf.spells.EffectSpell;
 import de.ftscraft.ftskampf.spells.effects.BuffArmor;
 import de.ftscraft.ftskampf.utils.Message;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class StunSpell extends EffectSpell {
 
-    FTSKampf plugin = FTSKampf.getPlugin();
+    private static final FTSKampf plugin = FTSKampf.getPlugin();
+    private static final FileConfiguration config = plugin.getConfig();
 
     public StunSpell() {
         super("Betäubungszauber", "0187", "Betäubt das Ziel, sodass es sich für kurze Zeit nicht bewegen oder handeln kann.");
@@ -21,7 +23,9 @@ public class StunSpell extends EffectSpell {
         EffectManager effectManager = plugin.getEffectManager();
         DiceManager diceManager = plugin.getDiceManager();
         diceManager.sendMessageInRange(Message.TAG + "§e" + diceManager.getName(caster) + " §7betäubt §e" + diceManager.getName(target) + " §7für die nächste Runde! (Auf Vertrauensbasis)", caster);
-        effectManager.addEffect(new BuffArmor(target.getUniqueId().toString(), caster.getUniqueId().toString(), 0.7, 1));
+        effectManager.addEffect(new BuffArmor(target.getUniqueId().toString(), caster.getUniqueId().toString(),
+                config.getDouble("SPELL_STUNSPELL_BUFFARMOR_MODIFIER"),
+                config.getInt("SPELL_STUNSPELL_BUFFARMOR_DURABILITY")));
     }
 
     @Override

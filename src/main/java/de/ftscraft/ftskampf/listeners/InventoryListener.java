@@ -6,6 +6,7 @@ import de.ftscraft.ftskampf.damageCalculators.DiceManager;
 import de.ftscraft.ftskampf.db.SpellManager;
 import de.ftscraft.ftskampf.inventorys.MagicInventory;
 import de.ftscraft.ftskampf.main.FTSKampf;
+import de.ftscraft.ftskampf.main.Logger;
 import de.ftscraft.ftskampf.utils.*;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
 import org.bukkit.Bukkit;
@@ -115,20 +116,33 @@ public class InventoryListener implements Listener {
             int i = 0;
             HashMap<Integer, String> newMapping = new HashMap<>();
             for (Spell spell : spellManager.getClassById(id).getSpells()) {
+                ItemStack item;
                 if (!spellManager.playerHasSpell(player, spell)) {
-                    ItemStack item = new ItemStack(Material.ENCHANTED_BOOK);
-                    ItemMeta itemMeta = item.getItemMeta();
-                    itemMeta.setDisplayName(spell.getName());
-                    List<String> lore = new ArrayList<>();
-                    lore.add(spell.getDescription());
-                    itemMeta.setLore(lore);
-                    itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                    item.setItemMeta(itemMeta);
-                    newInventory.setItem(i, item);
-                    newMapping.put(i++, spell.getId());
+                    item = new ItemStack(Material.ENCHANTED_BOOK);
+                } else {
+                    item = new ItemStack(Material.BOOK);
                 }
-
+                ItemMeta itemMeta = item.getItemMeta();
+                itemMeta.setDisplayName(spell.getName());
+                List<String> lore = new ArrayList<>();
+                lore.add(spell.getDescription());
+                if (spellManager.playerHasSpell(player, spell)) {
+                    lore.add("§7[Bereits gelernt]");
+                }
+                itemMeta.setLore(lore);
+                itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+                item.setItemMeta(itemMeta);
+                newInventory.setItem(i, item);
+                newMapping.put(i++, spell.getId());
             }
+            //Set go back Button
+            ItemStack button = new ItemStack(Material.ORANGE_STAINED_GLASS_PANE);
+            ItemMeta itemMeta = button.getItemMeta();
+            itemMeta.setDisplayName("&6Zurück");
+            itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+            button.setItemMeta(itemMeta);
+            newInventory.setItem(9*4, button);
+
             FTSKampf.spellChooseInventory.add(new MappedInventory(newInventory, newMapping, MappedInventory.MappedInventoryType.SPELL_INVENTORY));
             player.openInventory(newInventory);
         }
@@ -138,13 +152,23 @@ public class InventoryListener implements Listener {
             HashMap<Integer, String> idMapping = getSpellChooseInventory(inventory).getIdMapping();
             event.setCancelled(true);
             int slot = event.getRawSlot();
+            if(slot == 9*4) {
+                inventory.close();
+                player.performCommand("magie");
+                return;
+            }
             if (!idMapping.containsKey(slot)) {
+                return;
+            }
+            //Prevents learning already learned spells
+            if(inventory.getItem(slot).getType().equals(Material.BOOK)) {
                 return;
             }
             inventory.close();
             String id = idMapping.get(slot);
             player.sendMessage(Message.TAG + "§7Der Zauber §c" + spellManager.getSpellById(id).getName() + "§7 wurde gelernt.");
             spellManager.playerAddSpell(player.getUniqueId().toString(), id);
+            Logger.log(player, "Zauber " + id + "/" + spellManager.getSpellById(id).getName() + " gelernt");
         }
 
         if (isSpellCastInventory(inventory)) {
@@ -160,7 +184,7 @@ public class InventoryListener implements Listener {
             Engine engine = plugin.getEngine();
             Ausweis ausweis = engine.getAusweis(player);
             Ausweis.Gender gender = ausweis.getGender();
-            if(gender == null) {
+            if (gender == null) {
                 gender = Ausweis.Gender.MALE;
             }
             Race race = plugin.getRaceOrDefault(player);
@@ -238,7 +262,7 @@ public class InventoryListener implements Listener {
             if (engine.hasAusweis(target)) {
                 Ausweis targetAusweis = engine.getAusweis(target);
                 Ausweis.Gender tarGender = targetAusweis.getGender();
-                if(tarGender == null) {
+                if (tarGender == null) {
                     tarGender = Ausweis.Gender.MALE;
                 }
                 if (tarGender.equals(Ausweis.Gender.FEMALE)) {

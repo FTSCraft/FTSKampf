@@ -1,11 +1,16 @@
 package de.ftscraft.ftskampf.spells.effectSpells;
 
+import de.ftscraft.ftskampf.main.FTSKampf;
 import de.ftscraft.ftskampf.spells.EffectSpell;
 import de.ftscraft.ftskampf.spells.effects.Damage;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class DamageSpell extends EffectSpell {
+
+    private static final FTSKampf plugin = FTSKampf.getPlugin();
+    private static final FileConfiguration config = plugin.getConfig();
 
     public DamageSpell() {
         super("Schadenszauber", "0175", "Verursacht direkten Schaden am Ziel.");
@@ -14,7 +19,7 @@ public class DamageSpell extends EffectSpell {
     @Override
     public void doEffect(Player caster, Player target, int value) {
         try {
-            new Damage(caster, target, 1.5);
+            new Damage(caster, target, config.getInt("SPELL_DAMAGESPELL_MODIFIER"));
         } catch (RaceDoNotExistException e) {
             //Sollte nicht dazu kommen da vorher abgefangen bei Würfelwurf auf Target
             //Wenn doch Melleming hauen

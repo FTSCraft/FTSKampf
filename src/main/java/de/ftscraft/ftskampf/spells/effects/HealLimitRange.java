@@ -6,17 +6,19 @@ import de.ftscraft.ftskampf.spells.effects.effectDefinitions.Effect;
 import de.ftscraft.ftskampf.utils.Dice;
 import de.ftscraft.ftskampf.utils.Message;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class HealLimitRange implements Effect {
 
-    FTSKampf plugin = FTSKampf.getPlugin();
+    private static final FTSKampf plugin = FTSKampf.getPlugin();
+    private static final FileConfiguration config = plugin.getConfig();
     DiceManager diceManager = plugin.getDiceManager();
 
     public HealLimitRange(Player player, Player target) throws RaceDoNotExistException {
-        int range = 2;
+        int range = config.getInt("SPELL_HEALLIMITRANGE_RANGE");
         if(player.getLocation().getWorld().getNearbyEntities(player.getLocation(), range, range, range).contains(target)) {
-            diceManager.rollHealDice(Dice.MAGIC, player, target, 1.5);
+            diceManager.rollHealDice(Dice.MAGIC, player, target, config.getDouble("SPELL_HEALLIMITRANGE_MODIFIER"));
         } else {
             diceManager.sendMessageInRange(Message.TAG + "§7Doch das Ziel ist zu weit entfernt!", player);
         }

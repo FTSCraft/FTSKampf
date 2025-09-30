@@ -6,15 +6,18 @@ import de.ftscraft.ftskampf.spells.effects.effectDefinitions.RaceEffect;
 import de.ftscraft.ftskampf.utils.Dice;
 import de.ftscraft.ftskampf.utils.Message;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class RaceDamage extends RaceEffect {
-    FTSKampf plugin = FTSKampf.getPlugin();
+
+    private static final FTSKampf plugin = FTSKampf.getPlugin();
+    private static final FileConfiguration config = plugin.getConfig();
     DiceManager diceManager = plugin.getDiceManager();
 
     public RaceDamage(Player player, Player target, String raceName) throws RaceDoNotExistException {
         if(checkTargetRace(raceName, target)) {
-            diceManager.rollTargetDice(Dice.MAGIC, player, target, 1.8);
+            diceManager.rollTargetDice(Dice.MAGIC, player, target, config.getDouble("SPELL_RACEDAMAGE_MODIFIER"));
         } else {
             player.sendMessage(Message.TAG + "§cDieser Zauber ist nur auf die Rasse §6" + raceName + " §canwendbar!");
         }

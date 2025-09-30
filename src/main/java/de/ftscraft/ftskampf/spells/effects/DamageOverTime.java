@@ -1,19 +1,23 @@
 package de.ftscraft.ftskampf.spells.effects;
 
+import de.ftscraft.ftskampf.damageCalculators.DiceManager;
 import de.ftscraft.ftskampf.db.HpManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
 import de.ftscraft.ftskampf.spells.effects.effectDefinitions.ContinuousEffect;
 import de.ftscraft.ftskampf.spells.effects.effectDefinitions.ContinuousEffectId;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class DamageOverTime extends ContinuousEffect {
 
-    FTSKampf plugin = FTSKampf.getPlugin();
+    private static final FTSKampf plugin = FTSKampf.getPlugin();
     //HpManager hpManager = plugin.getHpManager();
+    DiceManager diceManager = plugin.getDiceManager();
+    private static final FileConfiguration config = plugin.getConfig();
 
     private int damage;
 
     public DamageOverTime(String target, String caster) {
-        this(target, caster, -1, 3);
+        this(target, caster, -1, config.getInt("SPELL_DAMAGEOVERTIME_DURABILTY"));
     }
 
     public DamageOverTime(String target, String caster, double modifier, int durability) {

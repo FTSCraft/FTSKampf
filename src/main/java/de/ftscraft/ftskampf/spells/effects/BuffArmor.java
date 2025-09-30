@@ -1,13 +1,19 @@
 package de.ftscraft.ftskampf.spells.effects;
 
+import de.ftscraft.ftskampf.main.FTSKampf;
 import de.ftscraft.ftskampf.spells.effects.effectDefinitions.ContinuousEffect;
 import de.ftscraft.ftskampf.spells.effects.effectDefinitions.ContinuousEffectId;
 import de.ftscraft.ftskampf.utils.Dice;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class BuffArmor extends ContinuousEffect {
 
+    private static final FTSKampf plugin = FTSKampf.getPlugin();
+    private static final FileConfiguration config = plugin.getConfig();
+
     public BuffArmor(String target, String caster) {
-        this(target, caster, 0.7, 3);
+        this(target, caster, config.getDouble("SPELL_BUFFARMOR_MODIFIER"),
+                config.getInt("SPELL_BUFFARMOR_DURABILITY"));
     }
 
     public BuffArmor(String target, String caster, double modifier) {

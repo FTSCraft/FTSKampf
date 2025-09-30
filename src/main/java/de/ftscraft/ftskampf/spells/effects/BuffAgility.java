@@ -1,13 +1,21 @@
 package de.ftscraft.ftskampf.spells.effects;
 
+import de.ftscraft.ftskampf.main.FTSKampf;
 import de.ftscraft.ftskampf.spells.effects.effectDefinitions.ContinuousEffect;
 import de.ftscraft.ftskampf.spells.effects.effectDefinitions.ContinuousEffectId;
 import de.ftscraft.ftskampf.utils.Dice;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class BuffAgility extends ContinuousEffect {
 
+    private static final FTSKampf plugin = FTSKampf.getPlugin();
+    private static final FileConfiguration config = plugin.getConfig();
+
     public BuffAgility(String target, String caster) {
-        this(target, caster, 1.2, 3);
+        this(target,
+                caster,
+                config.getDouble("SPELL_BUFFAGILITY_MODIFIER"),
+                config.getInt("SPELL_BUFFAGILITY_DURABILITY"));
     }
 
     public BuffAgility(String target, String caster, double modifier, int durability) {
