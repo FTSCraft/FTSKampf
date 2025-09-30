@@ -8,6 +8,7 @@ import de.ftscraft.ftskampf.listeners.InventoryListener;
 import de.ftscraft.ftskampf.listeners.JoinListener;
 import de.ftscraft.ftskampf.utils.*;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
+import de.ftscraft.ftssystem.main.FtsSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -30,6 +31,7 @@ public final class FTSKampf extends JavaPlugin {
     public static HashMap<Inventory, Player> targetInventorys;
     public static List<String> raceList;
     private Engine engine;
+    private FtsSystem ftsSystem;
     private DBManager dbManager;
     private HpManager hpManager;
     private EffectManager effectManager;
@@ -47,6 +49,7 @@ public final class FTSKampf extends JavaPlugin {
         raceList = getRaceList();
 
         engine = (Engine) getServer().getPluginManager().getPlugin("FTSEngine");
+        ftsSystem = (FtsSystem) getServer().getPluginManager().getPlugin("FTSSystem");
         effectManager = new EffectManager();
         effectManager.init();
         spellManager = new SpellManager();
@@ -96,6 +99,10 @@ public final class FTSKampf extends JavaPlugin {
 
     public Engine getEngine() {
         return engine;
+    }
+
+    public FtsSystem getSystem() {
+        return ftsSystem;
     }
 
     public HpManager getHpManager() {

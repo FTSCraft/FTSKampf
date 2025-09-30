@@ -11,6 +11,7 @@ import de.ftscraft.ftskampf.spells.effects.effectDefinitions.ContinuousEffect;
 import de.ftscraft.ftskampf.utils.*;
 import de.ftscraft.ftskampf.utils.exceptions.NumberNegativeException;
 import de.ftscraft.ftskampf.utils.exceptions.RaceDoNotExistException;
+import de.ftscraft.ftssystem.main.FtsSystem;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -502,7 +503,7 @@ public class DiceManager {
     }
 
     public void sendMessageInRange(String message, Player player) {
-        int range = plugin.getConfig().getInt("DiceChatRange");
+        int range = getChatRange(player);
         for (Entity nearbyEntity : player.getLocation().getWorld().getNearbyEntities(player.getLocation(), range, range, range)) {
             if (nearbyEntity instanceof Player) {
                 nearbyEntity.sendMessage(message);
@@ -511,9 +512,9 @@ public class DiceManager {
     }
 
     public void sendMessageInMultipleRange(String message, List<Player> players) {
-        int range = plugin.getConfig().getInt("DiceChatRange");
         List<Player> receivers = new ArrayList<>();
         for (Player player : players) {
+            int range =getChatRange(player);
             for (Entity nearbyEntity : player.getLocation().getWorld().getNearbyEntities(player.getLocation(), range, range, range)) {
                 if (nearbyEntity instanceof Player) {
                     receivers.add((Player) nearbyEntity);
@@ -583,5 +584,13 @@ public class DiceManager {
             }
         }
         return false;
+    }
+
+    private int getChatRange(Player player) {
+        FtsSystem system = plugin.getSystem();
+        int range = system.getUser(player).getActiveChannel().range();
+        if(range < 0)
+            return plugin.getConfig().getInt("DiceDefaultChatRange");
+        return range;
     }
 }

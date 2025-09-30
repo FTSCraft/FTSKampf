@@ -74,7 +74,7 @@ public class ConfigManager {
         defaultValues.put("MaxSpells", 4);
         defaultValues.put("EffectLifetime", 30);
 
-        defaultValues.put("DiceChatRange", 20);
+        defaultValues.put("DiceDefaultChatRange", 20);
 
         defaultValues.put("Dice.Melee.Max", 100);
         defaultValues.put("Dice.Melee.MaxSkillable", 100);
