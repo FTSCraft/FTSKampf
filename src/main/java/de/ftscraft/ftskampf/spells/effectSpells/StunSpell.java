@@ -24,8 +24,8 @@ public class StunSpell extends EffectSpell {
         DiceManager diceManager = plugin.getDiceManager();
         diceManager.sendMessageInRange(Message.TAG + "§e" + diceManager.getName(caster) + " §7betäubt §e" + diceManager.getName(target) + " §7für die nächste Runde! (Auf Vertrauensbasis)", caster);
         effectManager.addEffect(new BuffArmor(target.getUniqueId().toString(), caster.getUniqueId().toString(),
-                config.getDouble("SPELL_STUNSPELL_BUFFARMOR_MODIFIER"),
-                config.getInt("SPELL_STUNSPELL_BUFFARMOR_DURABILITY")));
+                config.getDouble("SPELL_STUN_BUFFARMOR_MODIFIER"),
+                config.getInt("SPELL_STUN_BUFFARMOR_DURABILITY")));
     }
 
     @Override
