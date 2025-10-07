@@ -19,7 +19,7 @@ public class DamageSpell extends EffectSpell {
     @Override
     public void doEffect(Player caster, Player target, int value) {
         try {
-            new Damage(caster, target, config.getInt("SPELL_DAMAGESPELL_MODIFIER"));
+            new Damage(caster, target, config.getInt("SPELL_DAMAGE_MODIFIER"));
         } catch (RaceDoNotExistException e) {
             //Sollte nicht dazu kommen da vorher abgefangen bei Würfelwurf auf Target
             //Wenn doch Melleming hauen
