@@ -207,7 +207,7 @@ public class ConfigManager {
         defaultValues.put("SPELL_RACEHEAL_MODIFIER", 1.3);
         defaultValues.put("SPELL_RACEHEALRADIUS_MODIFIER", 0.7);
         defaultValues.put("SPELL_RACEHEALRADIUS_RANGE", 5);
-        defaultValues.put("SPELL_DAMAGENOCKBACK_MODIFIER", 1.4);
+        defaultValues.put("SPELL_DAMAGEKNOCKBACK_MODIFIER", 1.4);
         defaultValues.put("SPELL_PROTECTATTACK_MODIFIER", 0.5);
         defaultValues.put("SPELL_STUN_BUFFARMOR_MODIFIER", 0.7);
         defaultValues.put("SPELL_STUN_BUFFARMOR_DURABILITY", 1);
