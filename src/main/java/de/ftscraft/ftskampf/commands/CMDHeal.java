@@ -73,21 +73,21 @@ public class CMDHeal implements CommandExecutor {
         }
 
         try {
+            int remainingMins = hpManager.isPlayerInOffset(target);
+            if (remainingMins != -1) {
+                player.sendMessage(Message.TAG + "§7Der Spieler hat erst vor kurzem Schaden erlitten und kann erst wieder in " + remainingMins + " Minuten geheilt werden!");
+                Logger.log(player, "Tried to heal " + target.getName() + " by command /heal, declined by offset, remaining " + remainingMins);
+                return true;
+            }
             hpManager.healPlayer(target, Integer.parseInt(args[1]));
-        } catch (NumberFormatException e) {
-            player.sendMessage(Message.TAG + "§6Bitte verwende den Befehl so: §c/ftskampf heal [Spieler] [HP zum heilen]");
-            return true;
         } catch (NumberNegativeException e) {
             player.sendMessage(Message.TAG + "§7Du musst mehr als 0 Punkte angeben!");
-        }
-
-        int remainingMins = hpManager.isPlayerInOffset(target);
-
-        if(remainingMins != -1) {
-            player.sendMessage(Message.TAG + "§7Der Spieler hat erst vor kurzem Schaden erlitten und kann erst wieder in " + remainingMins + " Minuten geheilt werden!");
-            Logger.log(player, "Tried to heal " + target.getName() + " by command /heal, declined by offset, remaining " + remainingMins);
+            return  true;
+        } catch (Exception e) {
+            player.sendMessage(Message.TAG + "§6Bitte verwende den Befehl so: §c/ftskampf heal [Spieler] [HP zum heilen]");
             return true;
         }
+
 
         Logger.log(player, "healed " + target.getName() + ", " + Integer.parseInt(args[1]) + " by command /heal");
 

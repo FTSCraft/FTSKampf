@@ -138,7 +138,7 @@ public class InventoryListener implements Listener {
             //Set go back Button
             ItemStack button = new ItemStack(Material.ORANGE_STAINED_GLASS_PANE);
             ItemMeta itemMeta = button.getItemMeta();
-            itemMeta.setDisplayName("&6Zurück");
+            itemMeta.setDisplayName("§6Zurück");
             itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
             button.setItemMeta(itemMeta);
             newInventory.setItem(9*4, button);
