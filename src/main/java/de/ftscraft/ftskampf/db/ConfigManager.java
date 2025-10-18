@@ -6,7 +6,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.util.HashMap;
 
 public class ConfigManager {
-    private final String SKILLS_COMPATIBLE_VERSION = "2.2";
+    private final String SKILLS_COMPATIBLE_VERSION = "2.3.1.2";
     private final String HP_COMPATIBLE_VERSION = "2.2";
     private final String SPELLS_COMPATIBLE_VERSION = "2.2";
     private final String EFFECT_COMPATIBLE_VERSION = "2.2";
@@ -45,6 +45,7 @@ public class ConfigManager {
             effectManager.reset();
             config.set("DBVersion.Effect", EFFECT_COMPATIBLE_VERSION);
         }
+
         plugin.saveConfig();
     }
 
@@ -164,6 +165,7 @@ public class ConfigManager {
         defaultValues.put("Races.Ork.InitialValues.Magic", 5);
         defaultValues.put("Races.Ork.InitialValues.Agility", 6);
         defaultValues.put("Races.Ork.InitialValues.Health", 150);
+
         defaultValues.put("DBVersion.Skills", "0");
         defaultValues.put("DBVersion.Hp", "0");
         defaultValues.put("DBVersion.Spells", "0");
