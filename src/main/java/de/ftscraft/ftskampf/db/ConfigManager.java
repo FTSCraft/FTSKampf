@@ -45,7 +45,6 @@ public class ConfigManager {
             effectManager.reset();
             config.set("DBVersion.Effect", EFFECT_COMPATIBLE_VERSION);
         }
-
         plugin.saveConfig();
     }
 
