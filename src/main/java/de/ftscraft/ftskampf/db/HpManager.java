@@ -14,7 +14,7 @@ public class HpManager {
 
     private final List<Player> activePlayers = new ArrayList<>();
     private final FTSKampf plugin = FTSKampf.getPlugin();
-    private final DBManager db = plugin.getDB();
+    private final SkillManager skillManager = plugin.getSkillManager();
     private final HashMap<String, Integer> health;
     private HashMap<String, Integer> offset;
     private final int OFFSET_MINUTES = plugin.getConfig().getInt("Health.HealtimeOffsetMinutes");
@@ -73,7 +73,7 @@ public class HpManager {
         int oldHealth = health.get(uuid);
         int newHealth = oldHealth + hpToHeal;
         int maxHealth = plugin.getRaceOrDefault(player).getHealth();
-        maxHealth += db.getPlayerSkill(player).getMaxHp();
+        maxHealth += skillManager.getPlayerSkill(player).getMaxHp();
         if(newHealth >= maxHealth) {
             unregisterPlayer(player);
             return;
@@ -127,7 +127,7 @@ public class HpManager {
 
     public int getMaxHealth(Player player) {
         int maxHealth = plugin.getRaceOrDefault(player).getHealth();
-        maxHealth += db.getPlayerSkill(player).getMaxHp();
+        maxHealth += skillManager.getPlayerSkill(player).getMaxHp();
         return maxHealth;
     }
 

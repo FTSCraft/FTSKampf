@@ -2,7 +2,7 @@ package de.ftscraft.ftskampf.commands;
 
 import de.ftscraft.ftsengine.main.Engine;
 import de.ftscraft.ftsengine.utils.Ausweis;
-import de.ftscraft.ftskampf.db.DBManager;
+import de.ftscraft.ftskampf.db.SkillManager;
 import de.ftscraft.ftskampf.db.SpellManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
 import de.ftscraft.ftskampf.utils.*;
@@ -29,7 +29,7 @@ public class CMDMagie implements CommandExecutor {
     Engine engine = plugin.getEngine();
     FileConfiguration config = plugin.getConfig();
     SpellManager spellManager = plugin.getSpellManager();
-    DBManager db = plugin.getDB();
+    SkillManager skillManager = plugin.getSkillManager();
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -119,7 +119,7 @@ public class CMDMagie implements CommandExecutor {
             String target = args[1];
             String targetUuid;
             try {
-                targetUuid = db.getUUID(target);
+                targetUuid = skillManager.getUUID(target);
             } catch (Exception e) {
                 player.sendMessage(Message.TAG + "§6Der Spieler §c" + target + " §6konnte nicht gefunden werden!");
                 return true;

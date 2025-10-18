@@ -20,7 +20,7 @@ public class DamageKnockbackSpell extends EffectSpell {
     @Override
     public void doEffect(Player caster, Player target, int value) {
         try {
-            new Damage(caster, target, config.getDouble("SPELL_DAMAGENOCKBACK_MODIFIER"));
+            new Damage(caster, target, config.getDouble("SPELL_DAMAGEKNOCKBACK_MODIFIER"));
             //FTSKampf.getPlugin().getDiceManager().sendMessageInRange(Message.TAG + "§6" + target.getName() + " §awird 3 Blöcke zurückgestoßen!", target);
         } catch (RaceDoNotExistException e) {
             //Sollte nicht dazu kommen da vorher abgefangen bei Würfelwurf auf Target

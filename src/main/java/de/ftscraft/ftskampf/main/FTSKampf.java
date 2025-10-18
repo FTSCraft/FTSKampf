@@ -32,7 +32,7 @@ public final class FTSKampf extends JavaPlugin {
     public static List<String> raceList;
     private Engine engine;
     private FtsSystem ftsSystem;
-    private DBManager dbManager;
+    private SkillManager skillManager;
     private HpManager hpManager;
     private EffectManager effectManager;
     private SpellManager spellManager;
@@ -54,7 +54,7 @@ public final class FTSKampf extends JavaPlugin {
         effectManager.init();
         spellManager = new SpellManager();
         spellManager.init();
-        dbManager = new DBManager();
+        skillManager = new SkillManager();
         hpManager = new HpManager();
         diceManager = new DiceManager();
 
@@ -93,8 +93,8 @@ public final class FTSKampf extends JavaPlugin {
         return plugin;
     }
 
-    public DBManager getDB() {
-        return dbManager;
+    public SkillManager getSkillManager() {
+        return skillManager;
     }
 
     public Engine getEngine() {

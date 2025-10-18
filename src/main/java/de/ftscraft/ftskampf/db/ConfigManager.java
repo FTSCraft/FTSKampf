@@ -21,13 +21,13 @@ public class ConfigManager {
     }
 
     public void checkDatabaseVersions () {
-        DBManager dbManager = plugin.getDB();
+        SkillManager skillManager = plugin.getSkillManager();
         HpManager hpManager = plugin.getHpManager();
         SpellManager spellManager = plugin.getSpellManager();
         EffectManager effectManager = plugin.getEffectManager();
 
         if(!config.getString("DBVersion.Skills").equals(SKILLS_COMPATIBLE_VERSION)) {
-            dbManager.reset();
+            skillManager.reset();
             config.set("DBVersion.Skills", SKILLS_COMPATIBLE_VERSION);
         }
 
@@ -39,11 +39,6 @@ public class ConfigManager {
         if(!config.getString("DBVersion.Spells").equals(SPELLS_COMPATIBLE_VERSION)) {
             spellManager.reset();
             config.set("DBVersion.Spells", SPELLS_COMPATIBLE_VERSION);
-        }
-
-        if(!config.getString("DBVersion.Effect").equals(EFFECT_COMPATIBLE_VERSION)) {
-            effectManager.reset();
-            config.set("DBVersion.Effect", EFFECT_COMPATIBLE_VERSION);
         }
 
         if(!config.getString("DBVersion.Effect").equals(EFFECT_COMPATIBLE_VERSION)) {
@@ -213,10 +208,10 @@ public class ConfigManager {
         defaultValues.put("SPELL_RACEHEAL_MODIFIER", 1.3);
         defaultValues.put("SPELL_RACEHEALRADIUS_MODIFIER", 0.7);
         defaultValues.put("SPELL_RACEHEALRADIUS_RANGE", 5);
-        defaultValues.put("SPELL_DAMAGENOCKBACK_MODIFIER", 1.4);
-        defaultValues.put("SPELL_PROTECTATTACKSPELL_MODIFIER", 0.5);
-        defaultValues.put("SPELL_STUNSPELL_BUFFARMOR_MODIFIER", 0.7);
-        defaultValues.put("SPELL_STUNSPELL_BUFFARMOR_DURABILITY", 1);
+        defaultValues.put("SPELL_DAMAGEKNOCKBACK_MODIFIER", 1.4);
+        defaultValues.put("SPELL_PROTECTATTACK_MODIFIER", 0.5);
+        defaultValues.put("SPELL_STUN_BUFFARMOR_MODIFIER", 0.7);
+        defaultValues.put("SPELL_STUN_BUFFARMOR_DURABILITY", 1);
 
 
         for(String key : defaultValues.keySet()) {

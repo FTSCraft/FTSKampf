@@ -1,6 +1,6 @@
 package de.ftscraft.ftskampf.commands;
 
-import de.ftscraft.ftskampf.db.DBManager;
+import de.ftscraft.ftskampf.db.SkillManager;
 import de.ftscraft.ftskampf.db.EffectManager;
 import de.ftscraft.ftskampf.db.HpManager;
 import de.ftscraft.ftskampf.db.SpellManager;
@@ -25,7 +25,7 @@ public class CMDftskampfdb implements CommandExecutor, TabCompleter {
 
     FTSKampf plugin = FTSKampf.getPlugin();
     FileConfiguration config = plugin.getConfig();
-    DBManager dbManager = plugin.getDB();
+    SkillManager skillManager = plugin.getSkillManager();
     EffectManager effectManager = plugin.getEffectManager();
     HpManager hpManager = plugin.getHpManager();
     SpellManager spellManager = plugin.getSpellManager();
@@ -81,7 +81,7 @@ public class CMDftskampfdb implements CommandExecutor, TabCompleter {
                 Logger.log(player, "Effect DB resetted");
                 break;
             case "skills":
-                dbManager.reset();
+                skillManager.reset();
                 player.sendMessage(Message.TAG + "§6Datenbank zurückgesetzt!");
                 Logger.log(player, "Skill DB resetted");
                 break;

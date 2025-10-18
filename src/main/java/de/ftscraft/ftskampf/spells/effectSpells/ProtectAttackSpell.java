@@ -44,7 +44,7 @@ public class ProtectAttackSpell extends EffectSpell {
             article = "Die";
             raceName = race.getfName();
         }
-        int damage = (int) Math.round(config.getDouble("SPELL_PROTECTATTACKSPELL_MODIFIER") * value);
+        int damage = (int) Math.round(config.getDouble("SPELL_PROTECTATTACK_MODIFIER") * value);
 
         hpManager.hurtPlayer(caster, damage);
         StringBuilder message = new StringBuilder("§7" + article + " §o" + raceName + " §r§e" + diceManager.getName(caster) + " §7fügt sich dabei §c" + damage + " §7LP Schaden zu!");
