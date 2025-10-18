@@ -77,7 +77,7 @@ public class DBManager {
 
     public HashMap<String, Integer> loadMaxPoints() throws IOException {
         HashMap<String, Integer> maxPoints = new HashMap<>();
-        BufferedReader reader = new BufferedReader(new FileReader(getPath()));
+        BufferedReader reader = new BufferedReader(new FileReader(getMaxPointsPath()));
         String line;
         while ((line = reader.readLine()) != null) {
             String[] values = line.split(";");
@@ -253,8 +253,10 @@ public class DBManager {
 
     public void reset() {
         skills.clear();
+        maxPoints.clear();
         try {
             saveSkills();
+            saveMaxPoints();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
