@@ -21,13 +21,13 @@ public class ConfigManager {
     }
 
     public void checkDatabaseVersions () {
-        DBManager dbManager = plugin.getDB();
+        SkillManager skillManager = plugin.getSkillManager();
         HpManager hpManager = plugin.getHpManager();
         SpellManager spellManager = plugin.getSpellManager();
         EffectManager effectManager = plugin.getEffectManager();
 
         if(!config.getString("DBVersion.Skills").equals(SKILLS_COMPATIBLE_VERSION)) {
-            dbManager.reset();
+            skillManager.reset();
             config.set("DBVersion.Skills", SKILLS_COMPATIBLE_VERSION);
         }
 

@@ -2,7 +2,7 @@ package de.ftscraft.ftskampf.commands;
 
 import de.ftscraft.ftsengine.main.Engine;
 import de.ftscraft.ftsengine.utils.Ausweis;
-import de.ftscraft.ftskampf.db.DBManager;
+import de.ftscraft.ftskampf.db.SkillManager;
 import de.ftscraft.ftskampf.db.HpManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
 import de.ftscraft.ftskampf.utils.Dice;
@@ -29,7 +29,7 @@ import java.util.List;
 public class CMDKampfskill implements CommandExecutor, TabCompleter {
     FTSKampf plugin = FTSKampf.getPlugin();
     Engine engine = plugin.getEngine();
-    DBManager db = plugin.getDB();
+    SkillManager skillManager = plugin.getSkillManager();
     FileConfiguration config = plugin.getConfig();
     HpManager hpManager = plugin.getHpManager();
 
@@ -95,21 +95,21 @@ public class CMDKampfskill implements CommandExecutor, TabCompleter {
         if (args[0].equalsIgnoreCase("info")) {
             player.sendMessage(Message.TAG + "§7Du hast folgende Skills:");
             if (race.getSkill(Dice.MELEE) > 0) {
-                player.sendMessage("§7Nahkampf: §c" + (db.getPlayerSkill(player).getMelee() + race.getMelee()) + " §7Skillpunkte");
+                player.sendMessage("§7Nahkampf: §c" + (skillManager.getPlayerSkill(player).getMelee() + race.getMelee()) + " §7Skillpunkte");
             }
             if (race.getSkill(Dice.DISTANCE) > 0) {
-                player.sendMessage("§7Fernkampf: §c" + (db.getPlayerSkill(player).getDistance() + race.getDistance()) + " §7Skillpunkte");
+                player.sendMessage("§7Fernkampf: §c" + (skillManager.getPlayerSkill(player).getDistance() + race.getDistance()) + " §7Skillpunkte");
             }
             if (race.getSkill(Dice.MAGIC) > 0) {
-                player.sendMessage("§7Magie: §c" + (db.getPlayerSkill(player).getMagic() + race.getMagic()) + " §7Skillpunkte");
+                player.sendMessage("§7Magie: §c" + (skillManager.getPlayerSkill(player).getMagic() + race.getMagic()) + " §7Skillpunkte");
 
             }
             if (race.getSkill(Dice.AGILITY) > 0) {
-                player.sendMessage("§7Agilität: §c" + (db.getPlayerSkill(player).getAgility() + race.getAgility()) + " §7Skillpunkte");
+                player.sendMessage("§7Agilität: §c" + (skillManager.getPlayerSkill(player).getAgility() + race.getAgility()) + " §7Skillpunkte");
             }
             player.sendMessage("§7Maximale Lebenspunkte: §c" + hpManager.getMaxHealth(player));
 
-            player.sendMessage("§7Aktuell kannst du noch §c" + db.getPlayerSkill(player).getPoints() + " §7Skillpoints vergeben");
+            player.sendMessage("§7Aktuell kannst du noch §c" + skillManager.getPlayerSkill(player).getPoints() + " §7Skillpoints vergeben");
             return true;
         }
 
@@ -143,7 +143,7 @@ public class CMDKampfskill implements CommandExecutor, TabCompleter {
                 }
             }
             try {
-                if (db.removeSkill(db.getPlayerSkill(player))) {
+                if (skillManager.removeSkill(skillManager.getPlayerSkill(player))) {
                     player.sendMessage(Message.TAG + "§6Deine Skills wurden zurückgesetzt!");
                 } else {
                     player.sendMessage(Message.TAG + "§6Du hast noch keine Skills vergeben.");
@@ -163,7 +163,7 @@ public class CMDKampfskill implements CommandExecutor, TabCompleter {
             }
             String username = args[1];
             try {
-                if (db.removeSkill(username)) {
+                if (skillManager.removeSkill(username)) {
                     player.sendMessage(Message.TAG + "§6Die Skills von §c" + username + " §6wurden zurückgesetzt!");
                 } else {
                     player.sendMessage(Message.TAG + "§6Der Spieler §c" + username + " §6hatte keine Skills gesetzt");
@@ -185,11 +185,11 @@ public class CMDKampfskill implements CommandExecutor, TabCompleter {
             }
             try {
                 int skillpoints = Integer.parseInt(args[1]);
-                db.addSkillpoints(skillpoints, player, Dice.MELEE);
+                skillManager.addSkillpoints(skillpoints, player, Dice.MELEE);
             } catch (NumberFormatException e) {
                 player.sendMessage(Message.TAG + "§6Bitte benutze den Befehl so: §c/kampfskill nahkampf [Skillpunkte]");
             } catch (NotEnoughPointsException e) {
-                player.sendMessage(Message.TAG + "§7Dafür reichen deine Punkte nicht aus! Du hast noch §c" + db.getPlayerSkill(player).getPoints() + " §7Skillpoints");
+                player.sendMessage(Message.TAG + "§7Dafür reichen deine Punkte nicht aus! Du hast noch §c" + skillManager.getPlayerSkill(player).getPoints() + " §7Skillpoints");
             } catch (SkillLimitException e) {
                 player.sendMessage(Message.TAG + "§7Du hast das maximale Limit für diesen Skill erreicht! Dir wurden §c" + e.getRemainingPoints() + " §7Skillpoints gutgeschrieben.");
             } catch (IOException e) {
@@ -211,11 +211,11 @@ public class CMDKampfskill implements CommandExecutor, TabCompleter {
             }
             try {
                 int skillpoints = Integer.parseInt(args[1]);
-                db.addSkillpoints(skillpoints, player, Dice.DISTANCE);
+                skillManager.addSkillpoints(skillpoints, player, Dice.DISTANCE);
             } catch (NumberFormatException e) {
                 player.sendMessage(Message.TAG + "§6Bitte benutze den Befehl so: §c/kampfskill fernkampf [Skillpunkte]");
             } catch (NotEnoughPointsException e) {
-                player.sendMessage(Message.TAG + "§7Dafür reichen deine Punkte nicht aus! Du hast noch §c" + db.getPlayerSkill(player).getPoints() + " §7Skillpoints");
+                player.sendMessage(Message.TAG + "§7Dafür reichen deine Punkte nicht aus! Du hast noch §c" + skillManager.getPlayerSkill(player).getPoints() + " §7Skillpoints");
             } catch (SkillLimitException e) {
                 player.sendMessage(Message.TAG + "§7Du hast das maximale Limit für diesen Skill erreicht! Dir wurden §c" + e.getRemainingPoints() + " §7Skillpoints gutgeschrieben.");
             } catch (IOException e) {
@@ -237,11 +237,11 @@ public class CMDKampfskill implements CommandExecutor, TabCompleter {
             }
             try {
                 int skillpoints = Integer.parseInt(args[1]);
-                db.addSkillpoints(skillpoints, player, Dice.MAGIC);
+                skillManager.addSkillpoints(skillpoints, player, Dice.MAGIC);
             } catch (NumberFormatException e) {
                 player.sendMessage(Message.TAG + "§6Bitte benutze den Befehl so: §c/kampfskill magie [Skillpunkte]");
             } catch (NotEnoughPointsException e) {
-                player.sendMessage(Message.TAG + "§7Dafür reichen deine Punkte nicht aus! Du hast noch §c" + db.getPlayerSkill(player).getPoints() + " §7Skillpoints");
+                player.sendMessage(Message.TAG + "§7Dafür reichen deine Punkte nicht aus! Du hast noch §c" + skillManager.getPlayerSkill(player).getPoints() + " §7Skillpoints");
             } catch (SkillLimitException e) {
                 player.sendMessage(Message.TAG + "§7Du hast das maximale Limit für diesen Skill erreicht! Dir wurden §c" + e.getRemainingPoints() + " §7Skillpoints gutgeschrieben.");
             } catch (IOException e) {
@@ -263,11 +263,11 @@ public class CMDKampfskill implements CommandExecutor, TabCompleter {
             }
             try {
                 int skillpoints = Integer.parseInt(args[1]);
-                db.addSkillpoints(skillpoints, player, Dice.AGILITY);
+                skillManager.addSkillpoints(skillpoints, player, Dice.AGILITY);
             } catch (NumberFormatException e) {
                 player.sendMessage(Message.TAG + "§6Bitte benutze den Befehl so: §c/kampfskill agilität [Skillpunkte]");
             } catch (NotEnoughPointsException e) {
-                player.sendMessage(Message.TAG + "§7Dafür reichen deine Punkte nicht aus! Du hast noch §c" + db.getPlayerSkill(player).getPoints() + " §7Skillpoints");
+                player.sendMessage(Message.TAG + "§7Dafür reichen deine Punkte nicht aus! Du hast noch §c" + skillManager.getPlayerSkill(player).getPoints() + " §7Skillpoints");
             } catch (SkillLimitException e) {
                 player.sendMessage(Message.TAG + "§7Du hast das maximale Limit für diesen Skill erreicht! Dir wurden §c" + e.getRemainingPoints() + " §7Skillpoints gutgeschrieben.");
             } catch (IOException e) {
@@ -285,11 +285,11 @@ public class CMDKampfskill implements CommandExecutor, TabCompleter {
             }
             try {
                 int skillpoints = Integer.parseInt(args[1]);
-                db.addHp(skillpoints, player);
+                skillManager.addHp(skillpoints, player);
             } catch (NumberFormatException e) {
                 player.sendMessage(Message.TAG + "§6Bitte benutze den Befehl so: §c/kampfskill hp [Skillpunkte]");
             } catch (NotEnoughPointsException e) {
-                player.sendMessage(Message.TAG + "§7Dafür reichen deine Punkte nicht aus! Du hast noch §c" + db.getPlayerSkill(player).getPoints() + " §7Skillpoints");
+                player.sendMessage(Message.TAG + "§7Dafür reichen deine Punkte nicht aus! Du hast noch §c" + skillManager.getPlayerSkill(player).getPoints() + " §7Skillpoints");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } catch (NumberNegativeException e) {
@@ -321,6 +321,6 @@ public class CMDKampfskill implements CommandExecutor, TabCompleter {
         player.sendMessage("§c/kampfskill agilität [Skillpunkte]: §6Lässt dich Agilitätspunkte (Beweglichkeit) verteilen");
         player.sendMessage("§c/kampfskill hp [Skillpunkte]: §6Lässt dich maximale Lebenspunkte verteilen");
         player.sendMessage("§7Jeder Skillpunkt in hp gibt dir §c" + config.getInt("Health.SkillMultiplier") + " §7maximale Lebenspunkte!");
-        player.sendMessage("§7Aktuell kannst du noch §c" + db.getPlayerSkill(player).getPoints() + " §7Skillpoints vergeben");
+        player.sendMessage("§7Aktuell kannst du noch §c" + skillManager.getPlayerSkill(player).getPoints() + " §7Skillpoints vergeben");
     }
 }

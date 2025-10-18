@@ -1,6 +1,6 @@
 package de.ftscraft.ftskampf.commands;
 
-import de.ftscraft.ftskampf.db.DBManager;
+import de.ftscraft.ftskampf.db.SkillManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
 import de.ftscraft.ftskampf.utils.Message;
 import de.ftscraft.ftskampf.utils.exceptions.NumberNegativeException;
@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 public class CMDSetpoints implements CommandExecutor {
     FTSKampf plugin = FTSKampf.getPlugin();
     FileConfiguration config = plugin.getConfig();
-    DBManager dbManager = plugin.getDB();
+    SkillManager skillManager = plugin.getSkillManager();
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String @NotNull [] args) {
@@ -41,7 +41,7 @@ public class CMDSetpoints implements CommandExecutor {
 
         if (args[1].equalsIgnoreCase("reset")) {
             try {
-                dbManager.resetMaxSkillpoints(args[0]);
+                skillManager.resetMaxSkillpoints(args[0]);
             } catch (Exception e) {
                 player.sendMessage(Message.TAG + "§6Spieler §r§e" + args[0] + " §6konnte nicht gefunden werden!");
                 return true;
@@ -51,7 +51,7 @@ public class CMDSetpoints implements CommandExecutor {
         }
 
         try {
-            dbManager.setMaxSkillpoints(args[0], Integer.parseInt(args[1]));
+            skillManager.setMaxSkillpoints(args[0], Integer.parseInt(args[1]));
         } catch (NumberNegativeException | NumberFormatException e) {
             player.sendMessage(Message.TAG + "§6Ungültige Zahl!");
             return true;

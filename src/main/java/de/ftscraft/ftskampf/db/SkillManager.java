@@ -15,7 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
 
-public class DBManager {
+public class SkillManager {
     FTSKampf plugin = FTSKampf.getPlugin();
     FileConfiguration config = plugin.getConfig();
     private final List<Skill> skills;

@@ -2,7 +2,7 @@ package de.ftscraft.ftskampf.damageCalculators;
 
 import de.ftscraft.ftsengine.main.Engine;
 import de.ftscraft.ftsengine.utils.Ausweis;
-import de.ftscraft.ftskampf.db.DBManager;
+import de.ftscraft.ftskampf.db.SkillManager;
 import de.ftscraft.ftskampf.db.EffectManager;
 import de.ftscraft.ftskampf.db.HpManager;
 import de.ftscraft.ftskampf.main.FTSKampf;
@@ -30,7 +30,7 @@ public class DiceManager {
     FTSKampf plugin = FTSKampf.getPlugin();
     private HashMap<Player, Attack> attacks = new HashMap<>();
     Engine engine = plugin.getEngine();
-    DBManager db = plugin.getDB();
+    SkillManager skillManager = plugin.getSkillManager();
     HpManager hpManager = plugin.getHpManager();
     DamageModifier damageModifier = new DamageModifier();
     FileConfiguration config = plugin.getConfig();
@@ -114,7 +114,7 @@ public class DiceManager {
 
         int value = calculateAttackValue(dice, player);
 
-        int skill = dice.equals(Dice.ACTION) ? 51 : db.getPlayerSkill(player).getSkill(dice) + race.getSkill(dice);
+        int skill = dice.equals(Dice.ACTION) ? 51 : skillManager.getPlayerSkill(player).getSkill(dice) + race.getSkill(dice);
 
         String colourCode = value < skill ? "§2" : "§c";
 
@@ -446,7 +446,7 @@ public class DiceManager {
 
     private int calculateSkill(Player player, Dice dice, Race race) {
         int skill = race.getSkill(dice);
-        skill += db.getPlayerSkill(player).getSkill(dice);
+        skill += skillManager.getPlayerSkill(player).getSkill(dice);
         ItemStack weapon = player.getInventory().getItemInMainHand();
         int skillNew = damageModifier.getModifiedHitchance(skill, dice, weapon);
         if (skill != skillNew) {
