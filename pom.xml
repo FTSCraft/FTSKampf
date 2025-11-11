@@ -5,7 +5,7 @@
 
     <groupId>FTSKampf</groupId>
     <artifactId>FTSKampf</artifactId>
-    <version>2.3.2</version>
+    <version>2.4.0</version>
     <packaging>jar</packaging>
 
     <name>FTSKampf</name>

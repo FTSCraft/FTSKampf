@@ -19,9 +19,9 @@ import org.jetbrains.annotations.NotNull;
 public class CMDHeal implements CommandExecutor {
 
     FTSKampf plugin = FTSKampf.getPlugin();
-    Engine engine = plugin.getEngine();
     FileConfiguration config = plugin.getConfig();
     final HpManager hpManager = plugin.getHpManager();
+    final int RANGE = 20;
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -32,19 +32,6 @@ public class CMDHeal implements CommandExecutor {
             player = ((Player) sender).getPlayer();
         } else {
             sender.sendMessage("Not a player");
-            return true;
-        }
-
-        if (config.getBoolean("Permissions.UseDices.Required")) {
-            if (!(player.hasPermission(config.getString("Permissions.UseDices.Name")))) {
-                player.sendMessage(Message.TAG + "§6Du hast keine Berechtigung für diese Aktion!");
-                return true;
-            }
-        }
-
-        Ausweis ausweis = engine.getAusweis(player);
-        if (ausweis == null || ausweis.getGender() == null || ausweis.getRace() == null) {
-            player.sendMessage(Message.TAG + "§6Bitte lege dir zuerst einen Ausweis an (/ausweis). Für das Würfeln ist folgendes wichtig: §cName, Rasse, Geschlecht");
             return true;
         }
 
@@ -66,19 +53,7 @@ public class CMDHeal implements CommandExecutor {
             return true;
         }
 
-        int range = plugin.getConfig().getInt("DiceChatRange");
-        if (!player.getLocation().getWorld().getNearbyEntities(player.getLocation(), range, range, range).contains(target)) {
-            player.sendMessage(Message.TAG + "§6Der Spieler §c" + args[0] + " §6ist zu weit entfernt!");
-            return true;
-        }
-
         try {
-            int remainingMins = hpManager.isPlayerInOffset(target);
-            if (remainingMins != -1) {
-                player.sendMessage(Message.TAG + "§7Der Spieler hat erst vor kurzem Schaden erlitten und kann erst wieder in " + remainingMins + " Minuten geheilt werden!");
-                Logger.log(player, "Tried to heal " + target.getName() + " by command /heal, declined by offset, remaining " + remainingMins);
-                return true;
-            }
             hpManager.healPlayer(target, Integer.parseInt(args[1]));
         } catch (NumberNegativeException e) {
             player.sendMessage(Message.TAG + "§7Du musst mehr als 0 Punkte angeben!");
@@ -91,32 +66,18 @@ public class CMDHeal implements CommandExecutor {
 
         Logger.log(player, "healed " + target.getName() + ", " + Integer.parseInt(args[1]) + " by command /heal");
 
-        String name;
-        if (ausweis == null || ausweis.getFirstName() == null || ausweis.getLastName() == null) {
-            name = player.getName();
-        } else {
-            name = ausweis.getFirstName() + " " + ausweis.getLastName();
-        }
-
-        String targetName;
-        ausweis = engine.getAusweis(target);
-        if (ausweis == null || ausweis.getFirstName() == null || ausweis.getLastName() == null) {
-            targetName = args[0];
-        } else {
-            targetName = ausweis.getFirstName() + " " + ausweis.getLastName();
-        }
 
         String message;
 
         if (hpManager.isMaxHealthReached(target)) {
-            message = Message.TAG + "§c" + name + " §7hat §c" + targetName + " §7vollständig geheilt!";
+            message = Message.TAG + "§7Ein Admin hat §c" + target.getName() + " §7vollständig geheilt!";
         } else {
-            message = Message.TAG + "§c" + name + " §7hat §c" + targetName + " §7um §c" + args[1] + " §7HP geheilt!";
+            message = Message.TAG + "§7Ein Admin hat §c" + target.getName() + " §7um §c" + args[1] + " §7HP geheilt!";
         }
 
-        String message2 = Message.TAG + "§c" + targetName + " §7hat nun §c" + hpManager.getHealth(target) + " §7HP!";
+        String message2 = Message.TAG + "§c" + target.getName() + " §7hat nun §c" + hpManager.getHealth(target) + " §7HP!";
 
-        for (Entity nearbyEntity : player.getLocation().getWorld().getNearbyEntities(player.getLocation(), range, range, range)) {
+        for (Entity nearbyEntity : target.getLocation().getWorld().getNearbyEntities(target.getLocation(), RANGE, RANGE, RANGE)) {
             if (nearbyEntity instanceof Player) {
                 nearbyEntity.sendMessage(message);
                 nearbyEntity.sendMessage(message2);

@@ -47,6 +47,13 @@ public class MagicInventory {
                 idMapping.put(i++, spell.getId());
             }
         }
+        //Set go back Button
+        ItemStack button = new ItemStack(Material.ORANGE_STAINED_GLASS_PANE);
+        ItemMeta itemMeta = button.getItemMeta();
+        itemMeta.setDisplayName("§6Zurück");
+        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        button.setItemMeta(itemMeta);
+        inventory.setItem(9*4, button);
         FTSKampf.spellCastInventory.add(new MappedInventory(inventory, idMapping, MappedInventory.MappedInventoryType.CAST_INVENTORY));
         player.openInventory(inventory);
     }
@@ -69,6 +76,13 @@ public class MagicInventory {
                 idMapping.put(i++, spell.getId());
             }
         }
+        //Set go back Button
+        ItemStack button = new ItemStack(Material.ORANGE_STAINED_GLASS_PANE);
+        ItemMeta itemMeta = button.getItemMeta();
+        itemMeta.setDisplayName("§6Zurück");
+        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        button.setItemMeta(itemMeta);
+        inventory.setItem(9*4, button);
         FTSKampf.spellTargetInventory.put(new MappedInventory(inventory, idMapping, MappedInventory.MappedInventoryType.CAST_INVENTORY), target);
         player.openInventory(inventory);
     }
