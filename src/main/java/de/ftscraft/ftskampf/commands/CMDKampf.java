@@ -3,6 +3,7 @@ package de.ftscraft.ftskampf.commands;
 import de.ftscraft.ftsengine.main.Engine;
 import de.ftscraft.ftsengine.utils.Ausweis;
 import de.ftscraft.ftskampf.db.HpManager;
+import de.ftscraft.ftskampf.inventorys.InventoryOpener;
 import de.ftscraft.ftskampf.main.FTSKampf;
 import de.ftscraft.ftskampf.utils.Message;
 import org.bukkit.Bukkit;
@@ -50,48 +51,7 @@ public class CMDKampf implements CommandExecutor {
         }
 
         if(args.length < 1) {
-            Inventory inventory = Bukkit.createInventory(null, 9 * 5, "Kampfsystem");
-
-            ItemStack item = new ItemStack(Material.IRON_SWORD);
-            ItemMeta itemMeta = item.getItemMeta();
-            itemMeta.setDisplayName("Nahkampfwürfel");
-            itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-            item.setItemMeta(itemMeta);
-            inventory.setItem(11, item);
-
-            item = new ItemStack(Material.PAPER);
-            itemMeta = item.getItemMeta();
-            itemMeta.setDisplayName("Aktionswürfel");
-            item.setItemMeta(itemMeta);
-            inventory.setItem(13, item);
-
-            item = new ItemStack(Material.BOW);
-            itemMeta = item.getItemMeta();
-            itemMeta.setDisplayName("Fernkampfwürfel");
-            item.setItemMeta(itemMeta);
-            inventory.setItem(15, item);
-
-            item = new ItemStack(Material.ENCHANTED_BOOK);
-            itemMeta = item.getItemMeta();
-            itemMeta.setDisplayName("Magie");
-            item.setItemMeta(itemMeta);
-            inventory.setItem(29, item);
-
-            item = new ItemStack(Material.ENDER_EYE);
-            itemMeta = item.getItemMeta();
-            itemMeta.setDisplayName("Magie-Aktionswürfel");
-            item.setItemMeta(itemMeta);
-            inventory.setItem(31, item);
-
-            item = new ItemStack(Material.LEATHER_BOOTS);
-            itemMeta = item.getItemMeta();
-            itemMeta.setDisplayName("Agilitätswürfel");
-            itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-            item.setItemMeta(itemMeta);
-            inventory.setItem(33, item);
-
-            FTSKampf.kampfInventorys.add(inventory);
-            player.openInventory(inventory);
+            InventoryOpener.openKampfInventory(player);
             return true;
         }
 
@@ -114,29 +74,7 @@ public class CMDKampf implements CommandExecutor {
             player.sendMessage(Message.TAG + "§6Der Spieler §c" + args[0] + " §6ist zu weit entfernt!");
         }
 
-        Inventory inventory = Bukkit.createInventory(null, 9 * 5, "Kampfsystem auf " + target.getName());
-
-        ItemStack item = new ItemStack(Material.IRON_SWORD);
-        ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName("Nahkampfwürfel");
-        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        item.setItemMeta(itemMeta);
-        inventory.setItem(11, item);
-
-        item = new ItemStack(Material.BOW);
-        itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName("Fernkampfwürfel");
-        item.setItemMeta(itemMeta);
-        inventory.setItem(15, item);
-
-        item = new ItemStack(Material.ENCHANTED_BOOK);
-        itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName("Magie");
-        item.setItemMeta(itemMeta);
-        inventory.setItem(29, item);
-
-        FTSKampf.targetInventorys.put(inventory, target);
-        player.openInventory(inventory);
+        InventoryOpener.openTargetInventory(player, target);
         return true;
     }
 }

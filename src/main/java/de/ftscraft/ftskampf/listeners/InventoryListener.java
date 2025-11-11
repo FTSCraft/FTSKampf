@@ -4,6 +4,7 @@ import de.ftscraft.ftsengine.main.Engine;
 import de.ftscraft.ftsengine.utils.Ausweis;
 import de.ftscraft.ftskampf.damageCalculators.DiceManager;
 import de.ftscraft.ftskampf.db.SpellManager;
+import de.ftscraft.ftskampf.inventorys.InventoryOpener;
 import de.ftscraft.ftskampf.inventorys.MagicInventory;
 import de.ftscraft.ftskampf.main.FTSKampf;
 import de.ftscraft.ftskampf.main.Logger;
@@ -176,6 +177,11 @@ public class InventoryListener implements Listener {
             HashMap<Integer, String> zidMapping = getSpellCastInventory(inventory).getIdMapping();
             event.setCancelled(true);
             int slot = event.getRawSlot();
+            if(slot == 9*4) {
+                inventory.close();
+                InventoryOpener.openPreviousInventory(player);
+                return;
+            }
             if (!zidMapping.containsKey(slot)) {
                 return;
             }
@@ -233,6 +239,11 @@ public class InventoryListener implements Listener {
                 return;
             }
             int slot = event.getRawSlot();
+            if(slot == 9*4) {
+                inventory.close();
+                InventoryOpener.openPreviousInventory(player);
+                return;
+            }
             if (!zidMapping.containsKey(slot)) {
                 return;
             }

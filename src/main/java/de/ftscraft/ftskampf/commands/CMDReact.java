@@ -45,6 +45,9 @@ public class CMDReact implements CommandExecutor {
                 diceManager.sendMessageInRange(Message.TAG + "§c§o" + player.getName() + " §r§chat den Angriff abgebrochen!", player);
                 Logger.log(player, "canceld attack");
                 break;
+            case "accept":
+                diceManager.rollAccept(player);
+                break;
             default:
                 return true;
         }

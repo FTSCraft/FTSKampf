@@ -159,7 +159,7 @@ public class DiceManager {
         doDamageOverTime(player);
 
         Ausweis.Gender gender = ausweis.getGender();
-        if(gender == null) {
+        if (gender == null) {
             gender = Ausweis.Gender.MALE;
         }
         String article = "Der";
@@ -175,7 +175,7 @@ public class DiceManager {
         if (engine.hasAusweis(target)) {
             Ausweis targetAusweis = engine.getAusweis(target);
             Ausweis.Gender tarGender = targetAusweis.getGender();
-            if(tarGender == null) {
+            if (tarGender == null) {
                 tarGender = Ausweis.Gender.MALE;
             }
             if (tarGender.equals(Ausweis.Gender.FEMALE)) {
@@ -197,29 +197,35 @@ public class DiceManager {
         } else {
             message.append("§c").append(value).append(" §7hätte aber §c").append(skill).append(" §7oder niedriger würfeln müssen!").append(" §5[").append(dice.getName()).append("]");
         }
-        sendMessageInRange(message, player);
+        sendMessageInRange(message, player, target);
         Logger.log(player, "Tries to attack with target dice: " + target.getName() + " ," + dice.getName());
         if (success) {
             if (isProtected(target)) {
-                sendMessageInRange(Message.TAG + "§7" + article + " §o" + raceName + " §r§e" + getName(player) + " §7greift §7" + articleTarget + " §o" + raceNameTarget + " §e" + targetName + " §7an, doch §e" + targetName + " §7ist zur Zeit immun", player);
+                sendMessageInRange(Message.TAG + "§7" + article + " §o" + raceName + " §r§e" + getName(player) + " §7greift §7" + articleTarget + " §o" + raceNameTarget + " §e" + targetName + " §7an, doch §e" + targetName + " §7ist zur Zeit immun", player, target);
                 return;
             }
             int attackStrength = calculateAttackStrength(player, dice, value, modifier);
-            sendMessageInRange(Message.TAG + getName(player) + " §7greift an mit der Stärke von §c" + attackStrength + " §5[" + dice.getName() + "]", player);
+            sendMessageInRange(Message.TAG + getName(player) + " §7greift an mit der Stärke von §c" + attackStrength + " §5[" + dice.getName() + "]", player, target);
             TextComponent message1 = new TextComponent(Message.TAG + "§7Du wirst angegriffen! Klicke hier um ");
-            TextComponent reaction1 = new TextComponent("§a[Auszuweichen]");
+            TextComponent reaction1 = new TextComponent("§e[Auszuweichen]");
             reaction1.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/react dodge"));
             reaction1.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§7Ausweichen").create()));
-            TextComponent message2 = new TextComponent(" §7oder zu ");
+            TextComponent message2 = new TextComponent(" §7,zu ");
             TextComponent reaction2 = new TextComponent("§c[Kontern]");
             reaction2.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/react counter"));
             reaction2.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§7Kontern").create()));
-            TextComponent message3 = new TextComponent("§7!" + " §5[" + dice.getName() + "]");
+            TextComponent message3 = new TextComponent(" §7oder ");
+            TextComponent reaction3 = new TextComponent("§a[Anzunehmen]");
+            reaction2.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/react accept"));
+            reaction2.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§7Annehmen").create()));
+            TextComponent message4 = new TextComponent("§7!" + " §5[" + dice.getName() + "]");
             TextComponent text = message1;
             text.addExtra(reaction1);
             text.addExtra(message2);
             text.addExtra(reaction2);
             text.addExtra(message3);
+            text.addExtra(reaction3);
+            text.addExtra(message4);
             target.sendMessage(text);
             registerAttack(target, new Attack(player, dice, attackStrength, absorptionRate, penetrateArmor));
             Logger.log(player, "Attacks with target dice: " + target.getName() + ", " + dice.getName() + ", " + value);
@@ -263,7 +269,7 @@ public class DiceManager {
         if (engine.hasAusweis(target)) {
             Ausweis targetAusweis = engine.getAusweis(player);
             Ausweis.Gender tarGender = targetAusweis.getGender();
-            if(tarGender == null) {
+            if (tarGender == null) {
                 tarGender = Ausweis.Gender.MALE;
             }
             if (tarGender.equals(Ausweis.Gender.FEMALE)) {
@@ -288,10 +294,10 @@ public class DiceManager {
         } else {
             message.append("§c").append(value).append(" §7hätte aber §c").append(skill).append(" §7oder niedriger würfeln müssen!").append(" §5[").append(dice.getName()).append("]");
         }
-        sendMessageInRange(message, player);
+        sendMessageInRange(message, player, target);
         Logger.log(player, "Tries to heal " + target.getName());
         if (success) {
-            sendMessageInRange(Message.TAG + "§7Geheilt werden §c" + (int) Math.round(modifier * finalValue) + " §7LP!", player);
+            sendMessageInRange(Message.TAG + "§7Geheilt werden §c" + (int) Math.round(modifier * finalValue) + " §7LP!", player, target);
             if (hpManager.isMaxHealthReached(target)) {
                 target.sendMessage(Message.TAG + "§7Du bist nun vollständig geheilt!");
             } else {
@@ -315,7 +321,7 @@ public class DiceManager {
         if (engine.hasAusweis(target)) {
             Ausweis targetAusweis = engine.getAusweis(target);
             Ausweis.Gender tarGender = targetAusweis.getGender();
-            if(tarGender == null) {
+            if (tarGender == null) {
                 tarGender = Ausweis.Gender.MALE;
             }
             if (tarGender.equals(Ausweis.Gender.FEMALE)) {
@@ -337,12 +343,12 @@ public class DiceManager {
             message.append("§c").append(value).append(" §7hätte aber §c").append(skill).append(" §7oder niedriger würfeln müssen!").append(" §5[").append(Dice.AGILITY.getName()).append("]");
         }
         removeAttack(target);
-        sendMessageInRange(message, target);
+        Player attacker = attack.getAttacker();
+        sendMessageInRange(message, target, attacker);
         Logger.log(target, "dodges attack from " + attack.getAttacker().getName() + ", " + attack.getType().getName());
         if (!success) {
-            Player attacker = attack.getAttacker();
             int damage = calculateValueAfterDefend(target, attack.getStrength(), attack.getType(), attack.doPenetrateArmor());
-            sendMessageInRange(Message.TAG + "§e" + getName(attack.getAttacker()) + " §7verursacht Schaden in Höhe von §c" + damage + " §7an §e" + getName(target) + " §5[" + attack.getType().getName() + "]", target);
+            sendMessageInRange(Message.TAG + "§e" + getName(attack.getAttacker()) + " §7verursacht Schaden in Höhe von §c" + damage + " §7an §e" + getName(target) + " §5[" + attack.getType().getName() + "]", target, attacker);
             hpManager.hurtPlayer(target, damage);
 
             Logger.log(target, "Dodge failed, Damage: " + damage);
@@ -354,14 +360,66 @@ public class DiceManager {
                     hpManager.healPlayer(attacker, absorbedLife);
                 } catch (NumberNegativeException ignored) {
                 }
-                sendMessageInRange(Message.TAG + "§c" + getName(attacker) + " §7absorbiert §c" + absorbedLife + " §7Lebenspunkte", attacker);
+                sendMessageInRange(Message.TAG + "§c" + getName(attacker) + " §7absorbiert §c" + absorbedLife + " §7Lebenspunkte", attacker, target);
             }
 
             if (hpManager.getHealth(target) <= 0) {
-                sendMessageInRange(Message.TAG + "§c" + getName(target) + " §7ist kampfunfähig!", target);
+                sendMessageInRange(Message.TAG + "§c" + getName(target) + " §7ist kampfunfähig!", target, attacker);
             } else {
-                sendMessageInRange(Message.TAG + "§c" + getName(target) + " §7hat noch §c" + hpManager.getHealth(target) + " §7HP!", target);
+                sendMessageInRange(Message.TAG + "§c" + getName(target) + " §7hat noch §c" + hpManager.getHealth(target) + " §7HP!", target, attacker);
             }
+        }
+    }
+
+    public void rollAccept(Player target) {
+        Attack attack = getAttack(target);
+        if (attack == null) {
+            return;
+        }
+
+        Race race = plugin.getRaceOrDefault(target);
+
+        Race targetRace = plugin.getRaceOrDefault(target);
+        String article = "Der";
+        String raceName = targetRace.getmName();
+        if (engine.hasAusweis(target)) {
+            Ausweis targetAusweis = engine.getAusweis(target);
+            Ausweis.Gender tarGender = targetAusweis.getGender();
+            if (tarGender == null) {
+                tarGender = Ausweis.Gender.MALE;
+            }
+            if (tarGender.equals(Ausweis.Gender.FEMALE)) {
+                article = "Die";
+                raceName = race.getfName();
+            }
+        }
+
+        StringBuilder message = new StringBuilder("§7" + article + " §o" + raceName + " §r§e" + getName(target) + " §7reagiert nicht auf den Angriff.§e");
+
+        removeAttack(target);
+        Player attacker = attack.getAttacker();
+
+        sendMessageInRange(message, target, attacker);
+        Logger.log(target, "Accepts attack from " + attack.getAttacker().getName() + ", " + attack.getType().getName());
+
+        int damage = calculateValueAfterDefend(target, attack.getStrength(), attack.getType(), attack.doPenetrateArmor());
+        sendMessageInRange(Message.TAG + "§e" + getName(attack.getAttacker()) + " §7verursacht Schaden in Höhe von §c" + damage + " §7an §e" + getName(target) + " §5[" + attack.getType().getName() + "]", target, attacker);
+        hpManager.hurtPlayer(target, damage);
+
+        if (attack.getAbsorptionRate() > 0) {
+            int absorbedLife = (int) Math.round(damage * attack.getAbsorptionRate());
+            Logger.log(target, absorbedLife + " HP got absorbed by " + attack.getAttacker().getName());
+            try {
+                hpManager.healPlayer(attacker, absorbedLife);
+            } catch (NumberNegativeException ignored) {
+            }
+            sendMessageInRange(Message.TAG + "§c" + getName(attacker) + " §7absorbiert §c" + absorbedLife + " §7Lebenspunkte",attacker , target);
+        }
+
+        if (hpManager.getHealth(target) <= 0) {
+            sendMessageInRange(Message.TAG + "§c" + getName(target) + " §7ist kampfunfähig!", target, attacker);
+        } else {
+            sendMessageInRange(Message.TAG + "§c" + getName(target) + " §7hat noch §c" + hpManager.getHealth(target) + " §7HP!", target, attacker);
         }
     }
 
@@ -378,7 +436,7 @@ public class DiceManager {
         if (engine.hasAusweis(target)) {
             Ausweis targetAusweis = engine.getAusweis(target);
             Ausweis.Gender tarGender = targetAusweis.getGender();
-            if(tarGender == null) {
+            if (tarGender == null) {
                 tarGender = Ausweis.Gender.MALE;
             }
             if (tarGender.equals(Ausweis.Gender.FEMALE)) {
@@ -407,20 +465,20 @@ public class DiceManager {
             message.append("§c").append(value).append(" §7hätte aber §c").append(skill).append(" §7oder niedriger würfeln müssen!").append(" §5[").append(dice.getName()).append("]");
             attackDmg = attack.getStrength();
         }
-        sendMessageInRange(message, target);
-
         Player attacker = attack.getAttacker();
+        sendMessageInRange(message, target, attacker);
+
         if (attackDmg < 0) {
             attacker = target;
             target = attack.getAttacker();
             attackDmg = Math.abs(attackDmg);
         }
 
-        sendMessageInRange(Message.TAG + getName(attacker) + " §7greift an mit der Stärke von §c" + attackDmg + " §5[" + dice.getName() + "]", attacker);
+        sendMessageInRange(Message.TAG + getName(attacker) + " §7greift an mit der Stärke von §c" + attackDmg + " §5[" + dice.getName() + "]", attacker, target);
         Logger.log(attacker, "Attack after counter: " + target.getName() + ", " + attack.getType().getName() + ", " + attackDmg);
 
         int damage = calculateValueAfterDefend(target, attackDmg, dice, attack.doPenetrateArmor());
-        sendMessageInRange(Message.TAG + "§e" + getName(attacker) + " §7verursacht Schaden in Höhe von §c" + damage + " §7an §e" + getName(target) + " §5[" + attack.getType().getName() + "]", target);
+        sendMessageInRange(Message.TAG + "§e" + getName(attacker) + " §7verursacht Schaden in Höhe von §c" + damage + " §7an §e" + getName(target) + " §5[" + attack.getType().getName() + "]", target, attacker);
         hpManager.hurtPlayer(target, damage);
 
         if (!success && attack.getAbsorptionRate() > 0) {
@@ -429,13 +487,13 @@ public class DiceManager {
                 hpManager.healPlayer(attacker, absorbedLife);
             } catch (NumberNegativeException ignored) {
             }
-            sendMessageInRange(Message.TAG + "§c" + getName(attacker) + " §7absorbiert §c" + absorbedLife + " §7Lebenspunkte", attacker);
+            sendMessageInRange(Message.TAG + "§c" + getName(attacker) + " §7absorbiert §c" + absorbedLife + " §7Lebenspunkte", attacker, target);
         }
 
         if (hpManager.getHealth(target) <= 0) {
-            sendMessageInRange(Message.TAG + "§c" + getName(target) + " §7ist kampfunfähig!", target);
+            sendMessageInRange(Message.TAG + "§c" + getName(target) + " §7ist kampfunfähig!", target, attacker);
         } else {
-            sendMessageInRange(Message.TAG + "§c" + getName(target) + " §7hat noch §c" + hpManager.getHealth(target) + " §7HP!", target);
+            sendMessageInRange(Message.TAG + "§c" + getName(target) + " §7hat noch §c" + hpManager.getHealth(target) + " §7HP!", target, attacker);
         }
     }
 
@@ -470,7 +528,7 @@ public class DiceManager {
         for (ContinuousEffect effect : effectManager.getPlayerEffects(player.getUniqueId().toString())) {
             initialValue = effect.modifyAttackValue(initialValue, dice, !damageModifier.isArmed(player));
         }
-        return (int) Math.round(initialValue*modifier);
+        return (int) Math.round(initialValue * modifier);
     }
 
     private int calculateValueAfterDefend(Player player, int value, Dice dice, boolean armorPen) {
@@ -511,10 +569,25 @@ public class DiceManager {
         }
     }
 
+    public void sendMessageInRange(String message, Player player, Player target) {
+        List<Player> receiver = new ArrayList<>();
+        receiver.add(player);
+        receiver.add(target);
+        sendMessageInMultipleRange(message, receiver);
+    }
+
+    public void sendMessageInRange(StringBuilder message, Player player, Player target) {
+        List<Player> receiver = new ArrayList<>();
+        receiver.add(player);
+        receiver.add(target);
+        sendMessageInMultipleRange(message.toString(), receiver);
+    }
+
+
     public void sendMessageInMultipleRange(String message, List<Player> players) {
         List<Player> receivers = new ArrayList<>();
         for (Player player : players) {
-            int range =getChatRange(player);
+            int range = getChatRange(player);
             for (Entity nearbyEntity : player.getLocation().getWorld().getNearbyEntities(player.getLocation(), range, range, range)) {
                 if (nearbyEntity instanceof Player) {
                     receivers.add((Player) nearbyEntity);
@@ -589,7 +662,7 @@ public class DiceManager {
     private int getChatRange(Player player) {
         FtsSystem system = plugin.getSystem();
         int range = system.getUser(player).getActiveChannel().range();
-        if(range < 0)
+        if (range < 0)
             return plugin.getConfig().getInt("DiceDefaultChatRange");
         return range;
     }
