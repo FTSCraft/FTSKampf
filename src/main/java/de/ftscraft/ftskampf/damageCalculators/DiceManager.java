@@ -210,14 +210,14 @@ public class DiceManager {
             TextComponent reaction1 = new TextComponent("§e[Auszuweichen]");
             reaction1.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/react dodge"));
             reaction1.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§7Ausweichen").create()));
-            TextComponent message2 = new TextComponent(" §7,zu ");
+            TextComponent message2 = new TextComponent("§7, zu ");
             TextComponent reaction2 = new TextComponent("§c[Kontern]");
             reaction2.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/react counter"));
             reaction2.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§7Kontern").create()));
             TextComponent message3 = new TextComponent(" §7oder ");
             TextComponent reaction3 = new TextComponent("§a[Anzunehmen]");
-            reaction2.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/react accept"));
-            reaction2.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§7Annehmen").create()));
+            reaction3.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/react accept"));
+            reaction3.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§7Annehmen").create()));
             TextComponent message4 = new TextComponent("§7!" + " §5[" + dice.getName() + "]");
             TextComponent text = message1;
             text.addExtra(reaction1);
